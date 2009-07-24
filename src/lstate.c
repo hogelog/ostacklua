@@ -117,11 +117,13 @@ static void close_state (lua_State *L) {
 
 
 lua_State *luaE_newthread (lua_State *L) {
+  lu_mem created = gcprofile_allocates(L);
   lua_State *L1 = tostate(luaM_malloc(L, state_size(lua_State)));
   luaC_link(L, obj2gco(L1), LUA_TTHREAD);
   preinit_state(L1, G(L));
   stack_init(L1, L);  /* init stack */
   setobj2n(L, gt(L1), gt(L));  /* share table of globals */
+  L1->created = created;
   L1->hookmask = L->hookmask;
   L1->basehookcount = L->basehookcount;
   L1->hook = L->hook;
@@ -149,6 +151,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   L = tostate(l);
   g = &((LG *)L)->g;
   L->next = NULL;
+  L->created = 0;
   L->tt = LUA_TTHREAD;
   g->currentwhite = bit2mask(WHITE0BIT, FIXEDBIT);
   L->marked = luaC_white(g);
@@ -186,6 +189,11 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   }
   else
     luai_userstateopen(L);
+
+  gcprofile_allocates(L) = state_size(LG);
+  if ((gcprofile_logfile(L) = fopen(GCLOGFILE, "w"))==NULL) {
+    gcprofile_logfile(L) = stderr;
+  }
   return L;
 }
 
@@ -209,6 +217,9 @@ LUA_API void lua_close (lua_State *L) {
   } while (luaD_rawrunprotected(L, callallgcTM, NULL) != 0);
   lua_assert(G(L)->tmudata == NULL);
   luai_userstateclose(L);
+  lua_wholeliveprofile(L, &G(L)->rootgc);
   close_state(L);
+	lua_gcprofile(L);
+  fclose(gcprofile_logfile(L));
 }
 

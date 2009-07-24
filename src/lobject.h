@@ -40,7 +40,8 @@ typedef union GCObject GCObject;
 ** Common Header for all collectable objects (in macro form, to be
 ** included in other objects)
 */
-#define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked
+/*#define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked*/
+#define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked; lu_mem created
 
 
 /*
@@ -376,6 +377,10 @@ LUAI_FUNC const char *luaO_pushvfstring (lua_State *L, const char *fmt,
 LUAI_FUNC const char *luaO_pushfstring (lua_State *L, const char *fmt, ...);
 LUAI_FUNC void luaO_chunkid (char *out, const char *source, size_t len);
 
+void (lua_gcprofile) (lua_State *L);
+void (lua_objprofile) (lua_State *L, GCObject *p);
+void (lua_liveprofile) (lua_State *L, GCObject **p, lu_mem count);
+#define lua_wholeliveprofile(L,p)	lua_liveprofile(L,p,MAX_LUMEM)
 
 #endif
 

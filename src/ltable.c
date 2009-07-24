@@ -356,7 +356,9 @@ static void rehash (lua_State *L, Table *t, const TValue *ek) {
 
 
 Table *luaH_new (lua_State *L, int narray, int nhash) {
+  lu_mem created = gcprofile_allocates(L);
   Table *t = luaM_new(L, Table);
+  t->created = created;
   luaC_link(L, obj2gco(t), LUA_TTABLE);
   t->metatable = NULL;
   t->flags = cast_byte(~0);

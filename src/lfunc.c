@@ -21,30 +21,36 @@
 
 
 Closure *luaF_newCclosure (lua_State *L, int nelems, Table *e) {
+  lu_mem created = gcprofile_allocates(L);
   Closure *c = cast(Closure *, luaM_malloc(L, sizeCclosure(nelems)));
   luaC_link(L, obj2gco(c), LUA_TFUNCTION);
   c->c.isC = 1;
   c->c.env = e;
   c->c.nupvalues = cast_byte(nelems);
+  c->c.created = created;
   return c;
 }
 
 
 Closure *luaF_newLclosure (lua_State *L, int nelems, Table *e) {
+  lu_mem created = gcprofile_allocates(L);
   Closure *c = cast(Closure *, luaM_malloc(L, sizeLclosure(nelems)));
   luaC_link(L, obj2gco(c), LUA_TFUNCTION);
   c->l.isC = 0;
   c->l.env = e;
   c->l.nupvalues = cast_byte(nelems);
   while (nelems--) c->l.upvals[nelems] = NULL;
+  c->l.created = created;
   return c;
 }
 
 
 UpVal *luaF_newupval (lua_State *L) {
+  lu_mem created = gcprofile_allocates(L);
   UpVal *uv = luaM_new(L, UpVal);
   luaC_link(L, obj2gco(uv), LUA_TUPVAL);
   uv->v = &uv->u.value;
+  uv->created = created;
   setnilvalue(uv->v);
   return uv;
 }
@@ -55,6 +61,7 @@ UpVal *luaF_findupval (lua_State *L, StkId level) {
   GCObject **pp = &L->openupval;
   UpVal *p;
   UpVal *uv;
+  lu_mem created;
   while (*pp != NULL && (p = ngcotouv(*pp))->v >= level) {
     lua_assert(p->v != &p->u.value);
     if (p->v == level) {  /* found a corresponding upvalue? */
@@ -64,7 +71,9 @@ UpVal *luaF_findupval (lua_State *L, StkId level) {
     }
     pp = &p->next;
   }
+  created = gcprofile_allocates(L);
   uv = luaM_new(L, UpVal);  /* not found: create a new one */
+  uv->created = created;
   uv->tt = LUA_TUPVAL;
   uv->marked = luaC_white(g);
   uv->v = level;  /* current value lives in the stack */
@@ -113,6 +122,7 @@ void luaF_close (lua_State *L, StkId level) {
 
 
 Proto *luaF_newproto (lua_State *L) {
+  lu_mem created = gcprofile_allocates(L);
   Proto *f = luaM_new(L, Proto);
   luaC_link(L, obj2gco(f), LUA_TPROTO);
   f->k = NULL;
@@ -134,6 +144,7 @@ Proto *luaF_newproto (lua_State *L) {
   f->linedefined = 0;
   f->lastlinedefined = 0;
   f->source = NULL;
+  f->created = created;
   return f;
 }
 

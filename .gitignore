@@ -1,0 +1,8 @@
+*.o
+*.a
+src/lua
+src/luac
+GPATH
+GRTAGS
+GSYMS
+GTAGS

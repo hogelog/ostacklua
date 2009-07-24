@@ -4,6 +4,8 @@ to be read, to see how Lua programs look.
 
 Here is a one-line summary of each program:
 
+   ao.lua		small ambient occlusion renderer
+   ao-opt.lua		small ambient occlusion renderer (table to array optimization)
    bisect.lua		bisection method for solving non-linear equations
    cf.lua		temperature conversion table (celsius to farenheit)
    echo.lua             echo command line arguments

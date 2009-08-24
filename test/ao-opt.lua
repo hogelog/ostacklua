@@ -13,17 +13,17 @@ function vec(ix, iy, iz)
 end
 
 function vadd(a, b)
-	return vec(a[1] + b[1], a[2] + b[2], a[3] + b[3])
+	return {a[1] + b[1], a[2] + b[2], a[3] + b[3]}
 end
 
 function vsub(a, b)
-	return vec(a[1] - b[1], a[2] - b[2], a[3] - b[3])
+	return {a[1] - b[1], a[2] - b[2], a[3] - b[3]}
 end
 
 function vcross(a, b)
-	return vec(	a[2] * b[3] - a[3] * b[2],
+	return {a[2] * b[3] - a[3] * b[2],
 				a[3] * b[1] - a[1] * b[3],
-				a[1] * b[2] - a[2] * b[1] )
+				a[1] * b[2] - a[2] * b[1]}
 end
 
 function vdot(a, b)
@@ -36,7 +36,7 @@ end
 
 function vnormalize(a)
 	local len = vlength(a)
-	local v = vec(a[1], a[2], a[3])
+	local v = {a[1], a[2], a[3]}
 	
 	if ( math.abs(len) > 1.0e-17 ) then
 		v[1] = v[1] / len;
@@ -69,58 +69,61 @@ function Sphere(icenter, iradius)
 end
 
 function Sphere_intersect(sphere, ray, isect)
-	local rs = vsub(ray.org, sphere.center)
-	local B = vdot(rs, ray.dir)
-	local C = vdot(rs, rs) - (sphere.radius * sphere.radius)
+	local rs = vsub(ray[1], sphere[1])
+	local B = vdot(rs, ray[2])
+	local C = vdot(rs, rs) - (sphere[2] * sphere[2])
 	local D = B * B - C
 	
 	if( D > 0.0 ) then
 		local t = -B - math.sqrt(D)
 		
-		if ( (t > 0.0) and (t < isect.t) ) then
-			isect.t = t
-			isect.hit = true
-			isect.p = vec(	ray.org[1] + ray.dir[1] * t,
-							ray.org[2] + ray.dir[2] * t,
-							ray.org[3] + ray.dir[3] * t )
+		if ( (t > 0.0) and (t < isect[1]) ) then
+			isect[1] = t
+			isect[2] = true
+			isect[3] = {ray[1][1] + ray[2][1] * t,
+							ray[1][2] + ray[2][2] * t,
+							ray[1][3] + ray[2][3] * t}
 			
-			local n = vsub( isect.p, sphere.center )
-			isect.n = vnormalize(n)
+			local n = vsub( isect[3], sphere[1] )
+			isect[4] = vnormalize(n)
 		end
 	end
 end
-
+--[[
 function Plane(ip, inorm)
 	return {p = ip, n = inorm}
 end
+--]]
 
 function Plane_intersect(aplane, ray, isect)
-	local d = -vdot(aplane.p, aplane.n)
-	local v = vdot(ray.dir, aplane.n)
+	local d = -vdot(aplane[1], aplane[2])
+	local v = vdot(ray[2], aplane[2])
 	
 	if (math.abs(v) < 1.0e-17) then
 		return;	--no hit
 	end
 	
-	local t = -(vdot(ray.org, aplane.n) + d) / v
+	local t = -(vdot(ray[1], aplane[2]) + d) / v
 	
-	if ((t > 0.0) and (t < isect.t)) then
-		isect.hit = true
-		isect.t = t
-		isect.n = aplane.n
-		isect.p = vec(	ray.org[1] + ray.dir[1] * t,
-						ray.org[2] + ray.dir[2] * t,
-						ray.org[3] + ray.dir[3] * t )
+	if ((t > 0.0) and (t < isect[1])) then
+		isect[2] = true
+		isect[1] = t
+		isect[4] = aplane[2]
+		isect[3] = {ray[1][1] + ray[2][1] * t,
+						    ray[1][2] + ray[2][2] * t,
+						    ray[1][3] + ray[2][3] * t}
 	end
 end
-
+--[[
 function Ray(iorg, idir)
 	return {org = iorg, dir = idir}
 end
-
+--]]
 function Isect()
-	return {t = 1000000.0, hit = false, p = vec(0.0, 0.0, 0.0), n = vec(0.0, 0.0, 0.0) }
+	return {1000000.0, false, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0} }
+	--return {t = 1000000.0, hit = false, p = vec(0.0, 0.0, 0.0), n = vec(0.0, 0.0, 0.0) }
 end
+
 
 function clamp(f)
 	local i = f * 255.5
@@ -134,8 +137,8 @@ function clamp(f)
 end
 
 function orthoBasis( basis, n )
-	basis[2] = vec(n[1], n[2], n[3])
-	basis[1] = vec(0.0, 0.0, 0.0)
+	basis[2] = {n[1], n[2], n[3]}
+	basis[1] = {0.0, 0.0, 0.0}
 	
 	if ((n[1] < 0.6) and (n[1] > -0.6)) then
 		basis[1][1] = 1.0
@@ -158,26 +161,25 @@ end
 -- ==========
 
 function init_scene()
-	spheres = {}
-	spheres[0]  = Sphere(vec(-2.0, 0.0, -3.5), 0.5)
-	spheres[1]  = Sphere(vec(-0.5, 0.0, -3.0), 0.5)
-	spheres[2]  = Sphere(vec(1.0, 0.0, -2.2), 0.5)
-	plane = Plane( vec(0.0, -0.5, 0.0), vec(0.0, 1.0, 0.0) )
+	spheres = {{{-2.0, 0.0, -3.5}, 0.5},
+	           {{-0.5, 0.0, -3.0}, 0.5},
+	           {{1.0, 0.0, -2.2}, 0.5}}
+	plane = {{0.0, -0.5, 0.0}, {0.0, 1.0, 0.0}}
 end
 
 
 function ambient_occlusion( isect )
 	local basis = {}
-	orthoBasis( basis, isect.n )
+	orthoBasis( basis, isect[4] )
 	
 	local ntheta = NAO_SAMPLES
 	local nphi   = NAO_SAMPLES
 	local eps    = 0.0001
 	local occlusion = 0.0
 	
-	local p = vec(	isect.p[1] + eps * isect.n[1],
-					isect.p[2] + eps * isect.n[2],
-					isect.p[3] + eps * isect.n[3] )
+	local p = {isect[3][1] + eps * isect[4][1],
+					isect[3][2] + eps * isect[4][2],
+					isect[3][3] + eps * isect[4][3]}
 	
 	for j = 0, nphi -1 do
 		for i = 0, ntheta -1 do
@@ -193,16 +195,16 @@ function ambient_occlusion( isect )
 			local ry = x * basis[0][2] + y * basis[1][2] + z * basis[2][2]
 			local rz = x * basis[0][3] + y * basis[1][3] + z * basis[2][3]
 			
-			local raydir = vec(rx, ry, rz)
-			local ray = Ray(p, raydir)
+			local raydir = {rx, ry, rz}
+			local ray = {p, raydir}
 			
 			local occIsect = Isect()
-			Sphere_intersect( spheres[0], ray, occIsect )
 			Sphere_intersect( spheres[1], ray, occIsect )
 			Sphere_intersect( spheres[2], ray, occIsect )
+			Sphere_intersect( spheres[3], ray, occIsect )
 			Plane_intersect( plane, ray, occIsect )
 			
-			if occIsect.hit then
+			if occIsect[2] then
 				occlusion = occlusion + 1.0
 			end
 			
@@ -211,7 +213,7 @@ function ambient_occlusion( isect )
 	
 	occlusion = (ntheta * nphi - occlusion) / (ntheta * nphi)
 	
-	return vec(occlusion, occlusion, occlusion)
+	return {occlusion, occlusion, occlusion}
 end
 
 function render(buffer, w, h, nsubsamples)
@@ -219,7 +221,7 @@ function render(buffer, w, h, nsubsamples)
 	
 	for y = 0, h - 1 do
 		for x = 0, w - 1 do
-			local rad = vec(0.0, 0.0, 0.0)
+			local rad = {0.0, 0.0, 0.0}
 			
 			-- subsampling
 			for v = 0, nsubsamples - 1 do
@@ -228,16 +230,16 @@ function render(buffer, w, h, nsubsamples)
 					local px = (x + (u / nsubsamples) - (w / 2.0)) / (w / 2.0)
 					local py = -(y + (v / nsubsamples) - (h / 2.0)) / (h / 2.0)
 					
-					local eye = vnormalize( vec(px, py, -1.0) )
-					local ray = Ray( vec(0.0, 0.0, 0.0), eye )
+					local eye = vnormalize({px, py, -1.0})
+					local ray = {{0.0, 0.0, 0.0}, eye}
 					
 					isect = Isect()
-					Sphere_intersect( spheres[0], ray, isect )
 					Sphere_intersect( spheres[1], ray, isect )
 					Sphere_intersect( spheres[2], ray, isect )
+					Sphere_intersect( spheres[3], ray, isect )
 					Plane_intersect( plane, ray, isect )
 					
-					if isect.hit then
+					if isect[2] then
 						local col = ambient_occlusion(isect)
 						
 						rad[1] = rad[1] + col[1]

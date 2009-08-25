@@ -500,6 +500,7 @@ TValue *luaH_set (lua_State *L, Table *t, const TValue *key) {
     if (ttisnil(key)) luaG_runerror(L, "table index is nil");
     else if (ttisnumber(key) && luai_numisnan(nvalue(key)))
       luaG_runerror(L, "table index is NaN");
+    if (ttisstring(key))  printf("##key: %s\n", svalue(key));
     return newkey(L, t, key);
   }
 }

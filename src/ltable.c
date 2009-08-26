@@ -365,16 +365,37 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
   t->sizearray = 0;
   t->lsizenode = 0;
   t->node = cast(Node *, dummynode);
+  t->stack = 0;
   setarrayvector(L, t, narray);
   setnodevector(L, t, nhash);
   return t;
 }
 
+Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
+  global_State *g = G(L);
+  Table *t = luaM_new(L, Table);
+  //luaC_link(L, obj2gco(t), LUA_TTABLE);
+  t->metatable = NULL;
+  t->flags = cast_byte(~0);
+
+  t->array = g->objstack;
+  g->objstack += sizeof(TValue)*narray;
+  t->node= g->objstack;
+  g->objstack += sizeof(TValue)*nhash;
+
+  t->sizearray = 0;
+  t->lsizenode = 0;
+  t->stack = 1;
+  t->node = cast(Node *, dummynode);
+  setnodevector(L, t, nhash);
+  return t;
+}
 
 void luaH_free (lua_State *L, Table *t) {
-  if (t->node != dummynode)
+  if (!t->stack && t->node != dummynode)
     luaM_freearray(L, t->node, sizenode(t), Node);
-  luaM_freearray(L, t->array, t->sizearray, TValue);
+  if (!t->stack)
+    luaM_freearray(L, t->array, t->sizearray, TValue);
   luaM_free(L, t);
 }
 

@@ -137,24 +137,24 @@ function clamp(f)
 end
 
 function orthoBasis( basis, n )
-	basis[2] = {n[1], n[2], n[3]}
-	basis[1] = {0.0, 0.0, 0.0}
+	basis[3] = {n[1], n[2], n[3]}
+	basis[2] = {0.0, 0.0, 0.0}
 	
 	if ((n[1] < 0.6) and (n[1] > -0.6)) then
-		basis[1][1] = 1.0
+		basis[2][1] = 1.0
 	elseif ((n[2] < 0.6) and (n[2] > -0.6)) then
-		basis[1][2] = 1.0
+		basis[2][2] = 1.0
 	elseif ((n[3] < 0.6) and (n[3] > -0.6)) then
-		basis[1][3] = 1.0
+		basis[2][3] = 1.0
 	else
-		basis[1][1] = 1.0
+		basis[2][1] = 1.0
 	end
 	
-	basis[0] = vcross(basis[1], basis[2])
-	basis[0] = vnormalize(basis[0])
-	
-	basis[1] = vcross(basis[2], basis[0])
+	basis[1] = vcross(basis[2], basis[3])
 	basis[1] = vnormalize(basis[1])
+	
+	basis[2] = vcross(basis[3], basis[1])
+	basis[2] = vnormalize(basis[2])
 end
 
 
@@ -191,9 +191,9 @@ function ambient_occlusion( isect )
 			local z = math.sqrt(r)
 			
 			-- local to global
-			local rx = x * basis[0][1] + y * basis[1][1] + z * basis[2][1]
-			local ry = x * basis[0][2] + y * basis[1][2] + z * basis[2][2]
-			local rz = x * basis[0][3] + y * basis[1][3] + z * basis[2][3]
+			local rx = x * basis[1][1] + y * basis[2][1] + z * basis[3][1]
+			local ry = x * basis[1][2] + y * basis[2][2] + z * basis[3][2]
+			local rz = x * basis[1][3] + y * basis[2][3] + z * basis[3][3]
 			
 			local raydir = {rx, ry, rz}
 			local ray = {p, raydir}
@@ -282,6 +282,7 @@ print("--- aobench ---")
 
 startTime = os.time()
 
+--image = table.create(IMAGE_WIDTH * IMAGE_HEIGHT - 1, 0)
 image = {}
 
 print("init scene")

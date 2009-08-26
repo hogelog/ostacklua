@@ -344,6 +344,7 @@ typedef struct Table {
   Node *node;
   Node *lastfree;  /* any free position is before this position */
   GCObject *gclist;
+  lu_byte stack;
   int sizearray;  /* size of `array' array */
 } Table;
 

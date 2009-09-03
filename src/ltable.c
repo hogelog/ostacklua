@@ -372,18 +372,18 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
 }
 
 Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
-  global_State *g = G(L);
+  int i;
+  //Table *t = stack_alloc(L, Table, 1);
   Table *t = luaM_new(L, Table);
   //luaC_link(L, obj2gco(t), LUA_TTABLE);
   t->metatable = NULL;
   t->flags = cast_byte(~0);
 
-  t->array = g->objstack;
-  g->objstack += sizeof(TValue)*narray;
-  t->node= g->objstack;
-  g->objstack += sizeof(TValue)*nhash;
+  t->array = stack_alloc(L, TValue, narray);
+  t->sizearray = narray;
+  for (i=t->sizearray; i<narray; i++)
+     setnilvalue(&t->array[i]);
 
-  t->sizearray = 0;
   t->lsizenode = 0;
   t->stack = 1;
   t->node = cast(Node *, dummynode);

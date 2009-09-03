@@ -61,6 +61,12 @@ typedef struct CallInfo {
 #define f_isLua(ci)	(!ci_func(ci)->c.isC)
 #define isLua(ci)	(ttisfunction((ci)->func) && f_isLua(ci))
 
+typedef struct ObjectStack {
+  void *head;
+  void *allocpoint;
+} ObjectStack;
+void* stack_alloc_(lua_State *L, size_t size) ;
+#define stack_alloc(L,t,c) stack_alloc_(L, sizeof(t)*(c))
 
 /*
 ** `global state', shared by all threads of this state
@@ -91,7 +97,7 @@ typedef struct global_State {
   UpVal uvhead;  /* head of double-linked list of all open upvalues */
   struct Table *mt[NUM_TAGS];  /* metatables for basic types */
   TString *tmname[TM_N];  /* array with tag-method names */
-  void *objstack;
+  ObjectStack objstack;
 } global_State;
 
 #define OBJSTACK_SIZE 1024 * 1024 * 1024

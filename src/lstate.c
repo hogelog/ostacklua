@@ -215,8 +215,7 @@ LUA_API void lua_close (lua_State *L) {
 }
 
 void* stack_alloc_(lua_State *L, size_t size) {
-  global_State *g = G(L);
-  void *allocpoint = g->objstack.allocpoint;
-  g->objstack.allocpoint += size;
+  void *allocpoint = stack_allocpoint(L);
+  stack_allocpoint(L) += size;
   return allocpoint;
 }

@@ -103,7 +103,7 @@ void luaF_close (lua_State *L, StkId level) {
     if (isdead(g, o))
       luaF_freeupval(L, uv);  /* free upvalue */
     else {
-      unlinkupval(uv);
+      if (!ttistable(&o->gch) || !o->h.stack) unlinkupval(uv);
       setobj(L, &uv->u.value, uv->v);
       uv->v = &uv->u.value;  /* now current value lives here */
       luaC_linkupval(L, uv);  /* link upvalue into `gcroot' list */
@@ -134,11 +134,13 @@ Proto *luaF_newproto (lua_State *L) {
   f->linedefined = 0;
   f->lastlinedefined = 0;
   f->source = NULL;
+  f->allocpoint = stack_allocpoint(L);
   return f;
 }
 
 
 void luaF_freeproto (lua_State *L, Proto *f) {
+  stack_allocpoint(L) = f->allocpoint;
   luaM_freearray(L, f->code, f->sizecode, Instruction);
   luaM_freearray(L, f->p, f->sizep, Proto *);
   luaM_freearray(L, f->k, f->sizek, TValue);

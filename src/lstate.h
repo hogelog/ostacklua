@@ -67,6 +67,7 @@ typedef struct ObjectStack {
 } ObjectStack;
 void* stack_alloc_(lua_State *L, size_t size) ;
 #define stack_alloc(L,t,c) stack_alloc_(L, sizeof(t)*(c))
+#define stack_allocpoint(L) (G(L)->objstack.allocpoint)
 
 /*
 ** `global state', shared by all threads of this state

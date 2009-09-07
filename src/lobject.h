@@ -48,6 +48,7 @@ typedef union GCObject GCObject;
 */
 typedef struct GCheader {
   CommonHeader;
+  lu_byte stack;
 } GCheader;
 
 
@@ -250,6 +251,7 @@ typedef struct Proto {
   lu_byte numparams;
   lu_byte is_vararg;
   lu_byte maxstacksize;
+  void *allocpoint;
 } Proto;
 
 
@@ -337,6 +339,7 @@ typedef struct Node {
 
 typedef struct Table {
   CommonHeader;
+  lu_byte stack;
   lu_byte flags;  /* 1<<p means tagmethod(p) is not present */ 
   lu_byte lsizenode;  /* log2 of size of `node' array */
   struct Table *metatable;
@@ -344,7 +347,6 @@ typedef struct Table {
   Node *node;
   Node *lastfree;  /* any free position is before this position */
   GCObject *gclist;
-  lu_byte stack;
   int sizearray;  /* size of `array' array */
 } Table;
 

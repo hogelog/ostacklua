@@ -103,10 +103,11 @@ void luaF_close (lua_State *L, StkId level) {
     if (isdead(g, o))
       luaF_freeupval(L, uv);  /* free upvalue */
     else {
-      if (!ttistable(&o->gch) || !o->h.stack) unlinkupval(uv);
+      unlinkupval(uv);
       setobj(L, &uv->u.value, uv->v);
       uv->v = &uv->u.value;  /* now current value lives here */
-      luaC_linkupval(L, uv);  /* link upvalue into `gcroot' list */
+      if (!ttistable(&o->gch) || !o->h.stack)
+        luaC_linkupval(L, uv);  /* link upvalue into `gcroot' list */
     }
   }
 }

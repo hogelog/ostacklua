@@ -64,6 +64,7 @@ typedef struct CallInfo {
 typedef struct ObjectStack {
   void *head;
   void *allocpoint;
+  size_t size;
 } ObjectStack;
 void* stack_alloc_(lua_State *L, size_t size) ;
 #define stack_alloc(L,t,c) stack_alloc_(L, sizeof(t)*(c))

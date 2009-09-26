@@ -375,6 +375,8 @@ Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
   int i;
   //Table *t = stack_alloc(L, Table, 1);
   Table *t = luaM_new(L, Table);
+  GCObject *o = obj2gco(t);
+  o->gch.tt = LUA_TTABLE;
   //luaC_link(L, obj2gco(t), LUA_TTABLE);
   t->metatable = NULL;
   t->flags = cast_byte(~0);

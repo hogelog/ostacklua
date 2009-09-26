@@ -104,7 +104,7 @@ static void preinit_state (lua_State *L, global_State *g) {
 
 static void close_state (lua_State *L) {
   global_State *g = G(L);
-  luaM_free(L, g->objstack.head);
+  luaM_freearray(L, g->objstack.head, g->objstack.size, lu_byte);
   luaF_close(L, L->stack);  /* close all upvalues for this thread */
   luaC_freeall(L);  /* collect all objects */
   lua_assert(g->rootgc == obj2gco(L));
@@ -112,6 +112,7 @@ static void close_state (lua_State *L) {
   luaM_freearray(L, G(L)->strt.hash, G(L)->strt.size, TString *);
   luaZ_freebuffer(L, &g->buff);
   freestack(L, L);
+  printf("#### %d %d\n", g->totalbytes, sizeof(LG));
   lua_assert(g->totalbytes == sizeof(LG));
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
 }
@@ -180,6 +181,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcstepmul = LUAI_GCMUL;
   g->gcdept = 0;
   g->objstack.head = g->objstack.allocpoint = luaM_malloc(L, OBJSTACK_SIZE);
+  g->objstack.size = OBJSTACK_SIZE;
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
   if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
     /* memory allocation error: free partial state */

@@ -373,8 +373,7 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
 
 Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
   int i;
-  //Table *t = stack_alloc(L, Table, 1);
-  Table *t = luaM_new(L, Table);
+  Table *t = stack_alloc(L, Table, 1);
   GCObject *o = obj2gco(t);
   o->gch.tt = LUA_TTABLE;
   //luaC_link(L, obj2gco(t), LUA_TTABLE);
@@ -523,11 +522,6 @@ TValue *luaH_set (lua_State *L, Table *t, const TValue *key) {
     if (ttisnil(key)) luaG_runerror(L, "table index is nil");
     else if (ttisnumber(key) && luai_numisnan(nvalue(key)))
       luaG_runerror(L, "table index is NaN");
-    /* print key name */
-#if 0
-    if (ttisstring(key))  printf("##key: %s\n", svalue(key));
-    else if (ttisnumber(key)) printf("##key: " LUA_NUMBER_FMT "\n", nvalue(key));
-#endif
     return newkey(L, t, key);
   }
 }

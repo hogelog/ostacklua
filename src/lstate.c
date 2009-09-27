@@ -112,7 +112,6 @@ static void close_state (lua_State *L) {
   luaM_freearray(L, G(L)->strt.hash, G(L)->strt.size, TString *);
   luaZ_freebuffer(L, &g->buff);
   freestack(L, L);
-  printf("#### %d %d\n", g->totalbytes, sizeof(LG));
   lua_assert(g->totalbytes == sizeof(LG));
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
 }

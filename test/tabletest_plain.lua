@@ -1,4 +1,4 @@
-size = 10000000
+size = 80000000
 t = {}
 for i = 1, size do
   t[i] = i

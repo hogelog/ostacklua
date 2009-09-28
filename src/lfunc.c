@@ -106,8 +106,7 @@ void luaF_close (lua_State *L, StkId level) {
       unlinkupval(uv);
       setobj(L, &uv->u.value, uv->v);
       uv->v = &uv->u.value;  /* now current value lives here */
-      if (!ttistable(&o->gch) || !o->h.stack)
-        luaC_linkupval(L, uv);  /* link upvalue into `gcroot' list */
+      luaC_linkupval(L, uv);  /* link upvalue into `gcroot' list */
     }
   }
 }

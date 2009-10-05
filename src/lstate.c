@@ -29,6 +29,10 @@
 #define tostate(l)   (cast(lua_State *, cast(lu_byte *, l) + LUAI_EXTRASPACE))
 
 
+LUA_API void getnanosec(struct timespec *cur) {
+  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, cur);
+}
+
 /*
 ** Main thread combines a thread state and the global state
 */
@@ -101,9 +105,16 @@ static void preinit_state (lua_State *L, global_State *g) {
   setnilvalue(gt(L));
 }
 
-
+#include <stdio.h>
+#define settimeull(ull, spec) { \
+  (ull) = (spec).tv_sec; \
+  (ull) *= 1000000000; \
+  (ull) += (spec).tv_nsec; \
+}
 static void close_state (lua_State *L) {
   global_State *g = G(L);
+  struct timespec lua_end;
+  unsigned long long luatime, gctime;
   luaF_close(L, L->stack);  /* close all upvalues for this thread */
   luaC_freeall(L);  /* collect all objects */
   lua_assert(g->rootgc == obj2gco(L));
@@ -113,6 +124,12 @@ static void close_state (lua_State *L) {
   freestack(L, L);
   lua_assert(g->totalbytes == sizeof(LG));
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
+  getnanosec(&lua_end);
+  gctime = (unsigned long long)g->gctime.tv_sec * 1000000000LL
+    + (unsigned long long)g->gctime.tv_nsec;
+  luatime = (unsigned long long)(lua_end.tv_sec - g->lua_start.tv_sec) * 1000000000LL
+    + (unsigned long long)(lua_end.tv_nsec - g->gctime.tv_nsec);
+  fprintf(stderr, "## %llu, %llu\n", luatime, gctime);
 }
 
 
@@ -178,6 +195,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcpause = LUAI_GCPAUSE;
   g->gcstepmul = LUAI_GCMUL;
   g->gcdept = 0;
+  getnanosec(&g->lua_start);
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
   if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
     /* memory allocation error: free partial state */

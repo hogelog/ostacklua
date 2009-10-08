@@ -380,15 +380,33 @@ Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
   t->metatable = NULL;
   t->flags = cast_byte(~0);
 
-  t->array = stack_alloc(L, TValue, narray);
-  t->sizearray = narray;
-  for (i=t->sizearray; i<narray; i++)
-     setnilvalue(&t->array[i]);
-
-  t->lsizenode = 0;
   t->stack = 1;
-  t->node = cast(Node *, dummynode);
-  setnodevector(L, t, nhash);
+
+  if (narray) {
+    t->array = stack_alloc(L, TValue, narray);
+    for (i=t->sizearray; i<narray; i++)
+       setnilvalue(&t->array[i]);
+  }
+  t->sizearray = narray;
+
+  if (nhash) {
+    int lsize = ceillog2(nhash);
+    int size = twoto(lsize);
+    if (lsize > MAXBITS)
+      luaG_runerror(L, "table overflow");
+    t->node = stack_alloc(L, Node, size);
+    for (i=0; i<size; i++) {
+      Node *n = gnode(t, i);
+      gnext(n) = NULL;
+      setnilvalue(gkey(n));
+      setnilvalue(gval(n));
+    }
+    t->lastfree = gnode(t, size);  /* all positions are free */
+  } else {
+    t->node = cast(Node *, dummynode);
+    t->lsizenode = 0;
+    t->lastfree = gnode(t, 0);  /* all positions are free */
+  }
   return t;
 }
 

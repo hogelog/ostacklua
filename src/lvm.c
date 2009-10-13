@@ -621,6 +621,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
             lua_assert(L->top == L->base + clvalue(func)->l.p->maxstacksize);
             ci->savedpc = L->savedpc;
             ci->tailcalls++;  /* one more call lost */
+            stack_allocpoint(L) = ci->objstack_top;
             L->ci--;  /* remove new frame */
             goto reentry;
           }

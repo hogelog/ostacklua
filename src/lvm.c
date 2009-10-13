@@ -132,6 +132,7 @@ void luaV_gettable (lua_State *L, const TValue *t, TValue *key, StkId val) {
 
 
 void luaV_settable (lua_State *L, const TValue *t, TValue *key, StkId val) {
+  // TODO: if table(objstack=0) -> obj(objstack=1) then move obj to heap
   int loop;
   for (loop = 0; loop < MAXTAGLOOP; loop++) {
     const TValue *tm;
@@ -643,8 +644,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
             int count;
             for(;it!=end;++it) {
               if (iscollectable(it) && isstackobject(gcvalue(it))) {
-                ++count;
-                // move obj to bottom
+                // TODO: move obj to bottom
               }
             }
           }

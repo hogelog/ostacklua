@@ -689,6 +689,7 @@ void luaC_link (lua_State *L, GCObject *o, lu_byte tt) {
   g->rootgc = o;
   o->gch.marked = luaC_white(g);
   o->gch.tt = tt;
+  o->gch.objstack = 0;
 }
 
 

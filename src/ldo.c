@@ -301,6 +301,7 @@ int luaD_precall (lua_State *L, StkId func, int nresults) {
       luaD_callhook(L, LUA_HOOKCALL, -1);
       L->savedpc--;  /* correct 'pc' */
     }
+    ci->objstack_top = stack_allocpoint(L);
     return PCRLUA;
   }
   else {  /* if is a C function, call it */
@@ -315,6 +316,7 @@ int luaD_precall (lua_State *L, StkId func, int nresults) {
     ci->nresults = nresults;
     if (L->hookmask & LUA_MASKCALL)
       luaD_callhook(L, LUA_HOOKCALL, -1);
+    ci->objstack_top = stack_allocpoint(L);
     lua_unlock(L);
     n = (*curr_func(L)->c.f)(L);  /* do the actual call */
     lua_lock(L);

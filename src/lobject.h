@@ -40,7 +40,7 @@ typedef union GCObject GCObject;
 ** Common Header for all collectable objects (in macro form, to be
 ** included in other objects)
 */
-#define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked
+#define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked; lu_byte objstack
 
 
 /*
@@ -48,7 +48,6 @@ typedef union GCObject GCObject;
 */
 typedef struct GCheader {
   CommonHeader;
-  lu_byte stack;
 } GCheader;
 
 
@@ -189,6 +188,7 @@ typedef struct lua_TValue {
 
 #define iscollectable(o)	(ttype(o) >= LUA_TSTRING)
 
+#define isstackobject(o) ((o)->gch.objstack)
 
 
 typedef TValue *StkId;  /* index to stack elements */
@@ -251,7 +251,6 @@ typedef struct Proto {
   lu_byte numparams;
   lu_byte is_vararg;
   lu_byte maxstacksize;
-  void *allocpoint;
 } Proto;
 
 
@@ -339,7 +338,6 @@ typedef struct Node {
 
 typedef struct Table {
   CommonHeader;
-  lu_byte stack;
   lu_byte flags;  /* 1<<p means tagmethod(p) is not present */ 
   lu_byte lsizenode;  /* log2 of size of `node' array */
   struct Table *metatable;

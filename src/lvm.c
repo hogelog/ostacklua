@@ -457,7 +457,6 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_NEWTABLE: {
         int b = GETARG_B(i);
         int c = GETARG_C(i);
-        //sethvalue(L, ra, luaH_new(L, luaO_fb2int(b), luaO_fb2int(c)));
         Table *t = luaH_stack_new(L, luaO_fb2int(b), luaO_fb2int(c));
         sethvalue(L, ra, t);
         Protect(luaC_checkGC(L));
@@ -636,7 +635,20 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       }
       case OP_RETURN: {
         int b = GETARG_B(i);
-        if (b != 0) L->top = ra+b-1;
+        stack_allocpoint(L) = L->ci->objstack_top;
+        if (b != 0) {
+          if (b > 1) {
+            TValue *it = ra, *end = ra+b-1;
+            int count;
+            for(;it!=end;++it) {
+              if (iscollectable(it) && isstackobject(gcvalue(it))) {
+                ++count;
+                // move obj to bottom
+              }
+            }
+          }
+          L->top = ra+b-1;
+        }
         if (L->openupval) luaF_close(L, base);
         L->savedpc = pc;
         b = luaD_poscall(L, ra);

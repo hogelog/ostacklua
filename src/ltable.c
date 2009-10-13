@@ -365,7 +365,6 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
   t->sizearray = 0;
   t->lsizenode = 0;
   t->node = cast(Node *, dummynode);
-  t->stack = 0;
   setarrayvector(L, t, narray);
   setnodevector(L, t, nhash);
   return t;
@@ -376,11 +375,9 @@ Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
   Table *t = stack_alloc(L, Table, 1);
   GCObject *o = obj2gco(t);
   o->gch.tt = LUA_TTABLE;
-  //luaC_link(L, obj2gco(t), LUA_TTABLE);
+  o->gch.objstack = 1;
   t->metatable = NULL;
   t->flags = cast_byte(~0);
-
-  t->stack = 1;
 
   if (narray) {
     t->array = stack_alloc(L, TValue, narray);
@@ -411,10 +408,10 @@ Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
 }
 
 void luaH_free (lua_State *L, Table *t) {
-  if (!t->stack && t->node != dummynode)
+  lua_assert(!isstackobject(obj2gco(t)));
+  if (t->node != dummynode)
     luaM_freearray(L, t->node, sizenode(t), Node);
-  if (!t->stack)
-    luaM_freearray(L, t->array, t->sizearray, TValue);
+  luaM_freearray(L, t->array, t->sizearray, TValue);
   luaM_free(L, t);
 }
 

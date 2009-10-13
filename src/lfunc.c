@@ -96,8 +96,6 @@ void luaF_freeupval (lua_State *L, UpVal *uv) {
 void luaF_close (lua_State *L, StkId level) {
   UpVal *uv;
   global_State *g = G(L);
-  // reset allocpoint
-  //stack_allocpoint(L) = f->allocpoint;
   while (L->openupval != NULL && (uv = ngcotouv(L->openupval))->v >= level) {
     GCObject *o = obj2gco(uv);
     lua_assert(!isblack(o) && uv->v != &uv->u.value);
@@ -136,7 +134,6 @@ Proto *luaF_newproto (lua_State *L) {
   f->linedefined = 0;
   f->lastlinedefined = 0;
   f->source = NULL;
-  f->allocpoint = stack_allocpoint(L);
   return f;
 }
 

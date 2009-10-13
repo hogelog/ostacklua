@@ -52,6 +52,7 @@ typedef struct CallInfo {
   const Instruction *savedpc;
   int nresults;  /* expected number of results from this function */
   int tailcalls;  /* number of tail calls lost under this entry */
+  void *objstack_top;
 } CallInfo;
 
 

@@ -373,9 +373,8 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
 Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
   int i;
   Table *t = stack_alloc(L, Table, 1);
-  GCObject *o = obj2gco(t);
-  o->gch.tt = LUA_TTABLE;
-  o->gch.objstack = 1;
+  t->tt = LUA_TTABLE;
+  t->objstack = 1;
   t->metatable = NULL;
   t->flags = cast_byte(~0);
 
@@ -398,6 +397,7 @@ Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
       setnilvalue(gkey(n));
       setnilvalue(gval(n));
     }
+    t->lsizenode = lsize;
     t->lastfree = gnode(t, size);  /* all positions are free */
   } else {
     t->node = cast(Node *, dummynode);

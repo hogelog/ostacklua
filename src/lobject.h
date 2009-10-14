@@ -108,9 +108,10 @@ typedef struct lua_TValue {
 #define checkconsistency(obj) \
   lua_assert(!iscollectable(obj) || (ttype(obj) == (obj)->value.gc->gch.tt))
 
-#define checkliveness(g,obj) \
+#define checkliveness(L,obj) \
   lua_assert(!iscollectable(obj) || \
-  ((ttype(obj) == (obj)->value.gc->gch.tt) && !isdead(g, (obj)->value.gc)))
+      (isstackobject(gcvalue(obj)) && (cast(void *, (obj)) < stack_allocpoint(L))) || \
+  ((ttype(obj) == (obj)->value.gc->gch.tt) && !isdead(G(L), (obj)->value.gc)))
 
 
 /* Macros to set values */
@@ -128,32 +129,32 @@ typedef struct lua_TValue {
 #define setsvalue(L,obj,x) \
   { TValue *i_o=(obj); \
     i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TSTRING; \
-    checkliveness(G(L),i_o); }
+    checkliveness(L,i_o); }
 
 #define setuvalue(L,obj,x) \
   { TValue *i_o=(obj); \
     i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TUSERDATA; \
-    checkliveness(G(L),i_o); }
+    checkliveness(L,i_o); }
 
 #define setthvalue(L,obj,x) \
   { TValue *i_o=(obj); \
     i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TTHREAD; \
-    checkliveness(G(L),i_o); }
+    checkliveness(L,i_o); }
 
 #define setclvalue(L,obj,x) \
   { TValue *i_o=(obj); \
     i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TFUNCTION; \
-    checkliveness(G(L),i_o); }
+    checkliveness(L,i_o); }
 
 #define sethvalue(L,obj,x) \
   { TValue *i_o=(obj); \
     i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TTABLE; \
-    checkliveness(G(L),i_o); }
+    checkliveness(L,i_o); }
 
 #define setptvalue(L,obj,x) \
   { TValue *i_o=(obj); \
     i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TPROTO; \
-    checkliveness(G(L),i_o); }
+    checkliveness(L,i_o); }
 
 
 
@@ -161,7 +162,7 @@ typedef struct lua_TValue {
 #define setobj(L,obj1,obj2) \
   { const TValue *o2=(obj2); TValue *o1=(obj1); \
     o1->value = o2->value; o1->tt=o2->tt; \
-    checkliveness(G(L),o1); }
+    checkliveness(L,o1); }
 
 
 /*
@@ -189,7 +190,6 @@ typedef struct lua_TValue {
 #define iscollectable(o)	(ttype(o) >= LUA_TSTRING)
 
 #define isstackobject(o) ((o)->gch.objstack)
-
 
 typedef TValue *StkId;  /* index to stack elements */
 
@@ -376,7 +376,6 @@ LUAI_FUNC const char *luaO_pushvfstring (lua_State *L, const char *fmt,
                                                        va_list argp);
 LUAI_FUNC const char *luaO_pushfstring (lua_State *L, const char *fmt, ...);
 LUAI_FUNC void luaO_chunkid (char *out, const char *source, size_t len);
-
 
 #endif
 

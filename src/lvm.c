@@ -637,19 +637,66 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       }
       case OP_RETURN: {
         int b = GETARG_B(i);
-        stack_allocpoint(L) = L->ci->objstack_top;
+        void *newtop = L->ci->objstack_top;
         if (b != 0) {
           if (b > 1) {
-            TValue *it = ra, *end = ra+b-1;
-            int count;
-            for(;it!=end;++it) {
+            TValue *it, *end;
+           
+            /* copy return objects to stack top */ 
+            GCObject *dup_start = stack_allocpoint(L);
+            GCObject *dup_end = NULL;
+            for(it=ra,end=ra+b-1;it!=end;++it) {
               if (iscollectable(it) && isstackobject(gcvalue(it))) {
-                // TODO: move obj to bottom
+                dup_end = luaO_stack_dupgcobj(L, gcvalue(it));
+              }
+            }
+
+            if (dup_end) {
+              stack_allocpoint(L) = newtop;
+              /* copy return objects to stack bottom */ 
+              void *src = dup_start;
+              for(it=ra,end=ra+b-1;it!=end;++it) {
+                lua_assert(src <= cast(void *, dup_end));
+                if (iscollectable(it) && isstackobject(gcvalue(it))) {
+                  GCObject *pt = stack_allocpoint(L);
+                  pt = luaO_stack_dupgcobj(L, src);
+                  src += (int)(stack_allocpoint(L) - cast(void *, pt));
+                }
+              }
+              newtop = stack_allocpoint(L);
+            }
+
+            // debug print loop
+            //{{{
+            for(it=ra,end=ra+b-1;it!=end;++it) {
+              if (iscollectable(it) && isstackobject(gcvalue(it))) {
+                printf("[%d] ", (it - ra));
+                switch(ttype(it)) {
+                  case LUA_TSTRING:
+                    printf("\"%s\"(%p)\n", svalue(it), rawtsvalue(it));
+                    break;
+                  case LUA_TTABLE:
+                    printf("table(%p)\n", hvalue(it));
+                    break;
+                  case LUA_TFUNCTION:
+                    printf("closure(%p)\n", clvalue(it));
+                    break;
+                  case LUA_TUSERDATA:
+                    printf("userdata(%p)\n", uvalue(it));
+                    break;
+                  case LUA_TTHREAD:
+                    printf("thread(%p)\n", thvalue(it));
+                    break;
+                  default: lua_assert(0); break;
+                }
               }
             }
           }
           L->top = ra+b-1;
         }
+
+        stack_allocpoint(L) = newtop;
+
         if (L->openupval) luaF_close(L, base);
         L->savedpc = pc;
         b = luaD_poscall(L, ra);
@@ -732,6 +779,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_CLOSURE: {
+        // TODO: to stack_alloc
         Proto *p;
         Closure *ncl;
         int nup, j;

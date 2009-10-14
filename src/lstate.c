@@ -6,6 +6,7 @@
 
 
 #include <stddef.h>
+#include <string.h>
 
 #define lstate_c
 #define LUA_CORE
@@ -219,4 +220,28 @@ void* stack_alloc_(lua_State *L, size_t size) {
   void *allocpoint = stack_allocpoint(L);
   stack_allocpoint(L) += size;
   return allocpoint;
+}
+
+GCObject *luaO_stack_dupgcobj(lua_State *L, GCObject *src) {
+  switch(src->gch.tt) {
+    case LUA_TSTRING: {
+      GCObject *new = stack_alloc(L, GCObject, 1);
+      memcpy(new, src, sizeof(GCObject));
+      return new;
+    }
+    case LUA_TTABLE: {
+      Table *srct = &src->h;
+      int narray = srct->sizearray;
+      int nhash = sizenode(srct);
+      Table *t = luaH_stack_new(L, narray, nhash);
+      t->flags = srct->flags;
+      t->metatable = srct->metatable;
+      return obj2gco(t);
+    }
+    // TODO: implement
+    case LUA_TFUNCTION:
+    case LUA_TUSERDATA:
+    case LUA_TTHREAD:
+    default: lua_assert(0); break;
+  }
 }

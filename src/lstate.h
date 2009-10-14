@@ -176,5 +176,7 @@ union GCObject {
 LUAI_FUNC lua_State *luaE_newthread (lua_State *L);
 LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
 
+GCObject *luaO_stack_dupgcobj(lua_State *L, GCObject *src);
+
 #endif
 

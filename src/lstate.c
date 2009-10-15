@@ -216,13 +216,13 @@ LUA_API void lua_close (lua_State *L) {
   close_state(L);
 }
 
-void* stack_alloc_(lua_State *L, size_t size) {
-  void *allocpoint = stack_allocpoint(L);
-  stack_allocpoint(L) += size;
-  return allocpoint;
+LUA_API void* stack_alloc_(lua_State *L, size_t size) {
+  void *ap = stack_allocpoint(L);
+  stack_allocpoint(L) = cast(void *, cast(unsigned, ap) + size);
+  return ap;
 }
 
-GCObject *luaO_stack_dupgcobj(lua_State *L, GCObject *src) {
+LUA_API GCObject *lua_stack_dupgcobj(lua_State *L, GCObject *src) {
   switch(src->gch.tt) {
     case LUA_TSTRING: {
       GCObject *new = stack_alloc(L, GCObject, 1);
@@ -244,6 +244,8 @@ GCObject *luaO_stack_dupgcobj(lua_State *L, GCObject *src) {
     case LUA_TFUNCTION:
     case LUA_TUSERDATA:
     case LUA_TTHREAD:
-    default: lua_assert(0); break;
+    default:
+      lua_assert(0); 
+      return NULL;
   }
 }

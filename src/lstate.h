@@ -67,9 +67,6 @@ typedef struct ObjectStack {
   void *allocpoint;
   size_t size;
 } ObjectStack;
-void* stack_alloc_(lua_State *L, size_t size) ;
-#define stack_alloc(L,t,c) stack_alloc_(L, sizeof(t)*(c))
-#define stack_allocpoint(L) (G(L)->objstack.allocpoint)
 
 /*
 ** `global state', shared by all threads of this state
@@ -176,7 +173,11 @@ union GCObject {
 LUAI_FUNC lua_State *luaE_newthread (lua_State *L);
 LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
 
-GCObject *luaO_stack_dupgcobj(lua_State *L, GCObject *src);
+#define stack_alloc(L,t,c) stack_alloc_(L, sizeof(t)*(c))
+#define stack_allocpoint(L) (G(L)->objstack.allocpoint)
+
+LUA_API void* stack_alloc_(lua_State *L, size_t size) ;
+LUA_API GCObject *lua_stack_dupgcobj(lua_State *L, GCObject *src);
 
 #endif
 

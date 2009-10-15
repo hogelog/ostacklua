@@ -267,8 +267,8 @@ static int sort (lua_State *L) {
 
 LUA_API void lua_createtable_stack (lua_State *L, int narray, int nrec) ;
 static int create (lua_State *L) {
-  int narray = luaL_checknumber(L, 1);
-  int nrec = luaL_checknumber(L, 2);
+  int narray = (int)luaL_checknumber(L, 1);
+  int nrec = (int)luaL_checknumber(L, 2);
   lua_createtable_stack(L, narray, nrec);
   lua_pushvalue(L, -1);
   return 1;

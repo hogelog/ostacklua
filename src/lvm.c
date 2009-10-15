@@ -638,58 +638,28 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_RETURN: {
         int b = GETARG_B(i);
         void *newtop = L->ci->objstack_top;
+        int nresults = L->ci->nresults;
         if (b != 0) {
-          if (b > 1) {
-            TValue *it, *end;
-           
-            /* copy return objects to stack top */ 
-            GCObject *dup_start = stack_allocpoint(L);
-            GCObject *dup_end = NULL;
-            for(it=ra,end=ra+b-1;it!=end;++it) {
-              if (iscollectable(it) && isstackobject(gcvalue(it))) {
-                dup_end = luaO_stack_dupgcobj(L, gcvalue(it));
-              }
+          if (b > 1 && nresults > 0) {
+            TValue *it;
+            const TValue *end = ra + b - 1;
+          
+            /* copy returned stack objects to top */
+            int count;
+            GCObject *args[MAXSTACK];
+            for(it=ra,count=0;it!=end&&count<nresults;++it,++count) {
+              args[count] = luaO_stack_dupgcobj(L, gcvalue(it));
             }
 
-            if (dup_end) {
+            /* copy returned stack objects to bottom */
+            if (count) {
               stack_allocpoint(L) = newtop;
-              /* copy return objects to stack bottom */ 
-              void *src = dup_start;
-              for(it=ra,end=ra+b-1;it!=end;++it) {
-                lua_assert(src <= cast(void *, dup_end));
+              for(it=ra,count=0;it!=end&&count<nresults;++it,++count) {
                 if (iscollectable(it) && isstackobject(gcvalue(it))) {
-                  GCObject *pt = stack_allocpoint(L);
-                  pt = luaO_stack_dupgcobj(L, src);
-                  src += (int)(stack_allocpoint(L) - cast(void *, pt));
+                  it->value.gc = luaO_stack_dupgcobj(L, args[count]);
                 }
               }
               newtop = stack_allocpoint(L);
-            }
-
-            // debug print loop
-            //{{{
-            for(it=ra,end=ra+b-1;it!=end;++it) {
-              if (iscollectable(it) && isstackobject(gcvalue(it))) {
-                printf("[%d] ", (it - ra));
-                switch(ttype(it)) {
-                  case LUA_TSTRING:
-                    printf("\"%s\"(%p)\n", svalue(it), rawtsvalue(it));
-                    break;
-                  case LUA_TTABLE:
-                    printf("table(%p)\n", hvalue(it));
-                    break;
-                  case LUA_TFUNCTION:
-                    printf("closure(%p)\n", clvalue(it));
-                    break;
-                  case LUA_TUSERDATA:
-                    printf("userdata(%p)\n", uvalue(it));
-                    break;
-                  case LUA_TTHREAD:
-                    printf("thread(%p)\n", thvalue(it));
-                    break;
-                  default: lua_assert(0); break;
-                }
-              }
             }
           }
           L->top = ra+b-1;

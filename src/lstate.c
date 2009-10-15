@@ -231,11 +231,13 @@ GCObject *luaO_stack_dupgcobj(lua_State *L, GCObject *src) {
     }
     case LUA_TTABLE: {
       Table *srct = &src->h;
-      int narray = srct->sizearray;
-      int nhash = sizenode(srct);
-      Table *t = luaH_stack_new(L, narray, nhash);
+      int asize = srct->sizearray;
+      int nsize = srct->lsizenode ? sizenode(srct) : 0;
+      Table *t = luaH_stack_new(L, asize, nsize);
       t->flags = srct->flags;
       t->metatable = srct->metatable;
+      memcpy(&t->array, &srct->array, asize*sizeof(TValue));
+      memcpy(&t->node, &srct->node, nsize*sizeof(Node));
       return obj2gco(t);
     }
     // TODO: implement

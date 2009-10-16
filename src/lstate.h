@@ -178,6 +178,7 @@ LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
 
 LUA_API void* stack_alloc_(lua_State *L, size_t size) ;
 LUA_API GCObject *lua_stack_dupgcobj(lua_State *L, GCObject *src);
+LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
 
 #endif
 

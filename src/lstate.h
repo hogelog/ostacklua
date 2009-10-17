@@ -180,5 +180,12 @@ LUA_API void* stack_alloc_(lua_State *L, size_t size) ;
 LUA_API GCObject *lua_stack_dupgcobj(lua_State *L, GCObject *src);
 LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
 
+#define lua_copy2heap(L,v) { \
+    if (iscollectable(v) && isstackobject(gcvalue(v))) { \
+      GCObject *dup = lua_dupgcobj(L, gcvalue(v)); \
+      dup->gch.marked = luaC_white(G(L)); \
+      (v)->value.gc = dup; \
+    } \
+  }
 #endif
 

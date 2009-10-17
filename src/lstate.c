@@ -253,19 +253,12 @@ LUA_API GCObject *lua_stack_dupgcobj(lua_State *L, GCObject *src) {
 LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
   switch(src->gch.tt) {
     case LUA_TSTRING: {
-      return obj2gco(luaS_newlstr(L, getstr(rawgco2ts(src)), gco2ts(src)->len));
+      TString *new = luaS_newlstr(L, getstr(rawgco2ts(src)), gco2ts(src)->len);
+      new->tsv.objstack = 0;
+      return obj2gco(new);
     }
     case LUA_TTABLE: {
-      Table *srct = gco2h(src);
-      int asize = srct->sizearray;
-      int nsize = srct->lsizenode ? sizenode(srct) : 0;
-      Table *t = luaH_new(L, asize, nsize);
-      t->flags = srct->flags;
-      // TODO: implement recursive dup
-      t->metatable = srct->metatable;
-      memcpy(&t->array, &srct->array, asize*sizeof(TValue));
-      memcpy(&t->node, &srct->node, nsize*sizeof(Node));
-      return obj2gco(t);
+      return obj2gco(luaH_duphobj(L, &src->h));
     }
     // TODO: implement
     case LUA_TFUNCTION:

@@ -381,7 +381,7 @@ Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
 
   if (narray) {
     t->array = stack_alloc(L, TValue, narray);
-    for (i=t->sizearray; i<narray; i++)
+    for (i=0; i<narray; i++)
        setnilvalue(&t->array[i]);
   }
   t->sizearray = narray;
@@ -614,6 +614,28 @@ int luaH_getn (Table *t) {
 }
 
 
+LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
+  int i;
+  int asize = src->sizearray;
+  int nsize = src->node == dummynode ? 0 : sizenode(src);
+  Table *t = luaH_new(L, asize, nsize);
+  t->flags = src->flags;
+  t->metatable = src->metatable;
+  t->objstack = 0;
+  for (i=0; i<asize; i++) {
+    lua_copy2heap(L, &src->array[i]);
+    setobj(L, &t->array[i], &src->array[i]);
+  }
+  for (i=0; i<nsize; i++) {
+    Node *d = gnode(t, i), *s = gnode(src, i);
+    TValue *dval = gval(d), *sval = gval(s);
+    lua_copy2heap(L, sval);
+    setobj(L, dval, sval);
+    setobj(L, key2tval(d), key2tval(s));
+    gnext(d) = gnode(t, 0) + (gnext(s) - gnode(src, 0));
+  }
+  return t;
+}
 
 #if defined(LUA_DEBUG)
 

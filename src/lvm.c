@@ -132,7 +132,6 @@ void luaV_gettable (lua_State *L, const TValue *t, TValue *key, StkId val) {
 
 
 void luaV_settable (lua_State *L, const TValue *t, TValue *key, StkId val) {
-  // TODO: if table(objstack=0) -> obj(objstack=1) then move obj to heap
   int loop;
   for (loop = 0; loop < MAXTAGLOOP; loop++) {
     const TValue *tm;
@@ -141,12 +140,9 @@ void luaV_settable (lua_State *L, const TValue *t, TValue *key, StkId val) {
       TValue *oldval = luaH_set(L, h, key); /* do a primitive set */
       if (!ttisnil(oldval) ||  /* result is no nil? */
           (tm = fasttm(L, h->metatable, TM_NEWINDEX)) == NULL) { /* or no TM? */
+        lua_copy2heap(L, val);
         setobj2t(L, oldval, val);
         luaC_barriert(L, h, val);
-        if (iscollectable(val) && isstackobject(gcvalue(val))) {
-          GCObject *dup = lua_dupgcobj(L, gcvalue(val));
-          val->value.gc = dup;
-        }
         return;
       }
       /* else will try the tag method */

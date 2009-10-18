@@ -65,6 +65,7 @@ typedef struct CallInfo {
 typedef struct ObjectStack {
   void *head;
   void *allocpoint;
+  void *tail;
   size_t size;
 } ObjectStack;
 

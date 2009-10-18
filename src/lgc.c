@@ -674,9 +674,12 @@ void luaC_barrierf (lua_State *L, GCObject *o, GCObject *v) {
 
 
 void luaC_barrierback (lua_State *L, Table *t) {
-  // TODO: if o1(objstack=0) -> o2(objstack=1) then move o2 to heap
   global_State *g = G(L);
   GCObject *o = obj2gco(t);
+  
+  // TODO: check is it okey
+  if (t->objstack) return;
+
   lua_assert(isblack(o) && !isdead(g, o));
   lua_assert(g->gcstate != GCSfinalize && g->gcstate != GCSpause);
   black2gray(o);  /* make table gray (again) */

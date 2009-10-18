@@ -182,6 +182,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcdept = 0;
   g->objstack.head = g->objstack.allocpoint = luaM_malloc(L, OBJSTACK_SIZE);
   g->objstack.size = OBJSTACK_SIZE;
+  g->objstack.tail = g->objstack.head + g->objstack.size;
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
   if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
     /* memory allocation error: free partial state */
@@ -217,8 +218,10 @@ LUA_API void lua_close (lua_State *L) {
 }
 
 LUA_API void* stack_alloc_(lua_State *L, size_t size) {
+  // TODO: resizable objstack
   void *ap = stack_allocpoint(L);
   stack_allocpoint(L) = cast(void *, cast(unsigned, ap) + size);
+  lua_assert(stack_allocpoint(L) <= G(L)->objstack.tail);
   return ap;
 }
 
@@ -230,16 +233,7 @@ LUA_API GCObject *lua_stack_dupgcobj(lua_State *L, GCObject *src) {
       return new;
     }
     case LUA_TTABLE: {
-      Table *srct = gco2h(src);
-      int asize = srct->sizearray;
-      int nsize = srct->lsizenode ? sizenode(srct) : 0;
-      Table *t = luaH_stack_new(L, asize, nsize);
-      t->flags = srct->flags;
-      // TODO: implement recursive dup
-      t->metatable = srct->metatable;
-      memcpy(&t->array, &srct->array, asize*sizeof(TValue));
-      memcpy(&t->node, &srct->node, nsize*sizeof(Node));
-      return obj2gco(t);
+      return obj2gco(luaH_stack_duphobj(L, &src->h));
     }
     // TODO: implement
     case LUA_TFUNCTION:

@@ -640,6 +640,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         void *newtop = L->ci->objstack_top;
         int nresults = L->ci->nresults;
         if (b != 0) {
+          if (nresults == -1) nresults = 1;
           if (b > 1 && nresults > 0) {
             TValue *it;
             const TValue *end = ra + b - 1;
@@ -648,7 +649,9 @@ void luaV_execute (lua_State *L, int nexeccalls) {
             int count;
             GCObject *args[MAXSTACK];
             for(it=ra,count=0;it!=end&&count<nresults;++it,++count) {
-              args[count] = lua_stack_dupgcobj(L, gcvalue(it));
+              if (iscollectable(it) && isstackobject(gcvalue(it))) {
+                args[count] = lua_stack_dupgcobj(L, gcvalue(it));
+              }
             }
 
             /* copy returned stack objects to bottom */
@@ -739,6 +742,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           luaH_resizearray(L, h, last);  /* pre-alloc it at once */
         for (; n > 0; n--) {
           TValue *val = ra+n;
+          lua_copy2heap(L, val);
           setobj2t(L, luaH_setnum(L, h, last--), val);
           luaC_barriert(L, h, val);
         }

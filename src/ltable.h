@@ -31,6 +31,7 @@ LUAI_FUNC void luaH_free (lua_State *L, Table *t);
 LUAI_FUNC int luaH_next (lua_State *L, Table *t, StkId key);
 LUAI_FUNC int luaH_getn (Table *t);
 
+LUAI_FUNC Table *luaH_stack_duphobj(lua_State *L, Table *src);
 LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src);
 
 #if defined(LUA_DEBUG)

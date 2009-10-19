@@ -67,6 +67,7 @@ static void removeentry (Node *n) {
 
 
 static void reallymarkobject (global_State *g, GCObject *o) {
+  lua_assert(!o->gch.objstack);
   lua_assert(iswhite(o) && !isdead(g, o));
   white2gray(o);
   switch (o->gch.tt) {
@@ -276,6 +277,7 @@ static void traversestack (global_State *g, lua_State *l) {
 */
 static l_mem propagatemark (global_State *g) {
   GCObject *o = g->gray;
+  lua_assert(!o->gch.objstack);
   lua_assert(isgray(o));
   gray2black(o);
   switch (o->gch.tt) {
@@ -376,6 +378,7 @@ static void cleartable (GCObject *l) {
 
 
 static void freeobj (lua_State *L, GCObject *o) {
+  lua_assert(!o->gch.objstack);
   switch (o->gch.tt) {
     case LUA_TPROTO: luaF_freeproto(L, gco2p(o)); break;
     case LUA_TFUNCTION: luaF_freeclosure(L, gco2cl(o)); break;
@@ -409,6 +412,7 @@ static GCObject **sweeplist (lua_State *L, GCObject **p, lu_mem count) {
   global_State *g = G(L);
   int deadmask = otherwhite(g);
   while ((curr = *p) != NULL && count-- > 0) {
+    lua_assert(!curr->gch.objstack);
     if (curr->gch.tt == LUA_TTHREAD)  /* sweep open upvalues of each thread */
       sweepwholelist(L, &gco2th(curr)->openupval);
     if ((curr->gch.marked ^ WHITEBITS) & deadmask) {  /* not dead? */

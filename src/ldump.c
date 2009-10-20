@@ -52,6 +52,11 @@ static void DumpNumber(lua_Number x, DumpState* D)
  DumpVar(x,D);
 }
 
+static void DumpPointer(void *p, DumpState* D)
+{
+ DumpVar(p,D);
+}
+
 static void DumpVector(const void* b, int n, size_t size, DumpState* D)
 {
  DumpInt(n,D);
@@ -88,19 +93,22 @@ static void DumpConstants(const Proto* f, DumpState* D)
   switch (ttype(o))
   {
    case LUA_TNIL:
-	break;
+    break;
    case LUA_TBOOLEAN:
-	DumpChar(bvalue(o),D);
-	break;
+    DumpChar(bvalue(o),D);
+    break;
    case LUA_TNUMBER:
-	DumpNumber(nvalue(o),D);
-	break;
+    DumpNumber(nvalue(o),D);
+    break;
    case LUA_TSTRING:
-	DumpString(rawtsvalue(o),D);
-	break;
+    DumpString(rawtsvalue(o),D);
+    break;
+   case LUA_TLIGHTUSERDATA:
+    DumpPointer(pvalue(o),D);
+    break;
    default:
-	lua_assert(0);			/* cannot happen */
-	break;
+    lua_assert(0);			/* cannot happen */
+    break;
   }
  }
  n=f->sizep;

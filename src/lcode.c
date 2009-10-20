@@ -246,6 +246,11 @@ static int addk (FuncState *fs, TValue *k, TValue *v) {
   }
 }
 
+int luaK_ludataK (FuncState *fs, void *p) {
+  TValue o;
+  setpvalue(&o, p);
+  return addk(fs, &o, &o);
+}
 
 int luaK_stringK (FuncState *fs, TString *s) {
   TValue o;

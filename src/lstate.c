@@ -117,7 +117,7 @@ static void close_state (lua_State *L) {
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
 }
 
-static lua_State *init_objstack(lua_State *L) {
+static lua_State *objstack_init(lua_State *L) {
   L->objstack.head = L->objstack.allocpoint = luaM_malloc(L, OBJSTACK_SIZE);
   if (!L->objstack.head) return NULL;
   L->objstack.size = OBJSTACK_SIZE;
@@ -136,7 +136,7 @@ lua_State *luaE_newthread (lua_State *L) {
   L1->hook = L->hook;
   resethookcount(L1);
   lua_assert(iswhite(obj2gco(L1)));
-  init_objstack(L1);
+  objstack_init(L1);
   return L1;
 }
 
@@ -191,7 +191,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcdept = 0;
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
 
-  init_objstack(L);
+  objstack_init(L);
 
   if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
     /* memory allocation error: free partial state */
@@ -230,6 +230,8 @@ LUA_API void* stack_alloc_(lua_State *L, size_t size) {
   // TODO: resizable objstack
   lu_byte *ap = stack_allocpoint(L);
   stack_allocpoint(L) = ap + size;
+  //printf("usage: %u\n", stack_usage(L));
+  //printf("point: %p tail: %p, %d\n", stack_allocpoint(L), L->objstack.tail, stack_allocpoint(L) <= L->objstack.tail);
   lua_assert(stack_allocpoint(L) <= L->objstack.tail);
   return ap;
 }

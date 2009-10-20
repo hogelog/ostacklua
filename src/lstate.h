@@ -52,9 +52,6 @@ typedef struct CallInfo {
   const Instruction *savedpc;
   int nresults;  /* expected number of results from this function */
   int tailcalls;  /* number of tail calls lost under this entry */
-#ifdef CALLBASE_STACK
-  void *stack_top;
-#endif
 } CallInfo;
 
 
@@ -102,7 +99,7 @@ typedef struct global_State {
   TString *tmname[TM_N];  /* array with tag-method names */
 } global_State;
 
-#define OBJSTACK_SIZE 10 * 1024 * 1024
+#define OBJSTACK_SIZE 512 * 1024 * 1024
 
 /*
 ** `per thread' state
@@ -178,6 +175,7 @@ LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
 
 #define stack_alloc(L,t,c) stack_alloc_(L, sizeof(t)*(c))
 #define stack_allocpoint(L) (L->objstack.allocpoint)
+#define stack_usage(L) cast(size_t, cast(lu_byte *, stack_allocpoint(L)) - cast(lu_byte *, L->objstack.head))
 
 LUA_API void* stack_alloc_(lua_State *L, size_t size) ;
 LUA_API GCObject *lua_stack_dupgcobj(lua_State *L, GCObject *src);

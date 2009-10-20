@@ -622,9 +622,6 @@ void luaV_execute (lua_State *L, int nexeccalls) {
             lua_assert(L->top == L->base + clvalue(func)->l.p->maxstacksize);
             ci->savedpc = L->savedpc;
             ci->tailcalls++;  /* one more call lost */
-#ifdef CALLBASE_STACK
-            stack_allocpoint(L) = ci->stack_top;
-#endif
             L->ci--;  /* remove new frame */
             goto reentry;
           }
@@ -639,42 +636,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       }
       case OP_RETURN: {
         int b = GETARG_B(i);
-#ifdef CALLBASE_STACK
-        void *newtop = L->ci->stack_top;
-        int nresults = L->ci->nresults;
-        if (b != 0) {
-          if (nresults == -1) nresults = 1;
-          if (b > 1 && nresults > 0) {
-            TValue *it;
-            const TValue *end = ra + b - 1;
-          
-            /* copy returned stack objects to top */
-            int count;
-            GCObject *args[MAXSTACK];
-            for(it=ra,count=0;it!=end&&count<nresults;++it,++count) {
-              if (iscollectable(it) && isstackobject(gcvalue(it))) {
-                args[count] = lua_stack_dupgcobj(L, gcvalue(it));
-              }
-            }
-
-            /* copy returned stack objects to bottom */
-            if (count) {
-              stack_allocpoint(L) = newtop;
-              for(it=ra,count=0;it!=end&&count<nresults;++it,++count) {
-                if (iscollectable(it) && isstackobject(gcvalue(it))) {
-                  it->value.gc = lua_stack_dupgcobj(L, args[count]);
-                }
-              }
-              newtop = stack_allocpoint(L);
-            }
-          }
-          L->top = ra+b-1;
-        }
-
-        stack_allocpoint(L) = newtop;
-#else
         if (b != 0) L->top = ra+b-1;
-#endif
         if (L->openupval) luaF_close(L, base);
         L->savedpc = pc;
         b = luaD_poscall(L, ra);
@@ -688,14 +650,17 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         }
       }
       case OP_FORLOOP: {
+        TValue *objstack = ra+3;
         lua_Number step = nvalue(ra+2);
         lua_Number idx = luai_numadd(nvalue(ra), step); /* increment index */
         lua_Number limit = nvalue(ra+1);
+        lua_assert(pvalue(objstack));
+        stack_allocpoint(L) = pvalue(objstack);
         if (luai_numlt(0, step) ? luai_numle(idx, limit)
                                 : luai_numle(limit, idx)) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
           setnvalue(ra, idx);  /* update internal index... */
-          setnvalue(ra+3, idx);  /* ...and external index */
+          setnvalue(ra+4, idx);  /* ...and external index */
         }
         continue;
       }
@@ -703,6 +668,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         const TValue *init = ra;
         const TValue *plimit = ra+1;
         const TValue *pstep = ra+2;
+        TValue *objstack = ra+3;
         L->savedpc = pc;  /* next steps may throw errors */
         if (!tonumber(init, ra))
           luaG_runerror(L, LUA_QL("for") " initial value must be a number");
@@ -710,6 +676,11 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           luaG_runerror(L, LUA_QL("for") " limit must be a number");
         else if (!tonumber(pstep, ra+2))
           luaG_runerror(L, LUA_QL("for") " step must be a number");
+        else if (!tonumber(pstep, ra+3))
+          luaG_runerror(L, LUA_QL("for") " step must be a number");
+        lua_assert(ttype(objstack) == LUA_TLIGHTUSERDATA);
+        lua_assert(pvalue(objstack) == NULL);
+        setpvalue(objstack, stack_allocpoint(L));
         setnvalue(ra, luai_numsub(nvalue(ra), nvalue(pstep)));
         dojump(L, pc, GETARG_sBx(i));
         continue;

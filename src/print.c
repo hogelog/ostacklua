@@ -41,8 +41,8 @@ static void PrintString(const TString* ts)
    case '\v': printf("\\v"); break;
    default:	if (isprint((unsigned char)c))
    			putchar(c);
-		else
-			printf("\\%03u",(unsigned char)c);
+    	else
+    		printf("\\%03u",(unsigned char)c);
   }
  }
  putchar('"');
@@ -54,20 +54,23 @@ static void PrintConstant(const Proto* f, int i)
  switch (ttype(o))
  {
   case LUA_TNIL:
-	printf("nil");
-	break;
+    printf("nil");
+    break;
   case LUA_TBOOLEAN:
-	printf(bvalue(o) ? "true" : "false");
-	break;
+    printf(bvalue(o) ? "true" : "false");
+    break;
   case LUA_TNUMBER:
-	printf(LUA_NUMBER_FMT,nvalue(o));
-	break;
+    printf(LUA_NUMBER_FMT,nvalue(o));
+    break;
+  case LUA_TLIGHTUSERDATA:
+    printf("%p",pvalue(o));
+    break;
   case LUA_TSTRING:
-	PrintString(rawtsvalue(o));
-	break;
+    PrintString(rawtsvalue(o));
+    break;
   default:				/* cannot happen */
-	printf("? type=%d",ttype(o));
-	break;
+    printf("? type=%d",ttype(o));
+    break;
  }
 }
 
@@ -169,13 +172,13 @@ static void PrintHeader(const Proto* f)
   s="(string)";
  printf("\n%s <%s:%d,%d> (%d instruction%s, %d bytes at %p)\n",
  	(f->linedefined==0)?"main":"function",s,
-	f->linedefined,f->lastlinedefined,
-	S(f->sizecode),f->sizecode*Sizeof(Instruction),VOID(f));
+    f->linedefined,f->lastlinedefined,
+    S(f->sizecode),f->sizecode*Sizeof(Instruction),VOID(f));
  printf("%d%s param%s, %d slot%s, %d upvalue%s, ",
-	f->numparams,f->is_vararg?"+":"",SS(f->numparams),
-	S(f->maxstacksize),S(f->nups));
+    f->numparams,f->is_vararg?"+":"",SS(f->numparams),
+    S(f->maxstacksize),S(f->nups));
  printf("%d local%s, %d constant%s, %d function%s\n",
-	S(f->sizelocvars),S(f->sizek),S(f->sizep));
+    S(f->sizelocvars),S(f->sizek),S(f->sizep));
 }
 
 static void PrintConstants(const Proto* f)

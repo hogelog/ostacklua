@@ -8,7 +8,7 @@
 PLAT= none
 
 CC= gcc
-CFLAGS= -g -O0 -Wall $(MYCFLAGS)
+CFLAGS= -Dlua_ssert=assert -g -O0 -Wall $(MYCFLAGS)
 AR= ar rcu
 RANLIB= ranlib
 RM= rm -f

@@ -10,6 +10,7 @@
 
 #include <limits.h>
 #include <stddef.h>
+#include <assert.h>
 
 
 #include "lua.h"
@@ -51,8 +52,6 @@ typedef LUAI_USER_ALIGNMENT_T L_Umaxalign;
 typedef LUAI_UACNUMBER l_uacNumber;
 
 
-#include <assert.h>
-#define lua_assert(c) assert(c)
 /* internal assertions for in-house debugging */
 #ifdef lua_assert
 

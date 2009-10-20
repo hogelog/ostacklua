@@ -110,7 +110,7 @@ typedef struct lua_TValue {
 
 #define checkliveness(L,obj) \
   lua_assert(!iscollectable(obj) || \
-      (isstackobject(gcvalue(obj)) && (cast(void *, (obj)) < stack_allocpoint(L))) || \
+      (onstack(gcvalue(obj)) && (cast(void *, (obj)) < stack_allocpoint(L))) || \
   ((ttype(obj) == (obj)->value.gc->gch.tt) && !isdead(G(L), (obj)->value.gc)))
 
 
@@ -190,7 +190,7 @@ typedef struct lua_TValue {
 #define iscollectable(o)	(ttype(o) >= LUA_TSTRING)
 
 
-#define isstackobject(o) ((o)->gch.onstack)
+#define onstack(o) ((o)->gch.onstack)
 
 typedef TValue *StkId;  /* index to stack elements */
 

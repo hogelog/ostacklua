@@ -410,7 +410,7 @@ Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
 }
 
 void luaH_free (lua_State *L, Table *t) {
-  lua_assert(!isstackobject(obj2gco(t)));
+  lua_assert(!onstack(obj2gco(t)));
   if (t->node != dummynode)
     luaM_freearray(L, t->node, sizenode(t), Node);
   luaM_freearray(L, t->array, t->sizearray, TValue);
@@ -643,12 +643,13 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
   t->flags = src->flags;
   t->metatable = src->metatable;
   for (i=0; i<asize; i++) {
-    lua_copy2heap(L, &src->array[i]);
-    setobj(L, &t->array[i], &src->array[i]);
+    TValue *o = &src->array[i];
+    if (iscollectable(o) && onstack(gcvalue(o))) lua_copy2heap(L, o);
+    setobj(L, &t->array[i], o);
   }
   for (i=0; i<nsize; i++) {
     Node *d = gnode(t, i), *s = gnode(src, i);
-    lua_copy2heap(L, gval(s));
+    if (iscollectable(gval(s)) && onstack(gcvalue(gval(s)))) lua_copy2heap(L, gval(s));
     setobj(L, gval(d), gval(s));
     setobj(L, key2tval(d), key2tval(s));
     gnext(d) = gnext(s) ? gnode(t, 0) + (gnext(s) - gnode(src, 0)) : NULL;

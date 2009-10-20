@@ -105,7 +105,7 @@ static void preinit_state (lua_State *L, global_State *g) {
 
 static void close_state (lua_State *L) {
   global_State *g = G(L);
-  luaM_freearray(L, L->objstack.head, L->objstack.size, lu_byte);
+  luaM_freearray(L, stack_head(L), stack_size(L), lu_byte);
   luaF_close(L, L->stack);  /* close all upvalues for this thread */
   luaC_freeall(L);  /* collect all objects */
   lua_assert(g->rootgc == obj2gco(L));
@@ -118,10 +118,10 @@ static void close_state (lua_State *L) {
 }
 
 static lua_State *objstack_init(lua_State *L) {
-  L->objstack.head = L->objstack.allocpoint = luaM_malloc(L, OBJSTACK_SIZE);
-  if (!L->objstack.head) return NULL;
-  L->objstack.size = OBJSTACK_SIZE;
-  L->objstack.tail = cast(lu_byte *, L->objstack.head) + L->objstack.size;
+  stack_head(L) = stack_allocpoint(L) = stack_lasttop(L) = luaM_malloc(L, OBJSTACK_SIZE);
+  if (!stack_head(L)) return NULL;
+  stack_size(L) = OBJSTACK_SIZE;
+  stack_tail(L) = cast(lu_byte *, stack_head(L)) + stack_size(L);
   return L;
 }
 
@@ -232,7 +232,7 @@ LUA_API void* stack_alloc_(lua_State *L, size_t size) {
   stack_allocpoint(L) = ap + size;
   //printf("usage: %u\n", stack_usage(L));
   //printf("point: %p tail: %p, %d\n", stack_allocpoint(L), L->objstack.tail, stack_allocpoint(L) <= L->objstack.tail);
-  lua_assert(stack_allocpoint(L) <= L->objstack.tail);
+  lua_assert(stack_allocpoint(L) <= stack_tail(L));
   return ap;
 }
 

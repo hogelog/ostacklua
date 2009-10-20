@@ -140,7 +140,7 @@ void luaV_settable (lua_State *L, const TValue *t, TValue *key, StkId val) {
       TValue *oldval = luaH_set(L, h, key); /* do a primitive set */
       if (!ttisnil(oldval) ||  /* result is no nil? */
           (tm = fasttm(L, h->metatable, TM_NEWINDEX)) == NULL) { /* or no TM? */
-        lua_copy2heap(L, val);
+        checkneedcopy(L, h, val);
         setobj2t(L, oldval, val);
         luaC_barriert(L, h, val);
         return;
@@ -680,6 +680,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           luaG_runerror(L, LUA_QL("for") " step must be a number");
         lua_assert(ttype(objstack) == LUA_TLIGHTUSERDATA);
         setpvalue(objstack, stack_allocpoint(L));
+        stack_lasttop(L) = pvalue(objstack);
         setnvalue(ra, luai_numsub(nvalue(ra), nvalue(pstep)));
         dojump(L, pc, GETARG_sBx(i));
         continue;
@@ -714,13 +715,13 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         h = hvalue(ra);
         last = ((c-1)*LFIELDS_PER_FLUSH) + n;
         if (last > h->sizearray) { /* needs more space? */
-          lua_copy2heap(L, ra);
+          if (onstack(gcvalue(ra))) lua_copy2heap(L, ra);
           h = hvalue(ra);
           luaH_resizearray(L, h, last);  /* pre-alloc it at once */
         }
         for (; n > 0; n--) {
           TValue *val = ra+n;
-          lua_copy2heap(L, val);
+          checkneedcopy(L, h, val);
           setobj2t(L, luaH_setnum(L, h, last--), val);
           luaC_barriert(L, h, val);
         }

@@ -622,7 +622,9 @@ void luaV_execute (lua_State *L, int nexeccalls) {
             lua_assert(L->top == L->base + clvalue(func)->l.p->maxstacksize);
             ci->savedpc = L->savedpc;
             ci->tailcalls++;  /* one more call lost */
-            stack_allocpoint(L) = ci->objstack_top;
+#ifdef CALLBASE_STACK
+            stack_allocpoint(L) = ci->stack_top;
+#endif
             L->ci--;  /* remove new frame */
             goto reentry;
           }
@@ -637,7 +639,8 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       }
       case OP_RETURN: {
         int b = GETARG_B(i);
-        void *newtop = L->ci->objstack_top;
+#ifdef CALLBASE_STACK
+        void *newtop = L->ci->stack_top;
         int nresults = L->ci->nresults;
         if (b != 0) {
           if (nresults == -1) nresults = 1;
@@ -669,7 +672,9 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         }
 
         stack_allocpoint(L) = newtop;
-
+#else
+        if (b != 0) L->top = ra+b-1;
+#endif
         if (L->openupval) luaF_close(L, base);
         L->savedpc = pc;
         b = luaD_poscall(L, ra);
@@ -738,8 +743,11 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         runtime_check(L, ttistable(ra));
         h = hvalue(ra);
         last = ((c-1)*LFIELDS_PER_FLUSH) + n;
-        if (last > h->sizearray)  /* needs more space? */
+        if (last > h->sizearray) { /* needs more space? */
+          lua_copy2heap(L, ra);
+          h = hvalue(ra);
           luaH_resizearray(L, h, last);  /* pre-alloc it at once */
+        }
         for (; n > 0; n--) {
           TValue *val = ra+n;
           lua_copy2heap(L, val);

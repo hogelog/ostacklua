@@ -52,7 +52,9 @@ typedef struct CallInfo {
   const Instruction *savedpc;
   int nresults;  /* expected number of results from this function */
   int tailcalls;  /* number of tail calls lost under this entry */
-  void *objstack_top;
+#ifdef CALLBASE_STACK
+  void *stack_top;
+#endif
 } CallInfo;
 
 
@@ -98,10 +100,9 @@ typedef struct global_State {
   UpVal uvhead;  /* head of double-linked list of all open upvalues */
   struct Table *mt[NUM_TAGS];  /* metatables for basic types */
   TString *tmname[TM_N];  /* array with tag-method names */
-  ObjectStack objstack;
 } global_State;
 
-#define OBJSTACK_SIZE 1024 * 1024 * 1024
+#define OBJSTACK_SIZE 10 * 1024 * 1024
 
 /*
 ** `per thread' state
@@ -133,6 +134,7 @@ struct lua_State {
   GCObject *gclist;
   struct lua_longjmp *errorJmp;  /* current error recover point */
   ptrdiff_t errfunc;  /* current error handling function (stack index) */
+  ObjectStack objstack;
 };
 
 
@@ -175,7 +177,7 @@ LUAI_FUNC lua_State *luaE_newthread (lua_State *L);
 LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
 
 #define stack_alloc(L,t,c) stack_alloc_(L, sizeof(t)*(c))
-#define stack_allocpoint(L) (G(L)->objstack.allocpoint)
+#define stack_allocpoint(L) (L->objstack.allocpoint)
 
 LUA_API void* stack_alloc_(lua_State *L, size_t size) ;
 LUA_API GCObject *lua_stack_dupgcobj(lua_State *L, GCObject *src);

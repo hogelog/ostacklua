@@ -40,7 +40,7 @@ typedef union GCObject GCObject;
 ** Common Header for all collectable objects (in macro form, to be
 ** included in other objects)
 */
-#define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked; lu_byte objstack
+#define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked; lu_byte onstack
 
 
 /*
@@ -189,7 +189,8 @@ typedef struct lua_TValue {
 
 #define iscollectable(o)	(ttype(o) >= LUA_TSTRING)
 
-#define isstackobject(o) ((o)->gch.objstack)
+
+#define isstackobject(o) ((o)->gch.onstack)
 
 typedef TValue *StkId;  /* index to stack elements */
 
@@ -376,6 +377,7 @@ LUAI_FUNC const char *luaO_pushvfstring (lua_State *L, const char *fmt,
                                                        va_list argp);
 LUAI_FUNC const char *luaO_pushfstring (lua_State *L, const char *fmt, ...);
 LUAI_FUNC void luaO_chunkid (char *out, const char *source, size_t len);
+
 
 #endif
 

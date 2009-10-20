@@ -366,7 +366,7 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
   t->sizearray = 0;
   t->lsizenode = 0;
   t->node = cast(Node *, dummynode);
-  t->objstack = 0;
+  t->onstack = 0;
   setarrayvector(L, t, narray);
   setnodevector(L, t, nhash);
   return t;
@@ -376,7 +376,7 @@ Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
   int i;
   Table *t = stack_alloc(L, Table, 1);
   t->tt = LUA_TTABLE;
-  t->objstack = 1;
+  t->onstack = 1;
   t->metatable = NULL;
   t->flags = cast_byte(~0);
 
@@ -619,7 +619,7 @@ LUAI_FUNC Table *luaH_stack_duphobj(lua_State *L, Table *src) {
   int asize = src->sizearray;
   int nsize = src->node == dummynode ? 0 : sizenode(src);
   Table *t = luaH_stack_new(L, asize, nsize);
-  t->objstack = 1;
+  t->onstack = 1;
   t->flags = src->flags;
   t->metatable = src->metatable;
   for (i=0; i<asize; i++) {
@@ -639,7 +639,7 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
   int asize = src->sizearray;
   int nsize = src->node == dummynode ? 0 : sizenode(src);
   Table *t = luaH_new(L, asize, nsize);
-  t->objstack = 0;
+  t->onstack = 0;
   t->flags = src->flags;
   t->metatable = src->metatable;
   for (i=0; i<asize; i++) {

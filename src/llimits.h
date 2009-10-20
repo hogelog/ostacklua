@@ -50,6 +50,7 @@ typedef LUAI_USER_ALIGNMENT_T L_Umaxalign;
 /* result of a `usual argument conversion' over lua_Number */
 typedef LUAI_UACNUMBER l_uacNumber;
 
+
 #include <assert.h>
 #define lua_assert(c) assert(c)
 /* internal assertions for in-house debugging */

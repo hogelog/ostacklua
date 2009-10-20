@@ -218,7 +218,7 @@ static StkId adjust_varargs (lua_State *L, Proto *p, int actual) {
     lua_assert(p->is_vararg & VARARG_HASARG);
     luaC_checkGC(L);
     htab = luaH_new(L, nvar, 1);  /* create `arg' table */
-    for (i=0; i<nvar; i++) /* put extra arguments into `arg' table */
+    for (i=0; i<nvar; i++)  /* put extra arguments into `arg' table */
       setobj2n(L, luaH_setnum(L, htab, i+1), L->top - nvar + i);
     /* store counter in field `n' */
     setnvalue(luaH_setstr(L, htab, luaS_newliteral(L, "n")), cast_num(nvar));
@@ -301,7 +301,9 @@ int luaD_precall (lua_State *L, StkId func, int nresults) {
       luaD_callhook(L, LUA_HOOKCALL, -1);
       L->savedpc--;  /* correct 'pc' */
     }
-    ci->objstack_top = stack_allocpoint(L);
+#ifdef CALLBASE_STACK
+    ci->stack_top = stack_allocpoint(L);
+#endif
     return PCRLUA;
   }
   else {  /* if is a C function, call it */
@@ -316,7 +318,9 @@ int luaD_precall (lua_State *L, StkId func, int nresults) {
     ci->nresults = nresults;
     if (L->hookmask & LUA_MASKCALL)
       luaD_callhook(L, LUA_HOOKCALL, -1);
-    ci->objstack_top = stack_allocpoint(L);
+#ifdef CALLBASE_STACK
+    ci->stack_top = stack_allocpoint(L);
+#endif
     lua_unlock(L);
     n = (*curr_func(L)->c.f)(L);  /* do the actual call */
     lua_lock(L);

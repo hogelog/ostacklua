@@ -105,7 +105,7 @@ static void preinit_state (lua_State *L, global_State *g) {
 
 static void close_state (lua_State *L) {
   global_State *g = G(L);
-  luaM_freearray(L, g->objstack.head, g->objstack.size, lu_byte);
+  luaM_freearray(L, L->objstack.head, L->objstack.size, lu_byte);
   luaF_close(L, L->stack);  /* close all upvalues for this thread */
   luaC_freeall(L);  /* collect all objects */
   lua_assert(g->rootgc == obj2gco(L));
@@ -117,6 +117,13 @@ static void close_state (lua_State *L) {
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
 }
 
+static lua_State *init_objstack(lua_State *L) {
+  L->objstack.head = L->objstack.allocpoint = luaM_malloc(L, OBJSTACK_SIZE);
+  if (!L->objstack.head) return NULL;
+  L->objstack.size = OBJSTACK_SIZE;
+  L->objstack.tail = cast(lu_byte *, L->objstack.head) + L->objstack.size;
+  return L;
+}
 
 lua_State *luaE_newthread (lua_State *L) {
   lua_State *L1 = tostate(luaM_malloc(L, state_size(lua_State)));
@@ -129,6 +136,7 @@ lua_State *luaE_newthread (lua_State *L) {
   L1->hook = L->hook;
   resethookcount(L1);
   lua_assert(iswhite(obj2gco(L1)));
+  init_objstack(L1);
   return L1;
 }
 
@@ -152,6 +160,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g = &((LG *)L)->g;
   L->next = NULL;
   L->tt = LUA_TTHREAD;
+  L->onstack = 0;
   g->currentwhite = bit2mask(WHITE0BIT, FIXEDBIT);
   L->marked = luaC_white(g);
   set2bits(L->marked, FIXEDBIT, SFIXEDBIT);
@@ -180,10 +189,10 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcpause = LUAI_GCPAUSE;
   g->gcstepmul = LUAI_GCMUL;
   g->gcdept = 0;
-  g->objstack.head = g->objstack.allocpoint = luaM_malloc(L, OBJSTACK_SIZE);
-  g->objstack.size = OBJSTACK_SIZE;
-  g->objstack.tail = g->objstack.head + g->objstack.size;
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
+
+  init_objstack(L);
+
   if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
     /* memory allocation error: free partial state */
     close_state(L);
@@ -219,9 +228,9 @@ LUA_API void lua_close (lua_State *L) {
 
 LUA_API void* stack_alloc_(lua_State *L, size_t size) {
   // TODO: resizable objstack
-  void *ap = stack_allocpoint(L);
-  stack_allocpoint(L) = cast(void *, cast(unsigned, ap) + size);
-  lua_assert(stack_allocpoint(L) <= G(L)->objstack.tail);
+  lu_byte *ap = stack_allocpoint(L);
+  stack_allocpoint(L) = ap + size;
+  lua_assert(stack_allocpoint(L) <= L->objstack.tail);
   return ap;
 }
 
@@ -248,7 +257,7 @@ LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
   switch(src->gch.tt) {
     case LUA_TSTRING: {
       TString *new = luaS_newlstr(L, getstr(rawgco2ts(src)), gco2ts(src)->len);
-      new->tsv.objstack = 0;
+      new->tsv.onstack = 0;
       return obj2gco(new);
     }
     case LUA_TTABLE: {

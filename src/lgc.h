@@ -86,8 +86,7 @@
 #define luaC_barrier(L,p,v) { if (valiswhite(v) && isblack(obj2gco(p)))  \
 	luaC_barrierf(L,obj2gco(p),gcvalue(v)); }
 
-#define luaC_barriert(L,t,v) { \
-  if (valiswhite(v) && isblack(obj2gco(t)))  \
+#define luaC_barriert(L,t,v) { if (valiswhite(v) && isblack(obj2gco(t)))  \
 	luaC_barrierback(L,t); }
 
 #define luaC_objbarrier(L,p,o)  \

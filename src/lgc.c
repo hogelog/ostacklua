@@ -67,7 +67,7 @@ static void removeentry (Node *n) {
 
 
 static void reallymarkobject (global_State *g, GCObject *o) {
-  lua_assert(!o->gch.objstack);
+  lua_assert(!o->gch.onstack);
   lua_assert(iswhite(o) && !isdead(g, o));
   white2gray(o);
   switch (o->gch.tt) {
@@ -277,7 +277,7 @@ static void traversestack (global_State *g, lua_State *l) {
 */
 static l_mem propagatemark (global_State *g) {
   GCObject *o = g->gray;
-  lua_assert(!o->gch.objstack);
+  lua_assert(!o->gch.onstack);
   lua_assert(isgray(o));
   gray2black(o);
   switch (o->gch.tt) {
@@ -378,7 +378,7 @@ static void cleartable (GCObject *l) {
 
 
 static void freeobj (lua_State *L, GCObject *o) {
-  lua_assert(!o->gch.objstack);
+  lua_assert(!o->gch.onstack);
   switch (o->gch.tt) {
     case LUA_TPROTO: luaF_freeproto(L, gco2p(o)); break;
     case LUA_TFUNCTION: luaF_freeclosure(L, gco2cl(o)); break;
@@ -412,7 +412,7 @@ static GCObject **sweeplist (lua_State *L, GCObject **p, lu_mem count) {
   global_State *g = G(L);
   int deadmask = otherwhite(g);
   while ((curr = *p) != NULL && count-- > 0) {
-    lua_assert(!curr->gch.objstack);
+    lua_assert(!curr->gch.onstack);
     if (curr->gch.tt == LUA_TTHREAD)  /* sweep open upvalues of each thread */
       sweepwholelist(L, &gco2th(curr)->openupval);
     if ((curr->gch.marked ^ WHITEBITS) & deadmask) {  /* not dead? */
@@ -664,7 +664,7 @@ void luaC_fullgc (lua_State *L) {
 
 
 void luaC_barrierf (lua_State *L, GCObject *o, GCObject *v) {
-  // TODO: if o1(objstack=0) -> o2(objstack=1) then move o2 to heap
+  // TODO: if o1(onstack=0) -> o2(onstack=1) then move o2 to heap
   global_State *g = G(L);
   lua_assert(isblack(o) && iswhite(v) && !isdead(g, v) && !isdead(g, o));
   lua_assert(g->gcstate != GCSfinalize && g->gcstate != GCSpause);
@@ -682,7 +682,7 @@ void luaC_barrierback (lua_State *L, Table *t) {
   GCObject *o = obj2gco(t);
   
   // TODO: check is it okey
-  if (t->objstack) return;
+  if (t->onstack) return;
 
   lua_assert(isblack(o) && !isdead(g, o));
   lua_assert(g->gcstate != GCSfinalize && g->gcstate != GCSpause);
@@ -698,7 +698,7 @@ void luaC_link (lua_State *L, GCObject *o, lu_byte tt) {
   g->rootgc = o;
   o->gch.marked = luaC_white(g);
   o->gch.tt = tt;
-  o->gch.objstack = 0;
+  o->gch.onstack = 0;
 }
 
 

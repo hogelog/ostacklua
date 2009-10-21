@@ -95,7 +95,7 @@ typedef struct global_State {
   unsigned gctime;
 } global_State;
 
-LUA_API unsigned getmillisec();
+LUA_API unsigned getmicrosec();
 
 /*
 ** `per thread' state

@@ -609,8 +609,7 @@ static l_mem singlestep (lua_State *L) {
 
 void luaC_step (lua_State *L) {
   global_State *g = G(L);
-  unsigned step_start, step_end;
-  step_start = getmillisec();
+  unsigned step_start = getmicrosec(), step_end;
   l_mem lim = (GCSTEPSIZE/100) * g->gcstepmul;
   if (lim == 0)
     lim = (MAX_LUMEM-1)/2;  /* no limit */
@@ -632,7 +631,7 @@ void luaC_step (lua_State *L) {
     lua_assert(g->totalbytes >= g->estimate);
     setthreshold(g);
   }
-  step_end = getmillisec();
+  step_end = getmicrosec();
   g->gctime += step_end - step_start;
 }
 

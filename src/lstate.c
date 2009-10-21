@@ -31,17 +31,18 @@
 #ifdef LUA_USE_POSIX
 #include <sys/time.h>
 #else
-#include < time.h >
+#include <time.h>
 #if defined(_MSC_VER) || defined(_MSC_EXTENSIONS)
-  #define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
+#define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
 #else
-  #define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
+#define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
 #endif
+#include <windows.h>
 struct timezone {
   int  tz_minuteswest; /* minutes W of Greenwich */
   int  tz_dsttime;     /* type of dst correction */
 };
-int gettimeofday(struct timeval *tv, struct timezone *tz) {
+static int gettimeofday(struct timeval *tv, struct timezone *tz) {
   FILETIME ft;
   unsigned __int64 tmpres = 0;
   if (NULL != tv) {
@@ -58,10 +59,10 @@ int gettimeofday(struct timeval *tv, struct timezone *tz) {
   return 0;
 }
 #endif
-LUA_API unsigned getmillisec() {
+LUA_API unsigned getmicrosec() {
   struct timeval t;
   gettimeofday(&t, NULL);
-  return t.tv_sec * 1000 + t.tv_usec;
+  return t.tv_sec*1000000 + t.tv_usec;
 }
 
 
@@ -145,7 +146,7 @@ static void preinit_state (lua_State *L, global_State *g) {
 }
 static void close_state (lua_State *L) {
   global_State *g = G(L);
-  unsigned lua_end;
+  unsigned long long lua_end;
   luaF_close(L, L->stack);  /* close all upvalues for this thread */
   luaC_freeall(L);  /* collect all objects */
   lua_assert(g->rootgc == obj2gco(L));
@@ -155,8 +156,8 @@ static void close_state (lua_State *L) {
   freestack(L, L);
   lua_assert(g->totalbytes == sizeof(LG));
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
-  lua_end = getmillisec();
-  fprintf(stderr, "## execution: %u ms, gc: %u ms\n", g->gctime, lua_end - g->lua_start);
+  lua_end = getmicrosec();
+  fprintf(stderr, "## execution: %.4f s, gc: %.4f s\n", (lua_end - g->lua_start)/1000000.0, g->gctime/1000000.0);
 }
 
 
@@ -222,7 +223,8 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcpause = LUAI_GCPAUSE;
   g->gcstepmul = LUAI_GCMUL;
   g->gcdept = 0;
-  g->lua_start = getmillisec();
+  g->gctime = 0;
+  g->lua_start = getmicrosec();
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
   if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
     /* memory allocation error: free partial state */

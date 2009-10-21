@@ -609,8 +609,8 @@ static l_mem singlestep (lua_State *L) {
 
 void luaC_step (lua_State *L) {
   global_State *g = G(L);
-  struct timespec step_start, step_end;
-  getnanosec(&step_start);
+  unsigned step_start, step_end;
+  step_start = getmillisec();
   l_mem lim = (GCSTEPSIZE/100) * g->gcstepmul;
   if (lim == 0)
     lim = (MAX_LUMEM-1)/2;  /* no limit */
@@ -632,9 +632,8 @@ void luaC_step (lua_State *L) {
     lua_assert(g->totalbytes >= g->estimate);
     setthreshold(g);
   }
-  getnanosec(&step_end);
-  g->gctime.tv_sec += step_end.tv_sec - step_start.tv_sec;
-  g->gctime.tv_nsec += step_end.tv_nsec - step_start.tv_nsec;
+  step_end = getmillisec();
+  g->gctime += step_end - step_start;
 }
 
 

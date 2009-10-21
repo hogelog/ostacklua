@@ -7,7 +7,6 @@
 #ifndef lstate_h
 #define lstate_h
 
-#include <time.h>
 #include "lua.h"
 
 #include "lobject.h"
@@ -92,11 +91,11 @@ typedef struct global_State {
   UpVal uvhead;  /* head of double-linked list of all open upvalues */
   struct Table *mt[NUM_TAGS];  /* metatables for basic types */
   TString *tmname[TM_N];  /* array with tag-method names */
-  struct timespec lua_start;
-  struct timespec gctime;
+  unsigned lua_start;
+  unsigned gctime;
 } global_State;
 
-LUA_API void getnanosec(struct timespec *);
+LUA_API unsigned getmillisec();
 
 /*
 ** `per thread' state

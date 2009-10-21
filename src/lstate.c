@@ -29,6 +29,43 @@
 #define fromstate(l)	(cast(lu_byte *, (l)) - LUAI_EXTRASPACE)
 #define tostate(l)   (cast(lua_State *, cast(lu_byte *, l) + LUAI_EXTRASPACE))
 
+#ifdef LUA_USE_POSIX
+#include <sys/time.h>
+#else
+#include <time.h>
+#if defined(_MSC_VER) || defined(_MSC_EXTENSIONS)
+#define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
+#else
+#define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
+#endif
+#include <windows.h>
+struct timezone {
+  int  tz_minuteswest; /* minutes W of Greenwich */
+  int  tz_dsttime;     /* type of dst correction */
+};
+static int gettimeofday(struct timeval *tv, struct timezone *tz) {
+  FILETIME ft;
+  unsigned __int64 tmpres = 0;
+  if (NULL != tv) {
+    GetSystemTimeAsFileTime(&ft);
+    tmpres |= ft.dwHighDateTime;
+    tmpres <<= 32;
+    tmpres |= ft.dwLowDateTime;
+    /*converting file time to unix epoch*/
+    tmpres /= 10;  /*convert into microseconds*/
+    tmpres -= DELTA_EPOCH_IN_MICROSECS;
+    tv->tv_sec = (long)(tmpres / 1000000UL);
+    tv->tv_usec = (long)(tmpres % 1000000UL);
+  }
+  return 0;
+}
+#endif
+LUA_API unsigned getmicrosec() {
+  struct timeval t;
+  gettimeofday(&t, NULL);
+  return t.tv_sec*1000000 + t.tv_usec;
+}
+
 
 /*
 ** Main thread combines a thread state and the global state
@@ -102,9 +139,15 @@ static void preinit_state (lua_State *L, global_State *g) {
   setnilvalue(gt(L));
 }
 
-
+#include <stdio.h>
+#define settimeull(ull, spec) { \
+  (ull) = (spec).tv_sec; \
+  (ull) *= 1000000000; \
+  (ull) += (spec).tv_nsec; \
+}
 static void close_state (lua_State *L) {
   global_State *g = G(L);
+  unsigned long long lua_end;
   luaM_freearray(L, stack_head(L), stack_size(L), lu_byte);
   luaF_close(L, L->stack);  /* close all upvalues for this thread */
   luaC_freeall(L);  /* collect all objects */
@@ -115,6 +158,8 @@ static void close_state (lua_State *L) {
   freestack(L, L);
   lua_assert(g->totalbytes == sizeof(LG));
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
+  lua_end = getmicrosec();
+  fprintf(stderr, "## execution: %.4f s, gc: %.4f s\n", (lua_end - g->lua_start)/1000000.0, g->gctime/1000000.0);
 }
 
 static lua_State *objstack_init(lua_State *L) {
@@ -189,6 +234,8 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcpause = LUAI_GCPAUSE;
   g->gcstepmul = LUAI_GCMUL;
   g->gcdept = 0;
+  g->gctime = 0;
+  g->lua_start = getmicrosec();
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
 
   objstack_init(L);

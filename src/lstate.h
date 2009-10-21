@@ -98,9 +98,13 @@ typedef struct global_State {
   UpVal uvhead;  /* head of double-linked list of all open upvalues */
   struct Table *mt[NUM_TAGS];  /* metatables for basic types */
   TString *tmname[TM_N];  /* array with tag-method names */
+  unsigned lua_start;
+  unsigned gctime;
 } global_State;
 
 #define OBJSTACK_SIZE 512 * 1024 * 1024
+
+LUA_API unsigned getmicrosec();
 
 /*
 ** `per thread' state

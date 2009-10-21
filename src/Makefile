@@ -12,7 +12,7 @@ CFLAGS= -O2 -Wall $(MYCFLAGS)
 AR= ar rcu
 RANLIB= ranlib
 RM= rm -f
-LIBS= -lm $(MYLIBS)
+LIBS= -lrt -lm $(MYLIBS)
 
 MYCFLAGS=
 MYLDFLAGS=

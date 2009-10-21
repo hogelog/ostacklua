@@ -456,10 +456,13 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_NEWTABLE: {
-        int b = GETARG_B(i);
-        int c = GETARG_C(i);
-        Table *t = luaH_stack_new(L, luaO_fb2int(b), luaO_fb2int(c));
-        sethvalue(L, ra, t);
+        int nb = luaO_fb2int(GETARG_B(i));
+        int nc = luaO_fb2int(GETARG_C(i));
+        if (nb > 0 || nc > 0) {
+          sethvalue(L, ra, luaH_stack_new(L, nb, nc));
+        } else {
+          sethvalue(L, ra, luaH_new(L, 0, 0));
+        }
         Protect(luaC_checkGC(L));
         continue;
       }

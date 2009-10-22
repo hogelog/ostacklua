@@ -118,7 +118,7 @@ static void close_state (lua_State *L) {
 }
 
 static lua_State *objstack_init(lua_State *L) {
-  stack_head(L) = stack_allocpoint(L) = stack_lasttop(L) = luaM_malloc(L, OBJSTACK_SIZE);
+  stack_head(L) = stack_apoint(L) = stack_lasttop(L) = luaM_malloc(L, OBJSTACK_SIZE);
   if (!stack_head(L)) return NULL;
   stack_size(L) = OBJSTACK_SIZE;
   stack_tail(L) = cast(lu_byte *, stack_head(L)) + stack_size(L);
@@ -228,11 +228,9 @@ LUA_API void lua_close (lua_State *L) {
 
 LUA_API void* stack_alloc_(lua_State *L, size_t size) {
   // TODO: resizable objstack
-  lu_byte *ap = stack_allocpoint(L);
-  stack_allocpoint(L) = ap + size;
-  //printf("usage: %u\n", stack_usage(L));
-  //printf("point: %p tail: %p, %d\n", stack_allocpoint(L), L->objstack.tail, stack_allocpoint(L) <= L->objstack.tail);
-  lua_assert(stack_allocpoint(L) <= stack_tail(L));
+  lu_byte *ap = stack_apoint(L);
+  stack_apoint(L) = ap + size;
+  lua_assert(stack_apoint(L) <= stack_tail(L));
   return ap;
 }
 
@@ -255,6 +253,7 @@ LUA_API GCObject *lua_stack_dupgcobj(lua_State *L, GCObject *src) {
       return NULL;
   }
 }
+
 LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
   switch(src->gch.tt) {
     case LUA_TSTRING: {

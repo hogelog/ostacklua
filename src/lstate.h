@@ -63,10 +63,11 @@ typedef struct CallInfo {
 
 typedef struct ObjectStack {
   void *head;
-  void *allocpoint;
+  void *apoint;
   void *tail;
-  void *lasttop;
   size_t size;
+  void *gregion;
+  StkId tregion;
 } ObjectStack;
 
 /*
@@ -142,6 +143,15 @@ struct lua_State {
 
 #define G(L)	(L->l_G)
 
+#define ostack_head(L) (L->objstack.head)
+#define ostack_apoint(L) (L->objstack.apoint)
+#define ostack_size(L) (L->objstack.size)
+#define ostack_tail(L) (L->objstack.tail)
+#define ostack_gregion(L) (L->objstack.gregion)
+#define ostack_tregion(L) (L->objstack.tregion)
+#define ostack_alloc(L,t,c) ostack_alloc_(L, sizeof(t)*(c))
+#define ostack_usage(L) cast(size_t, cast(lu_byte *, ostack_apoint(L)) - cast(lu_byte *, L->objstack.head))
+
 
 /*
 ** Union of all collectable objects
@@ -178,17 +188,10 @@ union GCObject {
 LUAI_FUNC lua_State *luaE_newthread (lua_State *L);
 LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
 
-#define stack_head(L) (L->objstack.head)
-#define stack_allocpoint(L) (L->objstack.allocpoint)
-#define stack_size(L) (L->objstack.size)
-#define stack_tail(L) (L->objstack.tail)
-#define stack_lasttop(L) (L->objstack.lasttop)
-#define stack_alloc(L,t,c) stack_alloc_(L, sizeof(t)*(c))
-#define stack_usage(L) cast(size_t, cast(lu_byte *, stack_allocpoint(L)) - cast(lu_byte *, L->objstack.head))
-
-LUA_API void* stack_alloc_(lua_State *L, size_t size) ;
-LUA_API GCObject *lua_stack_dupgcobj(lua_State *L, GCObject *src);
+LUA_API void* ostack_alloc_(lua_State *L, size_t size) ;
+LUA_API GCObject *lua_ostack_dupgcobj(lua_State *L, GCObject *src);
 LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
+LUA_API int lua_ostack_refix(lua_State *L, GCObject *heap, GCObject *stack);
 
 #define lua_copy2heap(L,v) { \
     GCObject *dup; \
@@ -198,11 +201,8 @@ LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
     (v)->value.gc = dup; \
   }
 
-#define checkneedcopy(L,t,v) \
-  lua_assert(ttype(t) == LUA_TABLE); \
-  if (iscollectable(v) && onstack(gcvalue(v)) && \
-     ((t)->onstack==0 || (cast(void *,(t)) < stack_lasttop(L)))) \
-    lua_copy2heap(L,(v))
+#define isneedcopy(L,t,v) (onstack((v)) && \
+     ((t)->onstack==0 || (cast(void *,(t)) < ostack_gregion(L))))
 
 #endif
 

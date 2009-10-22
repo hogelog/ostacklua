@@ -108,10 +108,10 @@ typedef struct lua_TValue {
 #define checkconsistency(obj) \
   lua_assert(!iscollectable(obj) || (ttype(obj) == (obj)->value.gc->gch.tt))
 
-#define checkliveness(L,obj) \
+#define checkliveness(g,obj) \
   lua_assert(!iscollectable(obj) || \
-      (onstack(gcvalue(obj)) && (cast(void *, (obj)) < stack_allocpoint(L))) || \
-  ((ttype(obj) == (obj)->value.gc->gch.tt) && !isdead(G(L), (obj)->value.gc)))
+      onstack(gcvalue(obj)) || \
+  ((ttype(obj) == (obj)->value.gc->gch.tt) && !isdead(g, (obj)->value.gc)))
 
 
 /* Macros to set values */
@@ -129,32 +129,32 @@ typedef struct lua_TValue {
 #define setsvalue(L,obj,x) \
   { TValue *i_o=(obj); \
     i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TSTRING; \
-    checkliveness(L,i_o); }
+    checkliveness(G(L),i_o); }
 
 #define setuvalue(L,obj,x) \
   { TValue *i_o=(obj); \
     i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TUSERDATA; \
-    checkliveness(L,i_o); }
+    checkliveness(G(L),i_o); }
 
 #define setthvalue(L,obj,x) \
   { TValue *i_o=(obj); \
     i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TTHREAD; \
-    checkliveness(L,i_o); }
+    checkliveness(G(L),i_o); }
 
 #define setclvalue(L,obj,x) \
   { TValue *i_o=(obj); \
     i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TFUNCTION; \
-    checkliveness(L,i_o); }
+    checkliveness(G(L),i_o); }
 
 #define sethvalue(L,obj,x) \
   { TValue *i_o=(obj); \
     i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TTABLE; \
-    checkliveness(L,i_o); }
+    checkliveness(G(L),i_o); }
 
 #define setptvalue(L,obj,x) \
   { TValue *i_o=(obj); \
     i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TPROTO; \
-    checkliveness(L,i_o); }
+    checkliveness(G(L),i_o); }
 
 
 
@@ -162,7 +162,7 @@ typedef struct lua_TValue {
 #define setobj(L,obj1,obj2) \
   { const TValue *o2=(obj2); TValue *o1=(obj1); \
     o1->value = o2->value; o1->tt=o2->tt; \
-    checkliveness(L,o1); }
+    checkliveness(G(L),o1); }
 
 
 /*

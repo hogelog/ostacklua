@@ -143,7 +143,7 @@ static void preinit_state (lua_State *L, global_State *g) {
 static void close_state (lua_State *L) {
   global_State *g = G(L);
   unsigned long long lua_end;
-  luaM_freearray(L, stack_head(L), stack_size(L), lu_byte);
+  luaM_freearray(L, ostack_head(L), ostack_size(L), lu_byte);
   luaF_close(L, L->stack);  /* close all upvalues for this thread */
   luaC_freeall(L);  /* collect all objects */
   lua_assert(g->rootgc == obj2gco(L));
@@ -157,11 +157,11 @@ static void close_state (lua_State *L) {
   fprintf(stderr, "## execution: %.6f s, gc: %.6f s\n", (lua_end - g->lua_start)/1000000.0, g->gctime/1000000.0);
 }
 
-static lua_State *objstack_init(lua_State *L) {
-  stack_head(L) = stack_allocpoint(L) = stack_lasttop(L) = luaM_malloc(L, OBJSTACK_SIZE);
-  if (!stack_head(L)) return NULL;
-  stack_size(L) = OBJSTACK_SIZE;
-  stack_tail(L) = cast(lu_byte *, stack_head(L)) + stack_size(L);
+static lua_State *ostack_init(lua_State *L) {
+  ostack_head(L) = ostack_apoint(L) = ostack_gregion(L) = luaM_malloc(L, OBJSTACK_SIZE);
+  if (!ostack_head(L)) return NULL;
+  ostack_size(L) = OBJSTACK_SIZE;
+  ostack_tail(L) = cast(lu_byte *, ostack_head(L)) + ostack_size(L);
   return L;
 }
 
@@ -176,7 +176,7 @@ lua_State *luaE_newthread (lua_State *L) {
   L1->hook = L->hook;
   resethookcount(L1);
   lua_assert(iswhite(obj2gco(L1)));
-  objstack_init(L1);
+  ostack_init(L1);
   return L1;
 }
 
@@ -233,7 +233,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->lua_start = getmicrosec();
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
 
-  objstack_init(L);
+  ostack_init(L);
 
   if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
     /* memory allocation error: free partial state */
@@ -268,25 +268,23 @@ LUA_API void lua_close (lua_State *L) {
   close_state(L);
 }
 
-LUA_API void* stack_alloc_(lua_State *L, size_t size) {
+LUA_API void* ostack_alloc_(lua_State *L, size_t size) {
   // TODO: resizable objstack
-  lu_byte *ap = stack_allocpoint(L);
-  stack_allocpoint(L) = ap + size;
-  //printf("usage: %u\n", stack_usage(L));
-  //printf("point: %p tail: %p, %d\n", stack_allocpoint(L), L->objstack.tail, stack_allocpoint(L) <= L->objstack.tail);
-  lua_assert(stack_allocpoint(L) <= stack_tail(L));
+  lu_byte *ap = ostack_apoint(L);
+  ostack_apoint(L) = ap + size;
+  lua_assert(ostack_apoint(L) <= ostack_tail(L));
   return ap;
 }
 
-LUA_API GCObject *lua_stack_dupgcobj(lua_State *L, GCObject *src) {
+LUA_API GCObject *lua_ostack_dupgcobj(lua_State *L, GCObject *src) {
   switch(src->gch.tt) {
     case LUA_TSTRING: {
-      GCObject *new = stack_alloc(L, GCObject, 1);
+      GCObject *new = ostack_alloc(L, GCObject, 1);
       memcpy(new, src, sizeof(GCObject));
       return new;
     }
     case LUA_TTABLE: {
-      return obj2gco(luaH_stack_duphobj(L, &src->h));
+      return obj2gco(luaH_ostack_duphobj(L, &src->h));
     }
     // TODO: implement
     case LUA_TFUNCTION:
@@ -297,6 +295,7 @@ LUA_API GCObject *lua_stack_dupgcobj(lua_State *L, GCObject *src) {
       return NULL;
   }
 }
+
 LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
   switch(src->gch.tt) {
     case LUA_TSTRING: {
@@ -315,4 +314,37 @@ LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
       lua_assert(0); 
       return NULL;
   }
+}
+
+LUA_API int lua_ostack_refix(lua_State *L, GCObject *h, GCObject *s) {
+  void *apoint  = ostack_apoint(L);
+  GCObject *o = ostack_gregion(L);
+  //TValue *t = ostack_tregion(L);
+  TValue *t = L->stack;
+  int count = 0;
+  while (o < cast(GCObject *, apoint)) {
+    if (!onstack(o)) continue;
+    switch(o->gch.tt) {
+      case LUA_TTABLE: {
+        count += luaH_ostack_refix(L, &o->h, h, s);
+        break;
+      }
+      // TODO: implement
+      case LUA_TSTRING:
+      case LUA_TFUNCTION:
+      case LUA_TUSERDATA:
+      case LUA_TTHREAD:
+      default:
+        lua_assert(0); 
+        return -1;
+    }
+    o = o->gch.next;
+  }
+  for (;t < L->stack_last;t++) {
+    if (iscollectable(t) && gcvalue(t)!=s) {
+      ++count;
+      t->value.gc = h;
+    }
+  }
+  return count;
 }

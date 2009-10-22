@@ -140,7 +140,6 @@ void luaV_settable (lua_State *L, const TValue *t, TValue *key, StkId val) {
       TValue *oldval = luaH_set(L, h, key); /* do a primitive set */
       if (!ttisnil(oldval) ||  /* result is no nil? */
           (tm = fasttm(L, h->metatable, TM_NEWINDEX)) == NULL) { /* or no TM? */
-        checkneedcopy(L, h, val);
         setobj2t(L, oldval, val);
         luaC_barriert(L, h, val);
         return;
@@ -459,7 +458,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         int nb = luaO_fb2int(GETARG_B(i));
         int nc = luaO_fb2int(GETARG_C(i));
         if (nb > 0 || nc > 0) {
-          sethvalue(L, ra, luaH_stack_new(L, nb, nc));
+          sethvalue(L, ra, luaH_ostack_new(L, nb, nc));
         } else {
           sethvalue(L, ra, luaH_new(L, 0, 0));
         }
@@ -657,8 +656,8 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         lua_Number step = nvalue(ra+2);
         lua_Number idx = luai_numadd(nvalue(ra), step); /* increment index */
         lua_Number limit = nvalue(ra+1);
-        lua_assert(pvalue(objstack) && pvalue(objstack) <= stack_allocpoint(L));
-        stack_allocpoint(L) = pvalue(objstack);
+        lua_assert(pvalue(objstack) && pvalue(objstack) <= ostack_apoint(L));
+        ostack_apoint(L) = pvalue(objstack);
         if (luai_numlt(0, step) ? luai_numle(idx, limit)
                                 : luai_numle(limit, idx)) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
@@ -682,8 +681,8 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         else if (!tonumber(pstep, ra+3))
           luaG_runerror(L, LUA_QL("for") " step must be a number");
         lua_assert(ttype(objstack) == LUA_TLIGHTUSERDATA);
-        setpvalue(objstack, stack_allocpoint(L));
-        stack_lasttop(L) = pvalue(objstack);
+        setpvalue(objstack, ostack_apoint(L));
+        ostack_gregion(L) = pvalue(objstack);
         setnvalue(ra, luai_numsub(nvalue(ra), nvalue(pstep)));
         dojump(L, pc, GETARG_sBx(i));
         continue;
@@ -724,7 +723,6 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         }
         for (; n > 0; n--) {
           TValue *val = ra+n;
-          checkneedcopy(L, h, val);
           setobj2t(L, luaH_setnum(L, h, last--), val);
           luaC_barriert(L, h, val);
         }
@@ -735,7 +733,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_CLOSURE: {
-        // TODO: to stack_alloc
+        // TODO: to ostack_alloc
         Proto *p;
         Closure *ncl;
         int nup, j;

@@ -5,6 +5,7 @@
 */
 
 
+#include <stdio.h>
 #include <stddef.h>
 #include <string.h>
 
@@ -139,12 +140,6 @@ static void preinit_state (lua_State *L, global_State *g) {
   setnilvalue(gt(L));
 }
 
-#include <stdio.h>
-#define settimeull(ull, spec) { \
-  (ull) = (spec).tv_sec; \
-  (ull) *= 1000000000; \
-  (ull) += (spec).tv_nsec; \
-}
 static void close_state (lua_State *L) {
   global_State *g = G(L);
   unsigned long long lua_end;
@@ -159,7 +154,7 @@ static void close_state (lua_State *L) {
   lua_assert(g->totalbytes == sizeof(LG));
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
   lua_end = getmicrosec();
-  fprintf(stderr, "## execution: %.4f s, gc: %.4f s\n", (lua_end - g->lua_start)/1000000.0, g->gctime/1000000.0);
+  fprintf(stderr, "## execution: %.6f s, gc: %.6f s\n", (lua_end - g->lua_start)/1000000.0, g->gctime/1000000.0);
 }
 
 static lua_State *objstack_init(lua_State *L) {

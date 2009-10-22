@@ -372,16 +372,16 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
   return t;
 }
 
-Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
+Table *luaH_ostack_new (lua_State *L, int narray, int nhash) {
   int i;
-  Table *t = stack_alloc(L, Table, 1);
+  Table *t = ostack_alloc(L, Table, 1);
   t->tt = LUA_TTABLE;
   t->onstack = 1;
   t->metatable = NULL;
   t->flags = cast_byte(~0);
 
   if (narray) {
-    t->array = stack_alloc(L, TValue, narray);
+    t->array = ostack_alloc(L, TValue, narray);
     for (i=0; i<narray; i++)
        setnilvalue(&t->array[i]);
   }
@@ -392,7 +392,7 @@ Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
     int size = twoto(lsize);
     if (lsize > MAXBITS)
       luaG_runerror(L, "table overflow");
-    t->node = stack_alloc(L, Node, size);
+    t->node = ostack_alloc(L, Node, size);
     for (i=0; i<size; i++) {
       Node *n = gnode(t, i);
       gnext(n) = NULL;
@@ -406,6 +406,7 @@ Table *luaH_stack_new (lua_State *L, int narray, int nhash) {
     t->lsizenode = 0;
     t->lastfree = gnode(t, 0);  /* all positions are free */
   }
+  t->next = ostack_apoint(L);
   return t;
 }
 
@@ -614,11 +615,11 @@ int luaH_getn (Table *t) {
   else return unbound_search(t, j);
 }
 
-LUAI_FUNC Table *luaH_stack_duphobj(lua_State *L, Table *src) {
+LUAI_FUNC Table *luaH_ostack_duphobj(lua_State *L, Table *src) {
   int i;
   int asize = src->sizearray;
   int nsize = src->node == dummynode ? 0 : sizenode(src);
-  Table *t = luaH_stack_new(L, asize, nsize);
+  Table *t = luaH_ostack_new(L, asize, nsize);
   t->onstack = 1;
   t->flags = src->flags;
   t->metatable = src->metatable;
@@ -657,6 +658,27 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
   return t;
 }
 
+LUAI_FUNC int luaH_ostack_refix(lua_State *L, Table *t, GCObject *h, GCObject *s) {
+  int asize = t->sizearray;
+  int nsize = t->node == dummynode ? 0 : sizenode(t);
+  int count = 0;
+  int i;
+  for (i=0; i<asize; i++) {
+    TValue *o = &t->array[i];
+    if (iscollectable(o) && gcvalue(o) == s) {
+      o->value.gc = h;
+      ++count;
+    }
+  }
+  for (i=0; i<nsize; i++) {
+    TValue *o = gval(gnode(t, i));
+    if (iscollectable(o) && gcvalue(o) == s) {
+      o->value.gc = h;
+      ++count;
+    }
+  }
+  return count;
+}
 #if defined(LUA_DEBUG)
 
 Node *luaH_mainposition (const Table *t, const TValue *key) {

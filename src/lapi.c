@@ -583,10 +583,10 @@ LUA_API void lua_createtable (lua_State *L, int narray, int nrec) {
   lua_unlock(L);
 }
 
-LUA_API void lua_createtable_stack (lua_State *L, int narray, int nrec) {
+LUA_API void lua_ostack_createtable (lua_State *L, int narray, int nrec) {
   lua_lock(L);
   luaC_checkGC(L);
-  sethvalue(L, L->top, luaH_stack_new(L, narray, nrec));
+  sethvalue(L, L->top, luaH_ostack_new(L, narray, nrec));
   api_incr_top(L);
   lua_unlock(L);
 }
@@ -682,7 +682,6 @@ LUA_API void lua_rawset (lua_State *L, int idx) {
   api_checknelems(L, 2);
   t = index2adr(L, idx);
   api_check(L, ttistable(t));
-  checkneedcopy(L, hvalue(t), L->top-1);
   setobj2t(L, luaH_set(L, hvalue(t), L->top-2), L->top-1);
   luaC_barriert(L, hvalue(t), L->top-1);
   L->top -= 2;
@@ -696,7 +695,6 @@ LUA_API void lua_rawseti (lua_State *L, int idx, int n) {
   api_checknelems(L, 1);
   o = index2adr(L, idx);
   api_check(L, ttistable(o));
-  checkneedcopy(L, hvalue(o), L->top-1);
   setobj2t(L, luaH_setnum(L, hvalue(o), n), L->top-1);
   luaC_barriert(L, hvalue(o), L->top-1);
   L->top--;

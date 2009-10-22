@@ -94,7 +94,11 @@
 		luaC_barrierf(L,obj2gco(p),obj2gco(o)); }
 
 #define luaC_objbarriert(L,t,o)  \
-   { if (iswhite(obj2gco(o)) && isblack(obj2gco(t))) luaC_barrierback(L,t); }
+   { GCObject *go = obj2gco(o); \
+     if (iswhite(go) && isblack(obj2gco(t))) luaC_barrierback(L,t); \
+     if (isneedcopy(L,(t),go)) { \
+       GCObject *dup = lua_dupgcobj(L, go); \
+       lua_ostack_refix(L, dup, go); }}
 
 LUAI_FUNC size_t luaC_separateudata (lua_State *L, int all);
 LUAI_FUNC void luaC_callGCTM (lua_State *L);

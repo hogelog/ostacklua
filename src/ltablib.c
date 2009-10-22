@@ -265,15 +265,6 @@ static int sort (lua_State *L) {
 
 /* }====================================================== */
 
-LUA_API void lua_createtable_stack (lua_State *L, int narray, int nrec) ;
-static int create (lua_State *L) {
-  int narray = (int)luaL_checknumber(L, 1);
-  int nrec = (int)luaL_checknumber(L, 2);
-  lua_createtable_stack(L, narray, nrec);
-  lua_pushvalue(L, -1);
-  return 1;
-}
-
 static const luaL_Reg tab_funcs[] = {
   {"concat", tconcat},
   {"foreach", foreach},
@@ -284,7 +275,6 @@ static const luaL_Reg tab_funcs[] = {
   {"remove", tremove},
   {"setn", setn},
   {"sort", sort},
-  {"create", create},
   {NULL, NULL}
 };
 

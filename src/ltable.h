@@ -17,6 +17,8 @@
 
 #define key2tval(n)	(&(n)->i_key.tvk)
 
+#define ostack_harray(t) cast(TValue *, ptradd(t, sizeof(Table)))
+#define ostack_hnode(t) cast(Node *, ptradd(t, sizeof(Table) + sizeof(TValue) * (t)->sizearray))
 
 LUAI_FUNC const TValue *luaH_getnum (Table *t, int key);
 LUAI_FUNC TValue *luaH_setnum (lua_State *L, Table *t, int key);
@@ -33,6 +35,7 @@ LUAI_FUNC int luaH_getn (Table *t);
 
 LUAI_FUNC Table *luaH_ostack_duphobj(lua_State *L, Table *src);
 LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src);
+LUAI_FUNC int luaH_ostack_correct(lua_State *L, Table *t, GCObject *old, GCObject *old_top, ptrdiff_t diff);
 LUAI_FUNC int luaH_ostack_refix(lua_State *L, Table *t, GCObject *h, GCObject *s);
 
 #if defined(LUA_DEBUG)

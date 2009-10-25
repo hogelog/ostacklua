@@ -12,7 +12,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include <assert.h>
-
+#include <unistd.h>
 
 #include "luaconf.h"
 

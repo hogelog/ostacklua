@@ -262,6 +262,7 @@ static int numusehash (const Table *t, int *nums, int *pnasize) {
 
 static void setarrayvector (lua_State *L, Table *t, int size) {
   int i;
+  lua_assert(!t->onstack);
   luaM_reallocvector(L, t->array, t->sizearray, size, TValue);
   for (i=t->sizearray; i<size; i++)
      setnilvalue(&t->array[i]);
@@ -271,6 +272,7 @@ static void setarrayvector (lua_State *L, Table *t, int size) {
 
 static void setnodevector (lua_State *L, Table *t, int size) {
   int lsize;
+  lua_assert(!t->onstack);
   if (size == 0) {  /* no elements to hash part? */
     t->node = cast(Node *, dummynode);  /* use common `dummynode' */
     lsize = 0;
@@ -300,6 +302,7 @@ static void resize (lua_State *L, Table *t, int nasize, int nhsize) {
   int oldasize = t->sizearray;
   int oldhsize = t->lsizenode;
   Node *nold = t->node;  /* save old hash ... */
+  lua_assert(!t->onstack);
   if (nasize > oldasize)  /* array part must grow? */
     setarrayvector(L, t, nasize);
   /* create new hash part with appropriate size */
@@ -366,52 +369,52 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
   t->sizearray = 0;
   t->lsizenode = 0;
   t->node = cast(Node *, dummynode);
-  t->onstack = 0;
   setarrayvector(L, t, narray);
   setnodevector(L, t, nhash);
   return t;
 }
 
 Table *luaH_ostack_new (lua_State *L, int narray, int nhash) {
+  Table *t;
+  int tsize = sizeof(Table);
+  int lsize = 0, nsize = 0;
   int i;
-  Table *t = ostack_alloc(L, Table, 1);
+
+  if (narray) {
+    tsize += sizeof(TValue) * narray;
+  }
+  if (nhash) {
+    lsize = ceillog2(nhash);
+    nsize = twoto(lsize);
+    tsize += sizeof(Node) * nsize;
+    if (lsize > MAXBITS)
+      luaG_runerror(L, "table overflow");
+  }
+  t = ostack_alloc(L, tsize);
   t->tt = LUA_TTABLE;
   t->onstack = 1;
   t->metatable = NULL;
   t->flags = cast_byte(~0);
-
-  if (narray) {
-    t->array = ostack_alloc(L, TValue, narray);
-    for (i=0; i<narray; i++)
-       setnilvalue(&t->array[i]);
-  }
   t->sizearray = narray;
-
-  if (nhash) {
-    int lsize = ceillog2(nhash);
-    int size = twoto(lsize);
-    if (lsize > MAXBITS)
-      luaG_runerror(L, "table overflow");
-    t->node = ostack_alloc(L, Node, size);
-    for (i=0; i<size; i++) {
-      Node *n = gnode(t, i);
-      gnext(n) = NULL;
-      setnilvalue(gkey(n));
-      setnilvalue(gval(n));
-    }
-    t->lsizenode = lsize;
-    t->lastfree = gnode(t, size);  /* all positions are free */
-  } else {
-    t->node = cast(Node *, dummynode);
-    t->lsizenode = 0;
-    t->lastfree = gnode(t, 0);  /* all positions are free */
+  t->lsizenode = lsize;
+  t->array = narray ? ptradd(t, sizeof(Table)) : NULL;
+  for (i=0; i<narray; i++)
+     setnilvalue(&t->array[i]);
+  t->node = nsize ? ostack_hnode(t) : cast(Node *, dummynode);
+  for (i=0; i<nsize; i++) {
+    Node *n = gnode(t, i);
+    gnext(n) = NULL;
+    setnilvalue(gkey(n));
+    setnilvalue(gval(n));
   }
-  t->next = ostack_apoint(L);
+  t->lastfree = gnode(t, nsize);  /* all positions are free */
+
+  t->next = ostack_top(L);
   return t;
 }
 
 void luaH_free (lua_State *L, Table *t) {
-  lua_assert(!onstack(obj2gco(t)));
+  lua_assert(!t->onstack);
   if (t->node != dummynode)
     luaM_freearray(L, t->node, sizenode(t), Node);
   luaM_freearray(L, t->array, t->sizearray, TValue);
@@ -615,26 +618,6 @@ int luaH_getn (Table *t) {
   else return unbound_search(t, j);
 }
 
-LUAI_FUNC Table *luaH_ostack_duphobj(lua_State *L, Table *src) {
-  int i;
-  int asize = src->sizearray;
-  int nsize = src->node == dummynode ? 0 : sizenode(src);
-  Table *t = luaH_ostack_new(L, asize, nsize);
-  t->onstack = 1;
-  t->flags = src->flags;
-  t->metatable = src->metatable;
-  for (i=0; i<asize; i++) {
-    setobj(L, &t->array[i], &src->array[i]);
-  }
-  for (i=0; i<nsize; i++) {
-    Node *d = gnode(t, i), *s = gnode(src, i);
-    setobj(L, gval(d), gval(s));
-    setobj(L, key2tval(d), key2tval(s));
-    gnext(d) = gnext(s) ? gnode(t, 0) + (gnext(s) - gnode(src, 0)) : NULL;
-  }
-  return t;
-}
-
 LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
   int i;
   int asize = src->sizearray;
@@ -656,6 +639,33 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
     gnext(d) = gnext(s) ? gnode(t, 0) + (gnext(s) - gnode(src, 0)) : NULL;
   }
   return t;
+}
+
+LUAI_FUNC int luaH_ostack_correct(lua_State *L, Table *t, GCObject *old, GCObject *old_top, ptrdiff_t diff) {
+  int asize = t->sizearray;
+  int nsize = t->node == dummynode ? 0 : sizenode(t);
+  int count = 0;
+  int i;
+  if (t->array != NULL) t->array = ptradd(t->array, diff);
+  if (t->node != dummynode) t->node = ptradd(t->node, diff);
+  for (i=0; i<asize; i++) {
+    TValue *o = &t->array[i];
+    if (iscollectable(o) && inrange(old, old_top, gcvalue(o))) {
+      o->value.gc = ptradd(o->value.gc, diff);
+      ++count;
+    }
+  }
+  for (i=0; i<nsize; i++) {
+    Node *n = gnode(t, i);
+    TValue *v = gval(n);
+    if (iscollectable(v) && inrange(old, old_top, gcvalue(v))) {
+      v->value.gc = ptradd(v->value.gc, diff);
+      if (gnext(n)) gnext(n) = ptradd(gnext(n), diff);
+      ++count;
+    }
+  }
+  t->next = ptradd(t->next, diff);
+  return count;
 }
 
 LUAI_FUNC int luaH_ostack_refix(lua_State *L, Table *t, GCObject *h, GCObject *s) {

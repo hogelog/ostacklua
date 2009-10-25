@@ -656,8 +656,8 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         lua_Number step = nvalue(ra+2);
         lua_Number idx = luai_numadd(nvalue(ra), step); /* increment index */
         lua_Number limit = nvalue(ra+1);
-        lua_assert(pvalue(objstack) && pvalue(objstack) <= ostack_apoint(L));
-        ostack_apoint(L) = pvalue(objstack);
+        lua_assert(pvalue(objstack) && pvalue(objstack) <= ostack_top(L));
+        ostack_set(L, pvalue(objstack));
         if (luai_numlt(0, step) ? luai_numle(idx, limit)
                                 : luai_numle(limit, idx)) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
@@ -681,7 +681,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         else if (!tonumber(pstep, ra+3))
           luaG_runerror(L, LUA_QL("for") " step must be a number");
         lua_assert(ttype(objstack) == LUA_TLIGHTUSERDATA);
-        setpvalue(objstack, ostack_apoint(L));
+        setpvalue(objstack, ostack_top(L));
         ostack_gregion(L) = pvalue(objstack);
         setnvalue(ra, luai_numsub(nvalue(ra), nvalue(pstep)));
         dojump(L, pc, GETARG_sBx(i));
@@ -733,7 +733,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_CLOSURE: {
-        // TODO: to ostack_alloc
+        // TODO: to ostack_new
         Proto *p;
         Closure *ncl;
         int nup, j;

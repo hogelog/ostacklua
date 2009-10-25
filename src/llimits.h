@@ -80,6 +80,9 @@ typedef LUAI_UACNUMBER l_uacNumber;
 #define cast_int(i)	cast(int, (i))
 
 
+#define ptradd(p,n) cast(void *, cast(lu_byte *, (p)) + (n))
+#define ptrsub(p,n) cast(void *, cast(lu_byte *, (p)) - (n))
+#define ptrdiff(p,q) (cast(lu_byte *, (p))-cast(lu_byte *, (q)))
 
 /*
 ** type for virtual-machine instructions

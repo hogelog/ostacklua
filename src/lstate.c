@@ -118,10 +118,10 @@ static void close_state (lua_State *L) {
 }
 
 static lua_State *ostack_init(lua_State *L) {
-  ostack_head(L) = ostack_apoint(L) = ostack_gregion(L) = luaM_malloc(L, OBJSTACK_SIZE);
-  if (!ostack_head(L)) return NULL;
-  ostack_size(L) = OBJSTACK_SIZE;
-  ostack_tail(L) = cast(lu_byte *, ostack_head(L)) + ostack_size(L);
+  ostack_head(L) = ostack_top(L) = ostack_gregion(L) =
+    luaM_newvector(L, OSTACK_MINSIZE, lu_byte);
+  ostack_size(L) = OSTACK_MINSIZE;
+  ostack_last(L) = ptradd(ostack_head(L), ostack_size(L));
   return L;
 }
 
@@ -226,45 +226,76 @@ LUA_API void lua_close (lua_State *L) {
   close_state(L);
 }
 
-LUA_API void* ostack_alloc_(lua_State *L, size_t size) {
-  // TODO: resizable objstack
-  lu_byte *ap = ostack_apoint(L);
-  ostack_apoint(L) = ap + size;
-  lua_assert(ostack_apoint(L) <= ostack_tail(L));
-  return ap;
+static int ostack_correct(lua_State *L, GCObject *old) {
+  GCObject *o = ostack_head(L);
+  ptrdiff_t diff = ptrdiff(o, old);
+  GCObject *old_top = ostack_top(L);
+  GCObject *new_top = ptradd(old_top, diff);
+  TValue *t = L->stack;
+  int count = 0;
+  ostack_top(L) = new_top;
+  ostack_gregion(L) = ptradd(ostack_gregion(L), diff);
+  while (o < new_top) {
+    lua_assert(onstack(o));
+    lua_assert(o->gch.tt == LUA_TTABLE);
+    switch(o->gch.tt) {
+      case LUA_TTABLE: {
+        count += luaH_ostack_correct(L, &o->h, old, old_top, diff);
+        break;
+      }
+      // TODO: implement
+      case LUA_TSTRING:
+      case LUA_TFUNCTION:
+      case LUA_TUSERDATA:
+      case LUA_TTHREAD:
+      default:
+        lua_assert(0); 
+        return -1;
+    }
+    o = o->gch.next;
+  }
+  for (;t < L->stack_last;t++) {
+    if (iscollectable(t) && inrange(old, old_top, gcvalue(t))) {
+      ++count;
+      t->value.gc = ptradd(gcvalue(t), diff);
+    }
+  }
+  return count;
 }
 
-LUA_API GCObject *lua_ostack_dupgcobj(lua_State *L, GCObject *src) {
-  switch(src->gch.tt) {
-    case LUA_TSTRING: {
-      GCObject *new = ostack_alloc(L, GCObject, 1);
-      memcpy(new, src, sizeof(GCObject));
-      return new;
-    }
-    case LUA_TTABLE: {
-      return obj2gco(luaH_ostack_duphobj(L, &src->h));
-    }
-    // TODO: implement
-    case LUA_TFUNCTION:
-    case LUA_TUSERDATA:
-    case LUA_TTHREAD:
-    default:
-      lua_assert(0); 
-      return NULL;
+static void ostack_realloc(lua_State *L, size_t nsize) {
+  GCObject *old = ostack_head(L);
+  luaM_reallocvector(L, ostack_head(L), ostack_size(L), nsize, lu_byte);
+  ostack_correct(L, old);
+  ostack_size(L) = nsize;
+  ostack_last(L) = ptradd(ostack_head(L), nsize);
+}
+
+LUA_API void *ostack_alloc_(lua_State *L, ssize_t size) {
+  // TODO: resizable objstack
+  void *new = ostack_top(L);
+  void *new_top = ptradd(new, size);
+  if (new_top >= ostack_last(L)) {
+    ostack_realloc(L, 2*ostack_size(L));
+    return ostack_alloc_(L, size);
   }
+  ostack_top(L) = new_top;
+  lua_assert(ostack_top(L) <= ostack_last(L));
+  return new;
+}
+
+LUA_API void ostack_set(lua_State *L, void *p) {
+  lua_assert(ostack_top(L) <= p && p < ostack_last(L));
+  ostack_top(L) = p;
 }
 
 LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
   switch(src->gch.tt) {
-    case LUA_TSTRING: {
-      TString *new = luaS_newlstr(L, getstr(rawgco2ts(src)), gco2ts(src)->len);
-      new->tsv.onstack = 0;
-      return obj2gco(new);
-    }
     case LUA_TTABLE: {
       return obj2gco(luaH_duphobj(L, &src->h));
     }
     // TODO: implement
+    case LUA_TSTRING:
     case LUA_TFUNCTION:
     case LUA_TUSERDATA:
     case LUA_TTHREAD:
@@ -275,12 +306,12 @@ LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
 }
 
 LUA_API int lua_ostack_refix(lua_State *L, GCObject *h, GCObject *s) {
-  void *apoint  = ostack_apoint(L);
+  void *top  = ostack_top(L);
   GCObject *o = ostack_gregion(L);
   //TValue *t = ostack_tregion(L);
   TValue *t = L->stack;
   int count = 0;
-  while (o < cast(GCObject *, apoint)) {
+  while (o < cast(GCObject *, top)) {
     if (!onstack(o)) continue;
     switch(o->gch.tt) {
       case LUA_TTABLE: {

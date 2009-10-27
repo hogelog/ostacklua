@@ -143,7 +143,6 @@ struct lua_State {
 #define ostack_size(L) (L->objstack.size)
 #define ostack_last(L) (L->objstack.last)
 #define ostack_gregion(L) (L->objstack.gregion)
-#define ostack_tregion(L) (L->objstack.tregion)
 #define ostack_alloc(L,s) ostack_alloc_(L, (s))
 #define ostack_new(L,t,c) ostack_alloc_(L, sizeof(t)*(c))
 #define ostack_usage(L) cast(size_t, ptrdiff(ostack_top(L), ostack_head(L)))

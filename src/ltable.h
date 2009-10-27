@@ -35,7 +35,6 @@ LUAI_FUNC int luaH_getn (Table *t);
 
 LUAI_FUNC Table *luaH_ostack_duphobj(lua_State *L, Table *src);
 LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src);
-LUAI_FUNC int luaH_ostack_correct(lua_State *L, Table *t, GCObject *old, GCObject *old_top, ptrdiff_t diff);
 LUAI_FUNC int luaH_ostack_refix(lua_State *L, Table *t, GCObject *h, GCObject *s);
 
 #if defined(LUA_DEBUG)

@@ -641,33 +641,6 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
   return t;
 }
 
-LUAI_FUNC int luaH_ostack_correct(lua_State *L, Table *t, GCObject *old, GCObject *old_top, ptrdiff_t diff) {
-  int asize = t->sizearray;
-  int nsize = t->node == dummynode ? 0 : sizenode(t);
-  int count = 0;
-  int i;
-  if (t->array != NULL) t->array = ptradd(t->array, diff);
-  if (t->node != dummynode) t->node = ptradd(t->node, diff);
-  for (i=0; i<asize; i++) {
-    TValue *o = &t->array[i];
-    if (iscollectable(o) && inrange(old, old_top, gcvalue(o))) {
-      o->value.gc = ptradd(o->value.gc, diff);
-      ++count;
-    }
-  }
-  for (i=0; i<nsize; i++) {
-    Node *n = gnode(t, i);
-    TValue *v = gval(n);
-    if (iscollectable(v) && inrange(old, old_top, gcvalue(v))) {
-      v->value.gc = ptradd(v->value.gc, diff);
-      if (gnext(n)) gnext(n) = ptradd(gnext(n), diff);
-      ++count;
-    }
-  }
-  t->next = ptradd(t->next, diff);
-  return count;
-}
-
 LUAI_FUNC int luaH_ostack_refix(lua_State *L, Table *t, GCObject *h, GCObject *s) {
   int asize = t->sizearray;
   int nsize = t->node == dummynode ? 0 : sizenode(t);

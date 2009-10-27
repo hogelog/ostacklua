@@ -226,58 +226,12 @@ LUA_API void lua_close (lua_State *L) {
   close_state(L);
 }
 
-static int ostack_correct(lua_State *L, GCObject *old) {
-  GCObject *o = ostack_head(L);
-  ptrdiff_t diff = ptrdiff(o, old);
-  GCObject *old_top = ostack_top(L);
-  GCObject *new_top = ptradd(old_top, diff);
-  TValue *t = L->stack;
-  int count = 0;
-  ostack_top(L) = new_top;
-  ostack_gregion(L) = ptradd(ostack_gregion(L), diff);
-  while (o < new_top) {
-    lua_assert(onstack(o));
-    lua_assert(o->gch.tt == LUA_TTABLE);
-    switch(o->gch.tt) {
-      case LUA_TTABLE: {
-        count += luaH_ostack_correct(L, &o->h, old, old_top, diff);
-        break;
-      }
-      // TODO: implement
-      case LUA_TSTRING:
-      case LUA_TFUNCTION:
-      case LUA_TUSERDATA:
-      case LUA_TTHREAD:
-      default:
-        lua_assert(0); 
-        return -1;
-    }
-    o = o->gch.next;
-  }
-  for (;t < L->stack_last;t++) {
-    if (iscollectable(t) && inrange(old, old_top, gcvalue(t))) {
-      ++count;
-      t->value.gc = ptradd(gcvalue(t), diff);
-    }
-  }
-  return count;
-}
-
-static void ostack_realloc(lua_State *L, size_t nsize) {
-  GCObject *old = ostack_head(L);
-  luaM_reallocvector(L, ostack_head(L), ostack_size(L), nsize, lu_byte);
-  ostack_correct(L, old);
-  ostack_size(L) = nsize;
-  ostack_last(L) = ptradd(ostack_head(L), nsize);
-}
-
 LUA_API void *ostack_alloc_(lua_State *L, ssize_t size) {
-  // TODO: resizable objstack
   void *new = ostack_top(L);
   void *new_top = ptradd(new, size);
   if (new_top >= ostack_last(L)) {
-    ostack_realloc(L, 2*ostack_size(L));
-    return ostack_alloc_(L, size);
+    // TODO: grow ostack
+    lua_assert(0);
   }
   ostack_top(L) = new_top;
   lua_assert(ostack_top(L) <= ostack_last(L));

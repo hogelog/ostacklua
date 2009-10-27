@@ -7,6 +7,7 @@
 
 #include <stddef.h>
 #include <string.h>
+#include <stdio.h>
 
 #define lstate_c
 #define LUA_CORE
@@ -128,6 +129,7 @@ static void close_state (lua_State *L) {
   luaZ_freebuffer(L, &g->buff);
   freestack(L, L);
   lua_assert(g->totalbytes == sizeof(LG));
+  fprintf(stderr, "# maxmem = %u\n", g->maxmem);
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
 }
 
@@ -195,6 +197,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcpause = LUAI_GCPAUSE;
   g->gcstepmul = LUAI_GCMUL;
   g->gcdept = 0;
+  g->maxmem = 0;
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
 
   ostack_init(L);

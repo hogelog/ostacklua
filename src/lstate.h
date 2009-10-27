@@ -67,7 +67,6 @@ typedef struct ObjectStack {
   void *tail;
   size_t size;
   void *gregion;
-  StkId tregion;
 } ObjectStack;
 
 /*

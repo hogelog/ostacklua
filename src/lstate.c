@@ -277,7 +277,6 @@ LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
 LUA_API int lua_ostack_refix(lua_State *L, GCObject *h, GCObject *s) {
   void *apoint  = ostack_apoint(L);
   GCObject *o = ostack_gregion(L);
-  //TValue *t = ostack_tregion(L);
   TValue *t = L->stack;
   int count = 0;
   while (o < cast(GCObject *, apoint)) {

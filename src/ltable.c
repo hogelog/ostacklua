@@ -390,6 +390,8 @@ Table *luaH_ostack_new (lua_State *L, int narray, int nhash) {
     if (lsize > MAXBITS)
       luaG_runerror(L, "table overflow");
   }
+  if (tsize > OSTACK_SLOTSIZE)
+    return luaH_new(L, narray, nhash);
   t = ostack_alloc(L, tsize);
   t->tt = LUA_TTABLE;
   t->onstack = 1;

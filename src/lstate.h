@@ -61,11 +61,26 @@ typedef struct CallInfo {
 #define f_isLua(ci)	(!ci_func(ci)->c.isC)
 #define isLua(ci)	(ttisfunction((ci)->func) && f_isLua(ci))
 
+#define OSTACK_SLOTSIZE 1024
+#define OSTACK_MAXSLOTS 1024
+
+#define ostack_slots(L) (L->objstack.slots)
+#define ostack_slot(L,i) (L->objstack.slots[(i)])
+#define ostack_slotsnum(L) (L->objstack.slotsnum)
+#define ostack_curslot(L) (L->objstack.curslot)
+#define ostack_top(L) (L->objstack.top)
+#define ostack_gregion(L) (L->objstack.gregion)
+#define ostack_first(L) ostack_slot(L,ostack_curslot(L))
+#define ostack_last(L) ptradd(ostack_first(L),OSTACK_SLOTSIZE)
+
+#define ostack_alloc(L,s) ostack_alloc_(L, (s))
+#define ostack_new(L,t,c) ostack_alloc_(L, sizeof(t)*(c))
+
 typedef struct ObjectStack {
-  void *head;
+  void **slots;
+  int slotsnum;
+  size_t curslot;
   void *top;
-  void *last;
-  size_t size;
   void *gregion;
 } ObjectStack;
 
@@ -99,8 +114,6 @@ typedef struct global_State {
   struct Table *mt[NUM_TAGS];  /* metatables for basic types */
   TString *tmname[TM_N];  /* array with tag-method names */
 } global_State;
-
-#define OSTACK_MINSIZE 2048
 
 /*
 ** `per thread' state
@@ -137,15 +150,6 @@ struct lua_State {
 
 
 #define G(L)	(L->l_G)
-
-#define ostack_head(L) (L->objstack.head)
-#define ostack_top(L) (L->objstack.top)
-#define ostack_size(L) (L->objstack.size)
-#define ostack_last(L) (L->objstack.last)
-#define ostack_gregion(L) (L->objstack.gregion)
-#define ostack_alloc(L,s) ostack_alloc_(L, (s))
-#define ostack_new(L,t,c) ostack_alloc_(L, sizeof(t)*(c))
-#define ostack_usage(L) cast(size_t, ptrdiff(ostack_top(L), ostack_head(L)))
 
 #define inrange(s,e,o) ((s) <= (o) && (o) < (e))
 

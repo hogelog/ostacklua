@@ -102,10 +102,24 @@ static void preinit_state (lua_State *L, global_State *g) {
   setnilvalue(gt(L));
 }
 
+static void ostack_init(lua_State *L) {
+  ostack_slotsnum(L) = 1;
+  ostack_slots(L) = luaM_newvector(L, 1, void *);
+  ostack_slot(L,0) = ostack_top(L) = ostack_gregion(L) = luaM_newvector(L, OSTACK_SLOTSIZE, lu_byte);
+  ostack_curslot(L) = 0;
+}
+
+static void free_ostack(lua_State *L) {
+  int i;
+  for(i=0;i<ostack_slotsnum(L);i++) {
+    luaM_freearray(L, ostack_slot(L,i), OSTACK_SLOTSIZE, lu_byte);
+  }
+  luaM_freearray(L, ostack_slots(L), ostack_slotsnum(L), void *);
+}
 
 static void close_state (lua_State *L) {
   global_State *g = G(L);
-  luaM_freearray(L, ostack_head(L), ostack_size(L), lu_byte);
+  free_ostack(L);
   luaF_close(L, L->stack);  /* close all upvalues for this thread */
   luaC_freeall(L);  /* collect all objects */
   lua_assert(g->rootgc == obj2gco(L));
@@ -115,14 +129,6 @@ static void close_state (lua_State *L) {
   freestack(L, L);
   lua_assert(g->totalbytes == sizeof(LG));
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
-}
-
-static lua_State *ostack_init(lua_State *L) {
-  ostack_head(L) = ostack_top(L) = ostack_gregion(L) =
-    luaM_newvector(L, OSTACK_MINSIZE, lu_byte);
-  ostack_size(L) = OSTACK_MINSIZE;
-  ostack_last(L) = ptradd(ostack_head(L), ostack_size(L));
-  return L;
 }
 
 lua_State *luaE_newthread (lua_State *L) {
@@ -226,12 +232,27 @@ LUA_API void lua_close (lua_State *L) {
   close_state(L);
 }
 
+static void ostack_grow(lua_State *L) {
+  int i;
+  ostack_curslot(L) += 1;
+  size_t slotsnum = ostack_slotsnum(L);
+  luaM_growvector(L, ostack_slots(L), ostack_curslot(L), ostack_slotsnum(L), void *,
+      OSTACK_MAXSLOTS, "object stack slots overflow");
+  if (ostack_slotsnum(L) != slotsnum) {
+    for(i=ostack_curslot(L);i<ostack_slotsnum(L);i++) {
+      ostack_slot(L,i) = luaM_newvector(L, OSTACK_SLOTSIZE, lu_byte);
+    }
+  }
+  lua_assert(ostack_first(L));
+  ostack_top(L) = ostack_first(L);
+}
+
 LUA_API void *ostack_alloc_(lua_State *L, ssize_t size) {
   void *new = ostack_top(L);
   void *new_top = ptradd(new, size);
-  if (new_top >= ostack_last(L)) {
-    // TODO: grow ostack
-    lua_assert(0);
+  if (new_top > ostack_last(L)) {
+    ostack_grow(L);
+    return ostack_alloc_(L, size);
   }
   ostack_top(L) = new_top;
   lua_assert(ostack_top(L) <= ostack_last(L));
@@ -239,8 +260,17 @@ LUA_API void *ostack_alloc_(lua_State *L, ssize_t size) {
 }
 
 LUA_API void ostack_set(lua_State *L, void *p) {
-  lua_assert(ostack_top(L) <= p && p < ostack_last(L));
-  ostack_top(L) = p;
+  int i;
+  for(i=ostack_curslot(L);i>=0;--i) {
+    void *s = ostack_slot(L,i);
+    void *e = ptradd(s, OSTACK_SLOTSIZE);
+    if (inrange(s, e, p)) {
+      ostack_curslot(L) = i;
+      ostack_top(L) = p;
+      return;
+    }
+  }
+  lua_assert(0);
 }
 
 LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {

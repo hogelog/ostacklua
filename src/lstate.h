@@ -63,8 +63,8 @@ typedef struct CallInfo {
 
 typedef struct ObjectStack {
   void *head;
-  void *apoint;
-  void *tail;
+  void *top;
+  void *last;
   size_t size;
   void *gregion;
 } ObjectStack;
@@ -100,7 +100,7 @@ typedef struct global_State {
   TString *tmname[TM_N];  /* array with tag-method names */
 } global_State;
 
-#define OBJSTACK_SIZE 512 * 1024 * 1024
+#define OSTACK_MINSIZE 2048
 
 /*
 ** `per thread' state
@@ -139,14 +139,16 @@ struct lua_State {
 #define G(L)	(L->l_G)
 
 #define ostack_head(L) (L->objstack.head)
-#define ostack_apoint(L) (L->objstack.apoint)
+#define ostack_top(L) (L->objstack.top)
 #define ostack_size(L) (L->objstack.size)
-#define ostack_tail(L) (L->objstack.tail)
+#define ostack_last(L) (L->objstack.last)
 #define ostack_gregion(L) (L->objstack.gregion)
 #define ostack_tregion(L) (L->objstack.tregion)
-#define ostack_alloc(L,t,c) ostack_alloc_(L, sizeof(t)*(c))
-#define ostack_usage(L) cast(size_t, cast(lu_byte *, ostack_apoint(L)) - cast(lu_byte *, L->objstack.head))
+#define ostack_alloc(L,s) ostack_alloc_(L, (s))
+#define ostack_new(L,t,c) ostack_alloc_(L, sizeof(t)*(c))
+#define ostack_usage(L) cast(size_t, ptrdiff(ostack_top(L), ostack_head(L)))
 
+#define inrange(s,e,o) ((s) <= (o) && (o) < (e))
 
 /*
 ** Union of all collectable objects
@@ -183,8 +185,8 @@ union GCObject {
 LUAI_FUNC lua_State *luaE_newthread (lua_State *L);
 LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
 
-LUA_API void* ostack_alloc_(lua_State *L, size_t size) ;
-LUA_API GCObject *lua_ostack_dupgcobj(lua_State *L, GCObject *src);
+LUA_API void *ostack_alloc_(lua_State *L, ssize_t size);
+LUA_API void ostack_set(lua_State *L, void *p);
 LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
 LUA_API int lua_ostack_refix(lua_State *L, GCObject *heap, GCObject *stack);
 

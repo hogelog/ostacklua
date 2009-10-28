@@ -1043,13 +1043,12 @@ static int exp1 (LexState *ls) {
 }
 
 
-#define FOR_CONTROLVARS 4
 static void forbody (LexState *ls, int base, int line, int nvars, int isnum) {
   /* forbody -> DO block */
   BlockCnt bl;
   FuncState *fs = ls->fs;
   int prep, endfor;
-  adjustlocalvars(ls, FOR_CONTROLVARS);  /* control variables */
+  adjustlocalvars(ls, 3);  /* control variables */
   checknext(ls, TK_DO);
   prep = isnum ? luaK_codeAsBx(fs, OP_FORPREP, base, NO_JUMP) : luaK_jump(fs);
   enterblock(fs, &bl, 0);  /* scope for declared variables */
@@ -1072,8 +1071,7 @@ static void fornum (LexState *ls, TString *varname, int line) {
   new_localvarliteral(ls, "(for index)", 0);
   new_localvarliteral(ls, "(for limit)", 1);
   new_localvarliteral(ls, "(for step)", 2);
-  new_localvarliteral(ls, "(for objstack)", 3);
-  new_localvar(ls, varname, 4);
+  new_localvar(ls, varname, 3);
   checknext(ls, '=');
   exp1(ls);  /* initial value */
   checknext(ls, ',');
@@ -1084,10 +1082,6 @@ static void fornum (LexState *ls, TString *varname, int line) {
     luaK_codeABx(fs, OP_LOADK, fs->freereg, luaK_numberK(fs, 1));
     luaK_reserveregs(fs, 1);
   }
-  /* objstack */
-  luaK_codeABx(fs, OP_LOADK, fs->freereg, luaK_ludataK(fs, NULL));
-  luaK_reserveregs(fs, 1);
-
   forbody(ls, base, line, 1, 1);
 }
 
@@ -1109,9 +1103,9 @@ static void forlist (LexState *ls, TString *indexname) {
     new_localvar(ls, str_checkname(ls), nvars++);
   checknext(ls, TK_IN);
   line = ls->linenumber;
-  adjust_assign(ls, FOR_CONTROLVARS, explist1(ls, &e), &e);
-  luaK_checkstack(fs, FOR_CONTROLVARS);  /* extra space to call generator */
-  forbody(ls, base, line, nvars - FOR_CONTROLVARS, 0);
+  adjust_assign(ls, 3, explist1(ls, &e), &e);
+  luaK_checkstack(fs, 3);  /* extra space to call generator */
+  forbody(ls, base, line, nvars - 3, 0);
 }
 
 

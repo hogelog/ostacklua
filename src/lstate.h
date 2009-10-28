@@ -61,9 +61,6 @@ typedef struct CallInfo {
 #define f_isLua(ci)	(!ci_func(ci)->c.isC)
 #define isLua(ci)	(ttisfunction((ci)->func) && f_isLua(ci))
 
-#define OSTACK_SLOTSIZE 1024
-#define OSTACK_MAXSLOTS 1024
-
 #define ostack_slots(L) (L->objstack.slots)
 #define ostack_slot(L,i) (L->objstack.slots[(i)])
 #define ostack_slotsnum(L) (L->objstack.slotsnum)
@@ -75,6 +72,13 @@ typedef struct CallInfo {
 
 #define ostack_alloc(L,s) ostack_alloc_(L, (s))
 #define ostack_new(L,t,c) ostack_alloc_(L, sizeof(t)*(c))
+
+typedef struct ObjectRegion {
+  CommonHeader;
+  int slotnum;
+  struct ObjectRegion *prev;
+  int prevslot;
+} ObjectRegion;
 
 typedef struct ObjectStack {
   void **slots;
@@ -189,9 +193,12 @@ LUAI_FUNC lua_State *luaE_newthread (lua_State *L);
 LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
 
 LUA_API void *ostack_alloc_(lua_State *L, ssize_t size);
-LUA_API void ostack_set(lua_State *L, void *p);
 LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
 LUA_API int lua_ostack_refix(lua_State *L, GCObject *heap, GCObject *stack);
+
+LUA_API void ostack_new_region(lua_State *L);
+LUA_API void ostack_restart_region(lua_State *L);
+LUA_API void ostack_close_region(lua_State *L);
 
 #define lua_copy2heap(L,v) { \
     GCObject *dup; \

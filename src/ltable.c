@@ -648,6 +648,11 @@ LUAI_FUNC int luaH_ostack_refix(lua_State *L, Table *t, GCObject *h, GCObject *s
   int nsize = t->node == dummynode ? 0 : sizenode(t);
   int count = 0;
   int i;
+  Table *mt = t->metatable;
+  if (mt == &s->h) {
+    t->metatable = &h->h;
+    ++count;
+  }
   for (i=0; i<asize; i++) {
     TValue *o = &t->array[i];
     if (iscollectable(o) && gcvalue(o) == s) {

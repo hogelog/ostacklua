@@ -441,6 +441,8 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         TValue g;
         sethvalue(L, &g, cl->env);
         lua_assert(ttisstring(KBx(i)));
+        if (iscollectable(ra) && onstack(gcvalue(ra)))
+          lua_copy2heap(L, ra);
         Protect(luaV_settable(L, &g, KBx(i), ra));
         continue;
       }
@@ -711,7 +713,8 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         h = hvalue(ra);
         last = ((c-1)*LFIELDS_PER_FLUSH) + n;
         if (last > h->sizearray) { /* needs more space? */
-          if (onstack(gcvalue(ra))) lua_copy2heap(L, ra);
+          if (onstack(gcvalue(ra)))
+            lua_copy2heap(L, ra);
           h = hvalue(ra);
           luaH_resizearray(L, h, last);  /* pre-alloc it at once */
         }

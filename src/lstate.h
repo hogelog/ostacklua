@@ -61,31 +61,32 @@ typedef struct CallInfo {
 #define f_isLua(ci)	(!ci_func(ci)->c.isC)
 #define isLua(ci)	(ttisfunction((ci)->func) && f_isLua(ci))
 
+#define ostack_index(L) (L->objstack.index)
 #define ostack_slots(L) (L->objstack.slots)
 #define ostack_slot(L,i) (L->objstack.slots[(i)])
+#define ostack_curslot(L) (L->objstack.slots[ostack_index(L)])
 #define ostack_slotsnum(L) (L->objstack.slotsnum)
-#define ostack_curslot(L) (L->objstack.curslot)
 #define ostack_top(L) (L->objstack.top)
 #define ostack_gregion(L) (L->objstack.gregion)
-#define ostack_first(L) ostack_slot(L,ostack_curslot(L))
-#define ostack_last(L) ptradd(ostack_first(L),OSTACK_SLOTSIZE)
+#define ostack_last(L,i) ptradd(ostack_slot(L,(i)),OSTACK_SLOTSIZE)
+#define ostack_curlast(L) ptradd(ostack_slot(L,ostack_index(L)),OSTACK_SLOTSIZE)
 
 #define ostack_alloc(L,s) ostack_alloc_(L, (s))
 #define ostack_new(L,t,c) ostack_alloc_(L, sizeof(t)*(c))
 
 typedef struct ObjectRegion {
   CommonHeader;
-  int slotnum;
+  int nextindex;
+  int index;
   struct ObjectRegion *prev;
-  int prevslot;
 } ObjectRegion;
 
 typedef struct ObjectStack {
   void **slots;
   int slotsnum;
-  size_t curslot;
+  int index;
   void *top;
-  void *gregion;
+  ObjectRegion *gregion;
 } ObjectStack;
 
 /*
@@ -155,7 +156,7 @@ struct lua_State {
 
 #define G(L)	(L->l_G)
 
-#define inrange(s,e,o) ((s) <= (o) && (o) < (e))
+#define inrange(s,e,o) (cast(void *,(s)) <= cast(void *,(o)) && cast(void *,(o)) < cast(void *, (e)))
 
 /*
 ** Union of all collectable objects
@@ -192,13 +193,14 @@ union GCObject {
 LUAI_FUNC lua_State *luaE_newthread (lua_State *L);
 LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
 
-LUA_API void *ostack_alloc_(lua_State *L, ssize_t size);
-LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
-LUA_API int lua_ostack_refix(lua_State *L, GCObject *heap, GCObject *stack);
-
 LUA_API void ostack_new_region(lua_State *L);
 LUA_API void ostack_restart_region(lua_State *L);
 LUA_API void ostack_close_region(lua_State *L);
+LUA_API int ostack_inregion_detail(lua_State *L, ObjectRegion *region, void *p);
+
+LUA_API void *ostack_alloc_(lua_State *L, ssize_t size);
+LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
+LUA_API int lua_ostack_refix(lua_State *L, GCObject *heap, GCObject *stack);
 
 #define lua_copy2heap(L,v) { \
     GCObject *dup; \
@@ -208,8 +210,16 @@ LUA_API void ostack_close_region(lua_State *L);
     (v)->value.gc = dup; \
   }
 
-#define isneedcopy(L,t,v) (onstack((v)) && \
-     ((t)->onstack==0 || (cast(void *,(t)) < ostack_gregion(L))))
+#define inregion(L,r,o) ( \
+    (((r)->nextindex==ostack_index(L) && inrange((r)->next, ostack_top(L), (o))) || \
+     ((r)->nextindex < ostack_index(L) && \
+      (inrange(ostack_curslot(L), ostack_top(L), (o)) || \
+       inrange((r)->next, ostack_last(L,(r)->nextindex),(o)))) || \
+     ((r)->nextindex+1 < ostack_index(L) && ostack_inregion_detail(L,r,o))))
+#define inlastregion(L,o) inregion(L,ostack_gregion(L),o)
+    
+#define isneedcopy(L,t,o) (onstack(o) && \
+     ((t)->onstack==0 || !inlastregion(L,t)))
 
 #endif
 

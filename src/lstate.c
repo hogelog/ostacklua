@@ -101,21 +101,22 @@ static void preinit_state (lua_State *L, global_State *g) {
   L->errfunc = 0;
   setnilvalue(gt(L));
 }
-static ObjectRegion *new_region(lua_State *L, ObjectRegion *prev, int prevslot) {
+static ObjectRegion *new_region(lua_State *L, ObjectRegion *prev) {
   ObjectRegion *region = ostack_new(L, ObjectRegion, 1);
   region->tt = LUA_TREGION;
+  region->onstack = 1;
   region->prev = prev;
-  region->prevslot = prevslot;
+  region->index = ostack_index(L);
   region->next = ostack_top(L);
-  region->slotnum = ostack_curslot(L);
+  region->nextindex = region->index + (region->next == ostack_curlast(L) ? 1 : 0);
   return region;
 }
 static void ostack_init(lua_State *L) {
   ostack_slotsnum(L) = 1;
   ostack_slots(L) = luaM_newvector(L, 1, void *);
   ostack_slot(L,0) = ostack_top(L) = luaM_newvector(L, OSTACK_SLOTSIZE, lu_byte);
-  ostack_curslot(L) = 0;
-  ostack_gregion(L) = new_region(L, NULL, 0);
+  ostack_index(L) = 0;
+  ostack_gregion(L) = new_region(L, NULL);
 }
 
 static void ostack_close(lua_State *L) {
@@ -243,48 +244,58 @@ LUA_API void lua_close (lua_State *L) {
 
 static void ostack_grow(lua_State *L) {
   int i;
-  ostack_curslot(L) += 1;
+  ostack_index(L) += 1;
   size_t slotsnum = ostack_slotsnum(L);
-  luaM_growvector(L, ostack_slots(L), ostack_curslot(L), ostack_slotsnum(L), void *,
+  luaM_growvector(L, ostack_slots(L), ostack_index(L), ostack_slotsnum(L), void *,
       OSTACK_MAXSLOTS, "object stack slots overflow");
   if (ostack_slotsnum(L) != slotsnum) {
     for(i=slotsnum;i<ostack_slotsnum(L);i++) {
       ostack_slot(L,i) = luaM_newvector(L, OSTACK_SLOTSIZE, lu_byte);
     }
   }
-  lua_assert(ostack_first(L));
-  ostack_top(L) = ostack_first(L);
+  lua_assert(ostack_curslot(L));
+  ostack_top(L) = ostack_curslot(L);
 }
 
 LUA_API void *ostack_alloc_(lua_State *L, ssize_t size) {
   void *new = ostack_top(L);
   void *new_top = ptradd(new, size);
-  if (new_top > ostack_last(L)) {
+  if (new_top > ostack_curlast(L)) {
     ostack_grow(L);
     return ostack_alloc_(L, size);
   }
   ostack_top(L) = new_top;
-  lua_assert(ostack_top(L) <= ostack_last(L));
+  lua_assert(ostack_top(L) <= ostack_curlast(L));
   return new;
 }
 
 LUA_API void ostack_new_region(lua_State *L) {
   ObjectRegion *prev = ostack_gregion(L);
-  ObjectRegion *region = new_region(L, prev, prev->slotnum);
+  ObjectRegion *region = new_region(L, prev);
   ostack_gregion(L) = region;
 }
 
 LUA_API void ostack_restart_region(lua_State *L) {
   ObjectRegion *region = ostack_gregion(L);
   ostack_top(L) = region->next;
-  ostack_curslot(L) = region->slotnum;
+  ostack_index(L) = region->index;
 }
 
 LUA_API void ostack_close_region(lua_State *L) {
   ObjectRegion *region = ostack_gregion(L);
   ostack_gregion(L) = region->prev;
   ostack_top(L) = region;
-  ostack_curslot(L) = region->slotnum;
+  ostack_index(L) = region->index;
+}
+
+LUA_API int ostack_inregion_detail(lua_State *L, ObjectRegion *region, void *p) {
+  int i;
+  lua_assert(region && (region->nextindex+1 < ostack_index(L)));
+  for(i=region->nextindex+1;i<ostack_index(L);i++) {
+    if (inrange(ostack_slot(L,i), ostack_last(L,i), p))
+      return 1;
+  }
+  return 0;
 }
 
 LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
@@ -308,11 +319,11 @@ LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
 
 LUA_API int lua_ostack_refix(lua_State *L, GCObject *h, GCObject *s) {
   void *top  = ostack_top(L);
-  GCObject *o = ostack_gregion(L);
-  TValue *t = L->stack;
+  GCObject *o = obj2gco(ostack_gregion(L));
+  TValue *t;
   int count = 0;
   while (o < cast(GCObject *, top)) {
-    if (!onstack(o)) continue;
+    lua_assert(onstack(o));
     switch(o->gch.tt) {
       case LUA_TTABLE: {
         count += luaH_ostack_refix(L, &o->h, h, s);
@@ -332,8 +343,8 @@ LUA_API int lua_ostack_refix(lua_State *L, GCObject *h, GCObject *s) {
     }
     o = o->gch.next;
   }
-  for (;t < L->stack_last;t++) {
-    if (iscollectable(t) && gcvalue(t)!=s) {
+  for (t=L->stack;t < L->stack_last;t++) {
+    if (iscollectable(t) && gcvalue(t)==s) {
       ++count;
       t->value.gc = h;
     }

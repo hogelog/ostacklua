@@ -63,13 +63,13 @@ typedef struct CallInfo {
 
 #define ostack_index(L) (L->objstack.index)
 #define ostack_slots(L) (L->objstack.slots)
-#define ostack_slot(L,i) (L->objstack.slots[(i)])
-#define ostack_curslot(L) (L->objstack.slots[ostack_index(L)])
+#define ostack_slot(L,i) (L->objstack.slots[(i)].slot)
+#define ostack_curslot(L) (ostack_slot(L, ostack_index(L)))
 #define ostack_slotsnum(L) (L->objstack.slotsnum)
 #define ostack_top(L) (L->objstack.top)
 #define ostack_gregion(L) (L->objstack.gregion)
-#define ostack_last(L,i) ptradd(ostack_slot(L,(i)),OSTACK_SLOTSIZE)
-#define ostack_curlast(L) ptradd(ostack_slot(L,ostack_index(L)),OSTACK_SLOTSIZE)
+#define ostack_last(L,i) (L->objstack.slots[(i)].last)
+#define ostack_curlast(L) (ostack_last(L, ostack_index(L)))
 
 #define ostack_alloc(L,s) ostack_alloc_(L, (s))
 #define ostack_new(L,t,c) ostack_alloc_(L, sizeof(t)*(c))
@@ -81,8 +81,12 @@ typedef struct ObjectRegion {
   struct ObjectRegion *prev;
 } ObjectRegion;
 
+typedef struct ObjectSlot {
+  void *slot;
+  void *last;
+} ObjectSlot;
 typedef struct ObjectStack {
-  void **slots;
+  ObjectSlot *slots;
   int slotsnum;
   int index;
   void *top;
@@ -198,7 +202,7 @@ LUA_API void ostack_restart_region(lua_State *L);
 LUA_API void ostack_close_region(lua_State *L);
 LUA_API int ostack_inregion_detail(lua_State *L, ObjectRegion *region, void *p);
 
-LUA_API void *ostack_alloc_(lua_State *L, ssize_t size);
+LUA_API void *ostack_alloc_(lua_State *L, size_t size);
 LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
 LUA_API int lua_ostack_refix(lua_State *L, GCObject *heap, GCObject *stack);
 

@@ -20,6 +20,7 @@
 #include "lgc.h"
 #include "lobject.h"
 #include "lopcodes.h"
+#include "lostack.h"
 #include "lstate.h"
 #include "lstring.h"
 #include "ltable.h"
@@ -104,7 +105,7 @@ static void callTM (lua_State *L, const TValue *f, const TValue *p1,
   luaD_call(L, L->top - 4, 0);
 }
 
-
+#include <stdio.h>
 void luaV_gettable (lua_State *L, const TValue *t, TValue *key, StkId val) {
   int loop;
   for (loop = 0; loop < MAXTAGLOOP; loop++) {
@@ -662,9 +663,9 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
           setnvalue(ra, idx);  /* update internal index... */
           setnvalue(ra+3, idx);  /* ...and external index */
-          ostack_restart_region(L);
+          ostack_newframe(L);
         } else
-          ostack_close_region(L);
+          ostack_closeframe(L, L->ostack.last);
         continue;
       }
       case OP_FORPREP: {
@@ -678,7 +679,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           luaG_runerror(L, LUA_QL("for") " limit must be a number");
         else if (!tonumber(pstep, ra+2))
           luaG_runerror(L, LUA_QL("for") " step must be a number");
-        ostack_new_region(L);
+        ostack_newframe(L);
         setnvalue(ra, luai_numsub(nvalue(ra), nvalue(pstep)));
         dojump(L, pc, GETARG_sBx(i));
         continue;

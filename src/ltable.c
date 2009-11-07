@@ -31,6 +31,7 @@
 #include "lgc.h"
 #include "lmem.h"
 #include "lobject.h"
+#include "lostack.h"
 #include "lstate.h"
 #include "ltable.h"
 
@@ -390,7 +391,7 @@ Table *luaH_ostack_new (lua_State *L, int narray, int nhash) {
     if (lsize > MAXBITS)
       luaG_runerror(L, "table overflow");
   }
-  if (tsize > OSTACK_SLOTSIZE)
+  if (tsize > OSTACK_MINSLOTSIZE)
     return luaH_new(L, narray, nhash);
   t = ostack_alloc(L, tsize);
   t->tt = LUA_TTABLE;
@@ -411,7 +412,7 @@ Table *luaH_ostack_new (lua_State *L, int narray, int nhash) {
   }
   t->lastfree = gnode(t, nsize);  /* all positions are free */
 
-  t->next = ostack_top(L);
+  ostack_setlastobj(&L->ostack, obj2gco(t));
   return t;
 }
 
@@ -634,40 +635,41 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
     setobj(L, &t->array[i], o);
   }
   for (i=0; i<nsize; i++) {
-    Node *d = gnode(t, i), *s = gnode(src, i);
-    if (iscollectable(gval(s)) && onstack(gcvalue(gval(s)))) lua_copy2heap(L, gval(s));
-    setobj(L, gval(d), gval(s));
-    setobj(L, key2tval(d), key2tval(s));
-    gnext(d) = gnext(s) ? gnode(t, 0) + (gnext(s) - gnode(src, 0)) : NULL;
+    //Node *d = gnode(t, i), *s = gnode(src, i);
+    Node *s = gnode(src, i);
+    TValue *skey = key2tval(s);
+    if (!ttisnil(skey)) {
+      TValue *sval = gval(s);
+      if (iscollectable(sval) && onstack(gcvalue(sval)))
+        lua_copy2heap(L, sval);
+      if (iscollectable(skey) && onstack(gcvalue(skey)))
+        lua_copy2heap(L, skey);
+      setobj2t(L, luaH_set(L, t, skey), sval);
+    }
   }
   return t;
 }
 
-LUAI_FUNC int luaH_ostack_refix(lua_State *L, Table *t, GCObject *h, GCObject *s) {
+LUAI_FUNC void luaH_ostack_refix(lua_State *L, Table *t, GCObject *h, GCObject *s) {
   int asize = t->sizearray;
   int nsize = t->node == dummynode ? 0 : sizenode(t);
-  int count = 0;
   int i;
   Table *mt = t->metatable;
   if (mt == &s->h) {
     t->metatable = &h->h;
-    ++count;
   }
   for (i=0; i<asize; i++) {
     TValue *o = &t->array[i];
     if (iscollectable(o) && gcvalue(o) == s) {
       o->value.gc = h;
-      ++count;
     }
   }
   for (i=0; i<nsize; i++) {
     TValue *o = gval(gnode(t, i));
     if (iscollectable(o) && gcvalue(o) == s) {
       o->value.gc = h;
-      ++count;
     }
   }
-  return count;
 }
 #if defined(LUA_DEBUG)
 

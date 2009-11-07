@@ -30,7 +30,7 @@
 #define LUA_TDEADKEY	(LAST_TAG+3)
 
 
-#define LUA_TREGION	(LAST_TAG+4)
+#define LUA_TFRAME	(LAST_TAG+4)
 
 /*
 ** Union of all collectable objects

@@ -12,7 +12,6 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include <assert.h>
-#include <unistd.h>
 
 #include "luaconf.h"
 
@@ -88,7 +87,6 @@ typedef void * (*lua_Alloc) (void *ud, void *ptr, size_t osize, size_t nsize);
 #define LUA_MINSTACK	20
 
 /* object stack size and max slotsnum */
-#define OSTACK_SLOTSIZE 1024
 #define OSTACK_MAXSLOTS 1024
 
 /*

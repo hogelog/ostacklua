@@ -65,6 +65,7 @@ LUAI_FUNC void lua_ostack_refix(lua_State *L, Frame *f, GCObject *h, GCObject *s
     lua_assert(iscollectable(v) && onstack(gcvalue(v))); \
     dup = lua_dupgcobj(L, gcvalue(v)); \
     dup->gch.marked = luaC_white(G(L)); \
+    lua_ostack_refix(L, L->ostack.last, dup, gcvalue(v)); \
     /*(v)->value.gc = dup;*/ \
   }
 #define isneedcopy(L,t,o) (onstack(o) && \

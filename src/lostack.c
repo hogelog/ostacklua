@@ -14,7 +14,7 @@ static Slot *addslot(OStack *os, size_t slotsize) {
 static size_t ostack_grow(OStack *os) {
   size_t slotsnum = os->slotsnum;
   size_t newsize = 0;
-  int i;
+  size_t i;
   for(i=0;i<slotsnum;++i) {
     Slot *slot = &os->slots[i];
     newsize += (char*)slot->end - (char*) slot->start;
@@ -81,7 +81,7 @@ LUAI_FUNC OStack *ostack_init(lua_State *L) {
 }
 LUAI_FUNC void ostack_close(lua_State *L) {
   OStack *os = ostack(L);
-  int i;
+  size_t i;
   while (os->last)
     ostack_closeframe(L, os->last);
   for (i=os->slotsnum-1;i>=0;--i)
@@ -95,7 +95,7 @@ LUAI_FUNC Frame *ostack_fmove(lua_State *L, Frame *to, FObject *fo) {
   return to;
 }
 LUAI_FUNC int ostack_inframe_detail(OStack *os, Frame *frame, void *p) {
-  int i;
+  size_t i;
   lua_assert(frame && (frame->index+1 < os->index));
   for (i=frame->index+1;i<os->index;i++) {
     Slot *slot = &os->slots[i];
@@ -125,11 +125,12 @@ LUAI_FUNC GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
       return NULL;
   }
   lua_ostack_refix(L, L->ostack.last, dup, src);
+  return dup;
 }
 LUAI_FUNC void lua_ostack_refix(lua_State *L, Frame *f, GCObject *h, GCObject *s) {
   OStack *os = ostack(L);
-  const GCObject *top  = os->top;
   GCObject *o = f ? obj2gco(f) : obj2gco(os->slots[0].start);
+  //GCObject *o = obj2gco(os->slots[0].start);
   TValue *t;
   while (o) {
     lua_assert(onstack(o));

@@ -401,6 +401,7 @@ Table *luaH_ostack_new (lua_State *L, int narray, int nhash) {
   t->sizearray = narray;
   t->lsizenode = lsize;
   t->array = narray ? ptradd(t, sizeof(Table)) : NULL;
+  t->marked = luaC_white(G(L));
   for (i=0; i<narray; i++)
      setnilvalue(&t->array[i]);
   t->node = nsize ? ostack_hnode(t) : cast(Node *, dummynode);
@@ -631,19 +632,22 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
   t->metatable = src->metatable;
   for (i=0; i<asize; i++) {
     TValue *o = &src->array[i];
-    if (iscollectable(o) && onstack(gcvalue(o))) lua_copy2heap(L, o);
+    if (iscollectable(o) && hvalue(o) != src && onstack(gcvalue(o))) {
+      lua_copy2heap(L, o);
+    }
     setobj(L, &t->array[i], o);
   }
   for (i=0; i<nsize; i++) {
-    //Node *d = gnode(t, i), *s = gnode(src, i);
     Node *s = gnode(src, i);
     TValue *skey = key2tval(s);
     if (!ttisnil(skey)) {
       TValue *sval = gval(s);
-      if (iscollectable(sval) && onstack(gcvalue(sval)))
+      if (iscollectable(sval) && hvalue(sval) != src && onstack(gcvalue(sval))) {
         lua_copy2heap(L, sval);
-      if (iscollectable(skey) && onstack(gcvalue(skey)))
+      }
+      if (iscollectable(skey) && hvalue(skey) != src && onstack(gcvalue(skey))) {
         lua_copy2heap(L, skey);
+      }
       setobj2t(L, luaH_set(L, t, skey), sval);
     }
   }

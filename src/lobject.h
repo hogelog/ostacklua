@@ -112,8 +112,8 @@ typedef struct lua_TValue {
 
 #define checkliveness(g,obj) \
   lua_assert(!iscollectable(obj) || \
-      onstack(gcvalue(obj)) || \
-  ((ttype(obj) == (obj)->value.gc->gch.tt) && !isdead(g, (obj)->value.gc)))
+    ((obj)->value.gc->gch.onstack) || \
+    ((ttype(obj) == (obj)->value.gc->gch.tt) && !isdead(g, (obj)->value.gc)))
 
 
 /* Macros to set values */

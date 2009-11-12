@@ -105,7 +105,6 @@ static void callTM (lua_State *L, const TValue *f, const TValue *p1,
   luaD_call(L, L->top - 4, 0);
 }
 
-#include <stdio.h>
 void luaV_gettable (lua_State *L, const TValue *t, TValue *key, StkId val) {
   int loop;
   for (loop = 0; loop < MAXTAGLOOP; loop++) {
@@ -141,6 +140,8 @@ void luaV_settable (lua_State *L, const TValue *t, TValue *key, StkId val) {
       TValue *oldval = luaH_set(L, h, key); /* do a primitive set */
       if (!ttisnil(oldval) ||  /* result is no nil? */
           (tm = fasttm(L, h->metatable, TM_NEWINDEX)) == NULL) { /* or no TM? */
+        if (iscollectable(val) && isneedcopy(L,h,gcvalue(val)))
+          lua_copy2heap(L, val);
         setobj2t(L, oldval, val);
         luaC_barriert(L, h, val);
         return;
@@ -454,6 +455,8 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_SETTABLE: {
+        if (iscollectable(ra) && onstack(gcvalue(ra)))
+          lua_copy2heap(L, ra);
         Protect(luaV_settable(L, ra, RKB(i), RKC(i)));
         continue;
       }
@@ -721,6 +724,8 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         }
         for (; n > 0; n--) {
           TValue *val = ra+n;
+          if (iscollectable(val) && isneedcopy(L,h,gcvalue(val)))
+            lua_copy2heap(L, val);
           setobj2t(L, luaH_setnum(L, h, last--), val);
           luaC_barriert(L, h, val);
         }

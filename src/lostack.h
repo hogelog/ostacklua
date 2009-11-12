@@ -50,7 +50,7 @@ LUAI_FUNC Frame *ostack_fmove(lua_State *L, Frame *to, FObject *fo);
 
 LUAI_FUNC int ostack_inframe_detail(OStack *os, Frame *frame, void *p);
 LUAI_FUNC GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
-LUAI_FUNC void lua_ostack_refix(lua_State *L, Frame *f, GCObject *h, GCObject *s);
+LUAI_FUNC void lua_ostack_refix(lua_State *L, GCObject *h, GCObject *s);
 
 #define inframe(os,f,o) ( \
     !(f) || \
@@ -61,13 +61,9 @@ LUAI_FUNC void lua_ostack_refix(lua_State *L, Frame *f, GCObject *h, GCObject *s
      ((f)->index+1 < (os)->index && ostack_inframe_detail((os),(f),(o)))))
 #define inlastframe(os,o) inframe((os),(os)->last,o)
 #define lua_copy2heap(L,v) { \
-    GCObject *dup; \
-    lua_assert(iscollectable(v) && onstack(gcvalue(v))); \
-    dup = lua_dupgcobj(L, gcvalue(v)); \
-    dup->gch.marked = luaC_white(G(L)); \
-    lua_ostack_refix(L, L->ostack.last, dup, gcvalue(v)); \
-    /*(v)->value.gc = dup;*/ \
-  }
+    GCObject *go=gcvalue(v), *dup = check_exp(onstack(go), lua_dupgcobj(L, go)); \
+    (v)->value.gc = dup; }
+    
 #define isneedcopy(L,t,o) (onstack(o) && \
      ((t)->onstack==0 || !inlastframe(ostack(L),t)))
 

@@ -87,24 +87,22 @@
 	luaC_barrierf(L,obj2gco(p),gcvalue(v)); }
 
 #define luaC_barriert(L,t,v) \
-  { if (valiswhite(v) && isblack(obj2gco(t)))  \
+  { if (valiswhite(v) && isblack(obj2gco(t))) \
 	  luaC_barrierback(L,t); \
   if (iscollectable(v) && isneedcopy(L,(t),gcvalue(v))) { \
-    GCObject *dup = lua_dupgcobj(L, gcvalue(v)); \
-    luaH_ostack_refix(L, (t), dup, gcvalue(v)); \
-    lua_ostack_refix(L, L->ostack.last, dup, gcvalue(v)); }}
+    GCObject *go = gcvalue(v), *dup = lua_dupgcobj(L, go); \
+    luaH_ostack_refix(L, (t), dup, go); }}
 
 #define luaC_objbarrier(L,p,o)  \
 	{ if (iswhite(obj2gco(o)) && isblack(obj2gco(p))) \
 		luaC_barrierf(L,obj2gco(p),obj2gco(o)); }
 
 #define luaC_objbarriert(L,t,o)  \
-   { GCObject *gobj = obj2gco(o); \
-   if (iswhite(gobj) && isblack(obj2gco(t))) luaC_barrierback(L,t); \
-   if (isneedcopy(L,(t),gobj)) { \
-     GCObject *dup = lua_dupgcobj(L, gobj); \
-     luaH_ostack_refix(L, (t), dup, gobj); \
-     lua_ostack_refix(L, L->ostack.last, dup, gobj); }}
+  { if (iswhite(obj2gco(o)) && isblack(obj2gco(t))) \
+    luaC_barrierback(L,t); \
+  if (isneedcopy(L,(t),obj2gco(o))) { \
+    GCObject *go = obj2gco(o), *dup = lua_dupgcobj(L, go); \
+    luaH_ostack_refix(L, (t), dup, go); }}
 
 LUAI_FUNC size_t luaC_separateudata (lua_State *L, int all);
 LUAI_FUNC void luaC_callGCTM (lua_State *L);

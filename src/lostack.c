@@ -9,6 +9,7 @@ static Slot *addslot(OStack *os, size_t slotsize) {
   os->slots = realloc(os->slots, (n+1)*sizeof(Slot));
   os->slots[n].start = malloc(slotsize);
   os->slots[n].end = (void*)((char*)os->slots[n].start + slotsize);
+  os->slots[n].size = slotsize;
   os->slotsnum = n+1;
   return os->slots[n].start;
 }
@@ -48,6 +49,7 @@ LUAI_FUNC void *ostack_lalloc(lua_State *L, size_t size) {
   fo = malloc(sizeof(FObject)+size);
   return (void*)(fo + 1);
 }
+
 LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
   OStack *os = ostack(L);
   void *ptop = os->top;
@@ -63,6 +65,7 @@ LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
   ostack_setlastobj(os, obj2gco(f));
   return f;
 }
+
 LUAI_FUNC Frame *ostack_closeframe(lua_State *L, Frame *f) {
   OStack *os = ostack(L);
   os->top = f->top;
@@ -70,17 +73,20 @@ LUAI_FUNC Frame *ostack_closeframe(lua_State *L, Frame *f) {
   os->last = f->prevframe;
   return f;
 }
+
 LUAI_FUNC OStack *ostack_init(lua_State *L) {
   OStack *os = ostack(L);
   os->slots = malloc(sizeof(Slot));
   os->slots[0].start = malloc(OSTACK_MINSLOTSIZE);
   os->slots[0].end = (void*)((char*)os->slots[0].start + OSTACK_MINSLOTSIZE);
+  os->slots[0].size = OSTACK_MINSLOTSIZE;
   os->slotsnum = 1;
   os->last = NULL;
   os->top = os->slots[0].start;
   os->index = 0;
   return os;
 }
+
 LUAI_FUNC void ostack_close(lua_State *L) {
   OStack *os = ostack(L);
   int i;

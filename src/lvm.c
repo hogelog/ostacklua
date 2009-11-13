@@ -666,6 +666,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
           setnvalue(ra, idx);  /* update internal index... */
           setnvalue(ra+3, idx);  /* ...and external index */
+          ostack_closeframe(L, L->ostack.last);
           ostack_newframe(L);
         } else
           ostack_closeframe(L, L->ostack.last);

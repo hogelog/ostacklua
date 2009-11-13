@@ -675,6 +675,7 @@ LUAI_FUNC void luaH_ostack_refix(lua_State *L, Table *t, GCObject *h, GCObject *
     }
   }
 }
+
 #if defined(LUA_DEBUG)
 
 Node *luaH_mainposition (const Table *t, const TValue *key) {

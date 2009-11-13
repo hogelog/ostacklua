@@ -49,7 +49,7 @@ LUAI_FUNC void *ostack_lalloc(lua_State *L, size_t size) {
   fo = malloc(sizeof(FObject)+size);
   return (void*)(fo + 1);
 }
-
+//#include <stdio.h>
 LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
   OStack *os = ostack(L);
   void *ptop = os->top;
@@ -116,7 +116,6 @@ LUAI_FUNC GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
   GCObject *dup = NULL;
   switch(src->gch.tt) {
     case LUA_TTABLE: {
-      //return obj2gco(luaH_duphobj(L, &src->h));
       dup = obj2gco(luaH_duphobj(L, &src->h));
       break;
     }
@@ -135,10 +134,15 @@ LUAI_FUNC GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
   lua_ostack_refix(L, dup, src);
   return dup;
 }
+
 LUAI_FUNC void lua_ostack_refix(lua_State *L, GCObject *h, GCObject *s) {
   OStack *os = ostack(L);
-  GCObject *o = obj2gco(os->slots[0].start);
+  GCObject *o;
   TValue *t;
+  Frame *f = os->last;
+  for (;f && !inframe(os,f,s);f=f->prevframe) ;
+  o = f ? f->top : obj2gco(os->slots[0].start);
+
   while (o) {
     lua_assert(onstack(o));
     switch(o->gch.tt) {

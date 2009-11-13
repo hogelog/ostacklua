@@ -654,7 +654,7 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
   return t;
 }
 
-LUAI_FUNC void luaH_ostack_refix(lua_State *L, Table *t, GCObject *h, GCObject *s) {
+LUAI_FUNC void luaH_ostack_fixptr(lua_State *L, Table *t, GCObject *h, GCObject *s) {
   int asize = t->sizearray;
   int nsize = t->node == dummynode ? 0 : sizenode(t);
   int i;

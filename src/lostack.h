@@ -49,8 +49,9 @@ LUAI_FUNC void ostack_close(lua_State *L);
 LUAI_FUNC Frame *ostack_fmove(lua_State *L, Frame *to, FObject *fo);
 
 LUAI_FUNC int ostack_inframe_detail(OStack *os, Frame *frame, void *p);
+LUAI_FUNC Frame *ostack_getframe(lua_State *L, GCObject *o);
 LUAI_FUNC GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
-LUAI_FUNC void lua_ostack_refix(lua_State *L, GCObject *h, GCObject *s);
+LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s);
 
 #define inframe(os,f,o) ( \
     !(f) || \

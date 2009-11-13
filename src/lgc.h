@@ -91,7 +91,7 @@
 	  luaC_barrierback(L,t); \
   if (iscollectable(v) && isneedcopy(L,(t),gcvalue(v))) { \
     GCObject *go = gcvalue(v), *dup = lua_dupgcobj(L, go); \
-    luaH_ostack_refix(L, (t), dup, go); }}
+    luaH_ostack_fixptr(L, (t), dup, go); }}
 
 #define luaC_objbarrier(L,p,o)  \
 	{ if (iswhite(obj2gco(o)) && isblack(obj2gco(p))) \
@@ -102,7 +102,7 @@
     luaC_barrierback(L,t); \
   if (isneedcopy(L,(t),obj2gco(o))) { \
     GCObject *go = obj2gco(o), *dup = lua_dupgcobj(L, go); \
-    luaH_ostack_refix(L, (t), dup, go); }}
+    luaH_ostack_fixptr(L, (t), dup, go); }}
 
 LUAI_FUNC size_t luaC_separateudata (lua_State *L, int all);
 LUAI_FUNC void luaC_callGCTM (lua_State *L);

@@ -112,6 +112,14 @@ LUAI_FUNC int ostack_inframe_detail(OStack *os, Frame *frame, void *p) {
   }
   return 0;
 }
+
+LUAI_FUNC Frame *ostack_getframe(lua_State *L, GCObject *o) {
+  OStack *os = ostack(L);
+  Frame *f = os->last;
+  for (;f && !inframe(os,f,o);f=f->prevframe) ;
+  return f;
+}
+
 LUAI_FUNC GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
   GCObject *dup = NULL;
   switch(src->gch.tt) {
@@ -131,23 +139,21 @@ LUAI_FUNC GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
       lua_assert(0); 
       return NULL;
   }
-  lua_ostack_refix(L, dup, src);
+  lua_ostack_fixptr(L, dup, src);
   return dup;
 }
 
-LUAI_FUNC void lua_ostack_refix(lua_State *L, GCObject *h, GCObject *s) {
+LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s) {
   OStack *os = ostack(L);
-  GCObject *o;
   TValue *t;
-  Frame *f = os->last;
-  for (;f && !inframe(os,f,s);f=f->prevframe) ;
-  o = f ? f->top : obj2gco(os->slots[0].start);
+  Frame *f = ostack_getframe(L, s);
+  GCObject *o = f ? f->top : obj2gco(os->slots[0].start);
 
   while (o) {
     lua_assert(onstack(o));
     switch(o->gch.tt) {
       case LUA_TTABLE: {
-        luaH_ostack_refix(L, &o->h, h, s);
+        luaH_ostack_fixptr(L, &o->h, h, s);
         break;
       }
       case LUA_TFRAME: break;
@@ -169,9 +175,4 @@ LUAI_FUNC void lua_ostack_refix(lua_State *L, GCObject *h, GCObject *s) {
       t->value.gc = h;
     }
   }
-}
-LUAI_FUNC Frame *ostack_getframe(lua_State *L, GCObject *o) {
-  OStack *os = ostack(L);
-  Frame *f = os->last;
-  return f;
 }

@@ -35,7 +35,7 @@ LUAI_FUNC int luaH_getn (Table *t);
 
 LUAI_FUNC Table *luaH_ostack_duphobj(lua_State *L, Table *src);
 LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src);
-LUAI_FUNC void luaH_ostack_refix(lua_State *L, Table *t, GCObject *h, GCObject *s);
+LUAI_FUNC void luaH_ostack_fixptr(lua_State *L, Table *t, GCObject *h, GCObject *s);
 
 #if defined(LUA_DEBUG)
 LUAI_FUNC Node *luaH_mainposition (const Table *t, const TValue *key);

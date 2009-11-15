@@ -49,7 +49,7 @@ LUAI_FUNC void *ostack_lalloc(lua_State *L, size_t size) {
   fo = malloc(sizeof(FObject)+size);
   return (void*)(fo + 1);
 }
-//#include <stdio.h>
+
 LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
   OStack *os = ostack(L);
   void *ptop = os->top;
@@ -170,7 +170,7 @@ LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s) {
     }
     o = o->gch.next;
   }
-  for (t=L->stack;t < L->stack_last;t++) {
+  for (t=L->ci->base;t < L->stack_last;t++) {
     if (iscollectable(t) && gcvalue(t)==s) {
       t->value.gc = h;
     }

@@ -60,8 +60,10 @@ LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
   f->prevframe = os->last;
   f->top = ptop;
   f->index = pindex;
+  f->framenum = os->framenum;
   f->marked = luaC_white(G(L));
   os->last = f;
+  os->framenum += 1;
   ostack_setlastobj(os, obj2gco(f));
   return f;
 }
@@ -71,6 +73,7 @@ LUAI_FUNC Frame *ostack_closeframe(lua_State *L, Frame *f) {
   os->top = f->top;
   os->index = f->index;
   os->last = f->prevframe;
+  os->framenum = f->framenum;
   return f;
 }
 
@@ -84,6 +87,7 @@ LUAI_FUNC OStack *ostack_init(lua_State *L) {
   os->last = NULL;
   os->top = os->slots[0].start;
   os->index = 0;
+  os->framenum = 0;
   return os;
 }
 
@@ -170,7 +174,7 @@ LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s) {
     }
     o = o->gch.next;
   }
-  for (t=L->ci->base;t < L->stack_last;t++) {
+  for (t=L->base;t < L->top;t++) {
     if (iscollectable(t) && gcvalue(t)==s) {
       t->value.gc = h;
     }

@@ -12,6 +12,7 @@ typedef struct Frame {
   struct Frame *prevframe;
   void *top;
   size_t index;
+  size_t framenum;
 } Frame;
 typedef struct Slot {
   void *start;
@@ -24,6 +25,7 @@ typedef struct OStack {
   Frame *last;
   void *top;
   size_t index;
+  size_t framenum;
   GCObject *lastobj;
 } OStack;
 
@@ -53,6 +55,8 @@ LUAI_FUNC Frame *ostack_getframe(lua_State *L, GCObject *o);
 LUAI_FUNC GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
 LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s);
 
+#define ostack_getframenum(L,o) (ostack_getframe(L,obj2gco(o))->framenum)
+
 #define inframe(os,f,o) ( \
     !(f) || \
     (((f)->index==(os)->index && inrange((f)->top, (os)->top, (o))) || \
@@ -64,8 +68,8 @@ LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s);
 #define lua_copy2heap(L,v) { \
     GCObject *go=gcvalue(v), *dup = check_exp(onstack(go), lua_dupgcobj(L, go)); \
     (v)->value.gc = dup; }
-    
+
 #define isneedcopy(L,t,o) (onstack(o) && \
-     ((t)->onstack==0 || !inlastframe(ostack(L),t)))
+     ((t)->onstack==0 || ostack_getframenum(L,t)<ostack_getframenum(L,o)))
 
 #endif

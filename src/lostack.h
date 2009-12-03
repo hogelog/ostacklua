@@ -29,7 +29,7 @@ typedef struct OStack {
   GCObject *lastobj;
 } OStack;
 
-#define OSTACK_MINSLOTSIZE 1024
+#define OSTACK_MINSLOTSIZE (16*1024)
 
 #define ostack_new(L,t,c) ((t *)ostack_alloc(L, sizeof(t)*(c)))
 

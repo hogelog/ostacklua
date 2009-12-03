@@ -4,26 +4,6 @@
 #include "lgc.h"
 #include "ltable.h"
 
-static Slot *addslot(OStack *os, size_t slotsize) {
-  size_t n = os->slotsnum;
-  os->slots = realloc(os->slots, (n+1)*sizeof(Slot));
-  os->slots[n].start = malloc(slotsize);
-  os->slots[n].end = (void*)((char*)os->slots[n].start + slotsize);
-  os->slots[n].size = slotsize;
-  os->slotsnum = n+1;
-  return os->slots[n].start;
-}
-static size_t ostack_grow(OStack *os) {
-  size_t slotsnum = os->slotsnum;
-  size_t newsize = 0;
-  size_t i;
-  for(i=0;i<slotsnum;++i) {
-    Slot *slot = &os->slots[i];
-    newsize += (char*)slot->end - (char*) slot->start;
-  }
-  addslot(os, newsize);
-  return os->slotsnum;
-}
 LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size) {
   OStack *os = ostack(L);
   void *new = os->top;
@@ -31,8 +11,6 @@ LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size) {
   Slot *curslot = &os->slots[os->index];
   while (newtop > curslot->end) {
     ++os->index;
-    if (os->index == os->slotsnum)
-      ostack_grow(os);
     os->top = os->slots[os->index].start;
     curslot = &os->slots[os->index];
     new = curslot->start;

@@ -33,7 +33,6 @@ typedef struct OStack {
 
 #define ostack_new(L,t,c) ((t *)ostack_alloc(L, sizeof(t)*(c)))
 
-#define obj2fobj(o) (((FObject*)(o))-1)
 #define inrange(s,e,o) \
   (cast(void *,(s)) <= cast(void *,(o)) && cast(void *,(o)) < cast(void *, (e)))
 
@@ -48,7 +47,6 @@ LUAI_FUNC Frame *ostack_newframe(lua_State *L);
 LUAI_FUNC Frame *ostack_closeframe(lua_State *L, Frame *f);
 LUAI_FUNC OStack *ostack_init(lua_State *L);
 LUAI_FUNC void ostack_close(lua_State *L);
-LUAI_FUNC Frame *ostack_fmove(lua_State *L, Frame *to, FObject *fo);
 
 LUAI_FUNC int ostack_inframe_detail(OStack *os, Frame *frame, void *p);
 LUAI_FUNC Frame *ostack_getframe(lua_State *L, GCObject *o);

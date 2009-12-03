@@ -9,23 +9,8 @@ LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size) {
   void *new = os->top;
   void *newtop = (void*)((char*)new + size);
   Slot *curslot = &os->slots[os->index];
-  while (newtop > curslot->end) {
-    ++os->index;
-    os->top = os->slots[os->index].start;
-    curslot = &os->slots[os->index];
-    new = curslot->start;
-    newtop = (void*)((char*)new + size);
-  }
   os->top = newtop;
   return new;
-}
-LUAI_FUNC void *ostack_lalloc(lua_State *L, size_t size) {
-  OStack *os = ostack(L);
-  FObject *fo;
-  Frame *f = os->last;
-  if (!f) return NULL;
-  fo = malloc(sizeof(FObject)+size);
-  return (void*)(fo + 1);
 }
 
 LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
@@ -78,11 +63,6 @@ LUAI_FUNC void ostack_close(lua_State *L) {
     free(os->slots[i].start);
   free(os->slots);
   os->slots = NULL;
-}
-LUAI_FUNC Frame *ostack_fmove(lua_State *L, Frame *to, FObject *fo) {
-  if (fo->next) fo->next->prev = fo->prev;
-  fo->prev->next = fo->next;
-  return to;
 }
 LUAI_FUNC int ostack_inframe_detail(OStack *os, Frame *frame, void *p) {
   size_t i;

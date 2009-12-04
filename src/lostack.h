@@ -4,11 +4,8 @@
 
 #include "lobject.h"
 
-typedef struct FObject {
-  struct FObject *prev, *next;
-} FObject;
 typedef struct Frame {
-  CommonHeader;
+  /*CommonHeader;*/
   struct Frame *prevframe;
   void *top;
   size_t index;
@@ -22,14 +19,16 @@ typedef struct Slot {
 typedef struct OStack {
   Slot *slots;
   size_t slotsnum;
+  Frame *frames;
+  size_t framenum;
   Frame *last;
   void *top;
   size_t index;
-  size_t framenum;
   GCObject *lastobj;
 } OStack;
 
 #define OSTACK_MINSLOTSIZE (16*1024)
+#define OSTACK_MAXFRAME 256
 
 #define ostack_new(L,t,c) ((t *)ostack_alloc(L, sizeof(t)*(c)))
 
@@ -37,10 +36,10 @@ typedef struct OStack {
   (cast(void *,(s)) <= cast(void *,(o)) && cast(void *,(o)) < cast(void *, (e)))
 
 #define ostack_setlastobj(os,o) { \
-    if ((os)->lastobj) (os)->lastobj->gch.next = (o); \
-    obj2gco(o)->gch.next = NULL; \
-    (os)->lastobj = (o); \
-  } 
+    obj2gco(o)->gch.next = (os)->lastobj->gch.next; \
+    (os)->lastobj->gch.next = obj2gco(o); \
+    (os)->lastobj = obj2gco(o); \
+  }
 LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size);
 LUAI_FUNC void *ostack_lalloc(lua_State *L, size_t size);
 LUAI_FUNC Frame *ostack_newframe(lua_State *L);

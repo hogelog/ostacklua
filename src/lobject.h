@@ -29,9 +29,6 @@
 #define LUA_TUPVAL	(LAST_TAG+2)
 #define LUA_TDEADKEY	(LAST_TAG+3)
 
-
-#define LUA_TFRAME	(LAST_TAG+4)
-
 /*
 ** Union of all collectable objects
 */

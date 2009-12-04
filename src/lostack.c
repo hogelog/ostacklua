@@ -8,7 +8,6 @@ LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size) {
   OStack *os = ostack(L);
   void *new = os->top;
   void *newtop = (void*)((char*)new + size);
-  Slot *curslot = &os->slots[os->index];
   os->top = newtop;
   return new;
 }
@@ -17,17 +16,13 @@ LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
   OStack *os = ostack(L);
   void *ptop = os->top;
   size_t pindex = os->index;
-  Frame *f = ostack_alloc(L, sizeof(Frame));
-  f->tt = LUA_TFRAME;
-  f->onstack = 1;
+  Frame *f = &os->frames[os->framenum];
   f->prevframe = os->last;
   f->top = ptop;
   f->index = pindex;
   f->framenum = os->framenum;
-  f->marked = luaC_white(G(L));
   os->last = f;
   os->framenum += 1;
-  ostack_setlastobj(os, obj2gco(f));
   return f;
 }
 
@@ -47,10 +42,13 @@ LUAI_FUNC OStack *ostack_init(lua_State *L) {
   os->slots[0].end = (void*)((char*)os->slots[0].start + OSTACK_MINSLOTSIZE);
   os->slots[0].size = OSTACK_MINSLOTSIZE;
   os->slotsnum = 1;
+  os->frames = malloc(sizeof(Frame)*OSTACK_MAXFRAME);
+  os->framenum = 0;
   os->last = NULL;
   os->top = os->slots[0].start;
   os->index = 0;
-  os->framenum = 0;
+  os->lastobj = (GCObject *)malloc(sizeof(GCObject));
+  os->lastobj->gch.next = NULL;
   return os;
 }
 
@@ -96,7 +94,6 @@ LUAI_FUNC GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
     case LUA_TTHREAD:
     case LUA_TPROTO:
     case LUA_TUPVAL:
-    case LUA_TFRAME:
     default:
       lua_assert(0); 
       return NULL;
@@ -111,14 +108,13 @@ LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s) {
   Frame *f = ostack_getframe(L, s);
   GCObject *o = f ? f->top : obj2gco(os->slots[0].start);
 
-  while (o) {
+  while (o != os->lastobj) {
     lua_assert(onstack(o));
     switch(o->gch.tt) {
       case LUA_TTABLE: {
         luaH_ostack_fixptr(L, &o->h, h, s);
         break;
       }
-      case LUA_TFRAME: break;
       // TODO: implement
       case LUA_TSTRING:
       case LUA_TFUNCTION:

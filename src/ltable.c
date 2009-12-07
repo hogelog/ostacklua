@@ -642,11 +642,11 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
     TValue *skey = key2tval(s);
     if (!ttisnil(skey)) {
       TValue *sval = gval(s);
-      if (iscollectable(sval) && hvalue(sval) != src && onstack(gcvalue(sval))) {
-        lua_copy2heap(L, sval);
-      }
       if (iscollectable(skey) && hvalue(skey) != src && onstack(gcvalue(skey))) {
         lua_copy2heap(L, skey);
+      }
+      if (iscollectable(sval) && hvalue(sval) != src && onstack(gcvalue(sval))) {
+        lua_copy2heap(L, sval);
       }
       setobj2t(L, luaH_set(L, t, skey), sval);
     }

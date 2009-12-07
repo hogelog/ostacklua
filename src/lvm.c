@@ -443,8 +443,6 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         TValue g;
         sethvalue(L, &g, cl->env);
         lua_assert(ttisstring(KBx(i)));
-        if (iscollectable(ra) && onstack(gcvalue(ra)))
-          lua_copy2heap(L, ra);
         Protect(luaV_settable(L, &g, KBx(i), ra));
         continue;
       }
@@ -455,8 +453,6 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_SETTABLE: {
-        if (iscollectable(ra) && onstack(gcvalue(ra)))
-          lua_copy2heap(L, ra);
         Protect(luaV_settable(L, ra, RKB(i), RKC(i)));
         continue;
       }

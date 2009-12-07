@@ -63,8 +63,8 @@ LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s);
      ((f)->index+1 < (os)->index && ostack_inframe_detail((os),(f),(o)))))
 #define inlastframe(os,o) inframe((os),(os)->last,o)
 #define lua_copy2heap(L,v) { \
-    GCObject *go=gcvalue(v), *dup = check_exp(onstack(go), lua_dupgcobj(L, go)); \
-    (v)->value.gc = dup; }
+    GCObject *h = gcvalue(v), *s = lua_dupgcobj(L, h); \
+    lua_ostack_fixptr(L, h, s); }
 
 #define isneedcopy(L,t,o) (onstack(o) && \
      ((t)->onstack==0 || ostack_getframenum(L,t)<ostack_getframenum(L,o)))

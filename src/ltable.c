@@ -413,7 +413,7 @@ Table *luaH_ostack_new (lua_State *L, int narray, int nhash) {
   }
   t->lastfree = gnode(t, nsize);  /* all positions are free */
 
-  ostack_setlastobj(&L->ostack, obj2gco(t));
+  ostack_pushgco(ostack(L), obj2gco(t));
   return t;
 }
 
@@ -632,7 +632,7 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
   t->metatable = src->metatable;
   for (i=0; i<asize; i++) {
     TValue *o = &src->array[i];
-    if (iscollectable(o) && hvalue(o) != src && onstack(gcvalue(o))) {
+    if (iscollectable(o) && gcvalue(o) != obj2gco(src) && onstack(gcvalue(o))) {
       lua_copy2heap(L, o);
     }
     setobj(L, &t->array[i], o);
@@ -642,10 +642,10 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
     TValue *skey = key2tval(s);
     if (!ttisnil(skey)) {
       TValue *sval = gval(s);
-      if (iscollectable(skey) && hvalue(skey) != src && onstack(gcvalue(skey))) {
+      if (iscollectable(skey) && gcvalue(skey) != obj2gco(src) && onstack(gcvalue(skey))) {
         lua_copy2heap(L, skey);
       }
-      if (iscollectable(sval) && hvalue(sval) != src && onstack(gcvalue(sval))) {
+      if (iscollectable(sval) && gcvalue(sval) != obj2gco(src) && onstack(gcvalue(sval))) {
         lua_copy2heap(L, sval);
       }
       setobj2t(L, luaH_set(L, t, skey), sval);

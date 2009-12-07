@@ -7,7 +7,7 @@
 typedef struct Frame {
   /*CommonHeader;*/
   struct Frame *prevframe;
-  void *top;
+  GCObject *top;
   size_t index;
   size_t framenum;
 } Frame;
@@ -27,7 +27,7 @@ typedef struct OStack {
   GCObject *lastobj;
 } OStack;
 
-#define OSTACK_MINSLOTSIZE (16*1024)
+#define OSTACK_MINSLOTSIZE 1024
 #define OSTACK_MAXFRAME 256
 
 #define ostack_new(L,t,c) ((t *)ostack_alloc(L, sizeof(t)*(c)))
@@ -35,11 +35,6 @@ typedef struct OStack {
 #define inrange(s,e,o) \
   (cast(void *,(s)) <= cast(void *,(o)) && cast(void *,(o)) < cast(void *, (e)))
 
-#define ostack_setlastobj(os,o) { \
-    obj2gco(o)->gch.next = (os)->lastobj->gch.next; \
-    (os)->lastobj->gch.next = obj2gco(o); \
-    (os)->lastobj = obj2gco(o); \
-  }
 LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size);
 LUAI_FUNC void *ostack_lalloc(lua_State *L, size_t size);
 LUAI_FUNC Frame *ostack_newframe(lua_State *L);
@@ -65,6 +60,11 @@ LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s);
 #define lua_copy2heap(L,v) { \
     GCObject *h = gcvalue(v), *s = lua_dupgcobj(L, h); \
     lua_ostack_fixptr(L, h, s); }
+
+#define ostack_pushgco(os,o) { \
+    (o)->gch.next = (os)->lastobj; \
+    (os)->lastobj = (o); \
+  }
 
 #define isneedcopy(L,t,o) (onstack(o) && \
      ((t)->onstack==0 || ostack_getframenum(L,t)<ostack_getframenum(L,o)))

@@ -138,10 +138,10 @@ LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s) {
   OStack *os = ostack(L);
   TValue *t;
   GCObject *o = os->lastobj;
-  //Frame *f = ostack_getframe(L, s);
-  //GCObject *oend = f ? f->top->gch.next : NULL;
+  Frame *f = ostack_getframe(L, s);
+  const GCObject *oend = f ? f->top->gch.next : NULL;
 
-  while (o) {
+  while (o != oend) {
     lua_assert(onstack(o));
     switch(o->gch.tt) {
       case LUA_TTABLE: {

@@ -33,8 +33,7 @@ LUAI_FUNC void luaH_free (lua_State *L, Table *t);
 LUAI_FUNC int luaH_next (lua_State *L, Table *t, StkId key);
 LUAI_FUNC int luaH_getn (Table *t);
 
-LUAI_FUNC Table *luaH_ostack_duphobj(lua_State *L, Table *src);
-LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src);
+LUAI_FUNC Table *luaH_ostack2heap(lua_State *L, Table *src);
 LUAI_FUNC void luaH_ostack_fixptr(lua_State *L, Table *t, GCObject *h, GCObject *s);
 
 #if defined(LUA_DEBUG)

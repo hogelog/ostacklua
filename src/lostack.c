@@ -1,4 +1,7 @@
 
+#define lostack_c
+#define LUA_CORE
+
 #include "lostack.h"
 #include "lstate.h"
 #include "lgc.h"
@@ -112,11 +115,11 @@ LUAI_FUNC Frame *ostack_getframe(lua_State *L, GCObject *o) {
   return f;
 }
 
-LUAI_FUNC GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
+LUAI_FUNC GCObject *ostack2heap(lua_State *L, GCObject *src) {
   GCObject *dup = NULL;
   switch(src->gch.tt) {
     case LUA_TTABLE: {
-      dup = obj2gco(luaH_duphobj(L, &src->h));
+      dup = obj2gco(luaH_ostack2heap(L, &src->h));
       break;
     }
     // TODO: implement

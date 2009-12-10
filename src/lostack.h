@@ -44,7 +44,7 @@ LUAI_FUNC void ostack_close(lua_State *L);
 
 LUAI_FUNC int ostack_inframe_detail(OStack *os, Frame *frame, void *p);
 LUAI_FUNC Frame *ostack_getframe(lua_State *L, GCObject *o);
-LUAI_FUNC GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
+LUAI_FUNC GCObject *ostack2heap(lua_State *L, GCObject *src);
 LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s);
 
 #define ostack_getframenum(L,o) (ostack_getframe(L,obj2gco(o))->framenum)
@@ -57,9 +57,6 @@ LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s);
        inrange((f)->top, (os)->slots[(f)->index].end, (o)))) || \
      ((f)->index+1 < (os)->index && ostack_inframe_detail((os),(f),(o)))))
 #define inlastframe(os,o) inframe((os),(os)->last,o)
-#define lua_copy2heap(L,v) { \
-    GCObject *h = gcvalue(v), *s = lua_dupgcobj(L, h); \
-    lua_ostack_fixptr(L, h, s); }
 
 #define ostack_pushgco(os,o) { \
     (o)->gch.next = (os)->lastobj; \

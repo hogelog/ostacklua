@@ -622,7 +622,7 @@ int luaH_getn (Table *t) {
   else return unbound_search(t, j);
 }
 
-LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
+LUAI_FUNC Table *luaH_ostack2heap(lua_State *L, Table *src) {
   int i;
   int asize = src->sizearray;
   int nsize = src->node == dummynode ? 0 : sizenode(src);
@@ -633,7 +633,7 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
   for (i=0; i<asize; i++) {
     TValue *o = &src->array[i];
     if (iscollectable(o) && gcvalue(o) != obj2gco(src) && onstack(gcvalue(o))) {
-      lua_copy2heap(L, o);
+      ostack2heap(L, gcvalue(o));
     }
     setobj(L, &t->array[i], o);
   }
@@ -643,10 +643,10 @@ LUAI_FUNC Table *luaH_duphobj(lua_State *L, Table *src) {
     if (!ttisnil(skey)) {
       TValue *sval = gval(s);
       if (iscollectable(skey) && gcvalue(skey) != obj2gco(src) && onstack(gcvalue(skey))) {
-        lua_copy2heap(L, skey);
+        ostack2heap(L, gcvalue(skey));
       }
       if (iscollectable(sval) && gcvalue(sval) != obj2gco(src) && onstack(gcvalue(sval))) {
-        lua_copy2heap(L, sval);
+        ostack2heap(L, gcvalue(sval));
       }
       setobj2t(L, luaH_set(L, t, skey), sval);
     }

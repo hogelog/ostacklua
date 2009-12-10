@@ -141,7 +141,7 @@ void luaV_settable (lua_State *L, const TValue *t, TValue *key, StkId val) {
       if (!ttisnil(oldval) ||  /* result is no nil? */
           (tm = fasttm(L, h->metatable, TM_NEWINDEX)) == NULL) { /* or no TM? */
         if (iscollectable(val) && isneedcopy(L,h,gcvalue(val)))
-          lua_copy2heap(L, val);
+          ostack2heap(L, gcvalue(val));
         setobj2t(L, oldval, val);
         luaC_barriert(L, h, val);
         return;
@@ -715,14 +715,14 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         last = ((c-1)*LFIELDS_PER_FLUSH) + n;
         if (last > h->sizearray) { /* needs more space? */
           if (onstack(gcvalue(ra)))
-            lua_copy2heap(L, ra);
+            ostack2heap(L, gcvalue(ra));
           h = hvalue(ra);
           luaH_resizearray(L, h, last);  /* pre-alloc it at once */
         }
         for (; n > 0; n--) {
           TValue *val = ra+n;
           if (iscollectable(val) && isneedcopy(L,h,gcvalue(val)))
-            lua_copy2heap(L, val);
+            ostack2heap(L, gcvalue(val));
           setobj2t(L, luaH_setnum(L, h, last--), val);
           luaC_barriert(L, h, val);
         }

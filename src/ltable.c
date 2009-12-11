@@ -263,7 +263,6 @@ static int numusehash (const Table *t, int *nums, int *pnasize) {
 
 static void setarrayvector (lua_State *L, Table *t, int size) {
   int i;
-  lua_assert(!t->onstack);
   luaM_reallocvector(L, t->array, t->sizearray, size, TValue);
   for (i=t->sizearray; i<size; i++)
      setnilvalue(&t->array[i]);
@@ -273,7 +272,6 @@ static void setarrayvector (lua_State *L, Table *t, int size) {
 
 static void setnodevector (lua_State *L, Table *t, int size) {
   int lsize;
-  lua_assert(!t->onstack);
   if (size == 0) {  /* no elements to hash part? */
     t->node = cast(Node *, dummynode);  /* use common `dummynode' */
     lsize = 0;
@@ -303,7 +301,6 @@ static void resize (lua_State *L, Table *t, int nasize, int nhsize) {
   int oldasize = t->sizearray;
   int oldhsize = t->lsizenode;
   Node *nold = t->node;  /* save old hash ... */
-  lua_assert(!t->onstack);
   if (nasize > oldasize)  /* array part must grow? */
     setarrayvector(L, t, nasize);
   /* create new hash part with appropriate size */
@@ -376,49 +373,24 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
 }
 
 Table *luaH_ostack_new (lua_State *L, int narray, int nhash) {
-  Table *t;
-  int tsize = sizeof(Table);
-  int lsize = 0, nsize = 0;
-  int i;
-
-  if (narray) {
-    tsize += sizeof(TValue) * narray;
-  }
-  if (nhash) {
-    lsize = ceillog2(nhash);
-    nsize = twoto(lsize);
-    tsize += sizeof(Node) * nsize;
-    if (lsize > MAXBITS)
-      luaG_runerror(L, "table overflow");
-  }
-  if (tsize > OSTACK_MINSLOTSIZE)
-    return luaH_new(L, narray, nhash);
-  t = ostack_alloc(L, tsize);
+  Table *t = ostack_new(L, Table);
+  //Table *t = luaM_new(L, Table);
   t->tt = LUA_TTABLE;
-  t->onstack = 1;
+  l_setbit(t->onstack, 0);
   t->metatable = NULL;
   t->flags = cast_byte(~0);
-  t->sizearray = narray;
-  t->lsizenode = lsize;
-  t->array = narray ? ptradd(t, sizeof(Table)) : NULL;
-  t->marked = luaC_white(G(L));
-  for (i=0; i<narray; i++)
-     setnilvalue(&t->array[i]);
-  t->node = nsize ? ostack_hnode(t) : cast(Node *, dummynode);
-  for (i=0; i<nsize; i++) {
-    Node *n = gnode(t, i);
-    gnext(n) = NULL;
-    setnilvalue(gkey(n));
-    setnilvalue(gval(n));
-  }
-  t->lastfree = gnode(t, nsize);  /* all positions are free */
+  /* temporary values (kept only if some malloc fails) */
+  t->array = NULL;
+  t->sizearray = 0;
+  t->lsizenode = 0;
+  t->node = cast(Node *, dummynode);
 
-  ostack_pushgco(ostack(L), obj2gco(t));
+  setarrayvector(L, t, narray);
+  setnodevector(L, t, nhash);
   return t;
 }
 
 void luaH_free (lua_State *L, Table *t) {
-  lua_assert(!t->onstack);
   if (t->node != dummynode)
     luaM_freearray(L, t->node, sizenode(t), Node);
   luaM_freearray(L, t->array, t->sizearray, TValue);
@@ -620,60 +592,6 @@ int luaH_getn (Table *t) {
   else if (t->node == dummynode)  /* hash part is empty? */
     return j;  /* that is easy... */
   else return unbound_search(t, j);
-}
-
-LUAI_FUNC Table *luaH_ostack2heap(lua_State *L, Table *src) {
-  int i;
-  int asize = src->sizearray;
-  int nsize = src->node == dummynode ? 0 : sizenode(src);
-  Table *t = luaH_new(L, asize, nsize);
-  t->onstack = 0;
-  t->flags = src->flags;
-  t->metatable = src->metatable;
-  for (i=0; i<asize; i++) {
-    TValue *o = &src->array[i];
-    if (iscollectable(o) && gcvalue(o) != obj2gco(src) && onstack(gcvalue(o))) {
-      ostack2heap(L, gcvalue(o));
-    }
-    setobj(L, &t->array[i], o);
-  }
-  for (i=0; i<nsize; i++) {
-    Node *s = gnode(src, i);
-    TValue *skey = key2tval(s);
-    if (!ttisnil(skey)) {
-      TValue *sval = gval(s);
-      if (iscollectable(skey) && gcvalue(skey) != obj2gco(src) && onstack(gcvalue(skey))) {
-        ostack2heap(L, gcvalue(skey));
-      }
-      if (iscollectable(sval) && gcvalue(sval) != obj2gco(src) && onstack(gcvalue(sval))) {
-        ostack2heap(L, gcvalue(sval));
-      }
-      setobj2t(L, luaH_set(L, t, skey), sval);
-    }
-  }
-  return t;
-}
-
-LUAI_FUNC void luaH_ostack_fixptr(lua_State *L, Table *t, GCObject *h, GCObject *s) {
-  int asize = t->sizearray;
-  int nsize = t->node == dummynode ? 0 : sizenode(t);
-  int i;
-  Table *mt = t->metatable;
-  if (mt == &s->h) {
-    t->metatable = &h->h;
-  }
-  for (i=0; i<asize; i++) {
-    TValue *o = &t->array[i];
-    if (iscollectable(o) && gcvalue(o) == s) {
-      o->value.gc = h;
-    }
-  }
-  for (i=0; i<nsize; i++) {
-    TValue *o = gval(gnode(t, i));
-    if (iscollectable(o) && gcvalue(o) == s) {
-      o->value.gc = h;
-    }
-  }
 }
 
 #if defined(LUA_DEBUG)

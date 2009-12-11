@@ -6,167 +6,122 @@
 #include "lstate.h"
 #include "lgc.h"
 #include "ltable.h"
+#include "lfunc.h"
+#include "lstring.h"
 
-static Slot *addslot(OStack *os, size_t slotsize) {
-  size_t n = os->slotsnum;
-  os->slots = realloc(os->slots, (n+1)*sizeof(Slot));
-  os->slots[n].start = malloc(slotsize);
-  os->slots[n].end = (void*)((char*)os->slots[n].start + slotsize);
-  os->slots[n].size = slotsize;
-  os->slotsnum = n+1;
-  return os->slots[n].start;
-}
-
-static size_t ostack_grow(OStack *os) {
-  size_t slotsnum = os->slotsnum;
-  size_t newsize = 0;
-  size_t i;
-  for(i=0;i<slotsnum;++i) {
-    Slot *slot = &os->slots[i];
-    newsize += (char*)slot->end - (char*) slot->start;
+static void freeobj (lua_State *L, GCObject *o) {
+  switch (o->gch.tt) {
+    case LUA_TPROTO: luaF_freeproto(L, gco2p(o)); break;
+    case LUA_TFUNCTION: luaF_freeclosure(L, gco2cl(o)); break;
+    case LUA_TUPVAL: luaF_freeupval(L, gco2uv(o)); break;
+    case LUA_TTABLE: luaH_free(L, gco2h(o)); break;
+    case LUA_TTHREAD: {
+      lua_assert(gco2th(o) != L && gco2th(o) != G(L)->mainthread);
+      luaE_freethread(L, gco2th(o));
+      break;
+    }
+    case LUA_TSTRING: {
+      G(L)->strt.nuse--;
+      luaM_freemem(L, o, sizestring(gco2ts(o)));
+      break;
+    }
+    case LUA_TUSERDATA: {
+      luaM_freemem(L, o, sizeudata(gco2u(o)));
+      break;
+    }
+    default: lua_assert(0);
   }
-  addslot(os, newsize);
-  return os->slotsnum;
 }
 
 LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size) {
   OStack *os = ostack(L);
-  void *new = os->top;
-  void *newtop = (void*)((char*)new + size);
-  Slot *curslot = &os->slots[os->index];
-  while (newtop > curslot->end) {
-    if (++os->index == os->slotsnum)
-      ostack_grow(os);
-    os->top = os->slots[os->index].start;
-    curslot = &os->slots[os->index];
-    new = curslot->start;
-    newtop = (void*)((char*)new + size);
-  }
-  os->top = newtop;
-  return new;
+  //LinkHeader *head = luaM_new(L, LinkHeader);
+  LinkHeader *head = malloc(sizeof(LinkHeader));
+  Frame *f = os->lastframe;
+  head->body = luaM_malloc(L, size);
+  head->prev = &f->list;
+  head->next = f->list.next;
+  f->list.next->prev = head;
+  f->list.next = head;
+  return head->body;
 }
 
 LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
   OStack *os = ostack(L);
-  void *ptop = os->top;
-  size_t pindex = os->index;
   Frame *f = &os->frames[os->framenum];
-  f->prevframe = os->last;
-  f->top = ptop;
-  f->index = pindex;
+  f->prevframe = os->lastframe;
   f->framenum = os->framenum;
-  os->last = f;
+  f->list.prev = f->list.next = &f->list;
+  os->lastframe = f;
   os->framenum += 1;
   return f;
 }
 
 LUAI_FUNC Frame *ostack_closeframe(lua_State *L, Frame *f) {
   OStack *os = ostack(L);
-  os->top = f->top;
-  os->index = f->index;
-  os->last = f->prevframe;
+  LinkHeader *list = &f->list;
+  LinkHeader *head = list->next;
+  while (head != list) {
+    head = head->next;
+    freeobj(L, head->prev->body);
+    free(head->prev);
+  }
+  os->lastframe = f->prevframe;
   os->framenum = f->framenum;
-  os->lastobj = f->top->gch.next;
   return f;
 }
 
 LUAI_FUNC OStack *ostack_init(lua_State *L) {
   OStack *os = ostack(L);
-  os->slots = malloc(sizeof(Slot));
-  os->slots[0].start = malloc(OSTACK_MINSLOTSIZE);
-  os->slots[0].end = (void*)((char*)os->slots[0].start + OSTACK_MINSLOTSIZE);
-  os->slots[0].size = OSTACK_MINSLOTSIZE;
-  os->slotsnum = 1;
-  os->frames = malloc(sizeof(Frame)*OSTACK_MAXFRAME);
+  os->frames = luaM_newvector(L, OSTACK_MAXFRAME, Frame);
   os->framenum = 0;
-  os->last = NULL;
-  os->top = os->slots[0].start;
-  os->index = 0;
-  os->lastobj = NULL;
+  os->lastframe = NULL;
   return os;
 }
 
 LUAI_FUNC void ostack_close(lua_State *L) {
   OStack *os = ostack(L);
-  int i;
-  while (os->last)
-    ostack_closeframe(L, os->last);
-  for (i=os->slotsnum-1;i>=0;--i)
-    free(os->slots[i].start);
-  free(os->slots);
-  free(os->frames);
-  os->slots = NULL;
+  while (os->lastframe)
+    ostack_closeframe(L, os->lastframe);
+  luaM_freearray(L, os->frames, OSTACK_MAXFRAME, Frame);
 }
-LUAI_FUNC int ostack_inframe_detail(OStack *os, Frame *frame, void *p) {
-  size_t i;
-  lua_assert(frame && (frame->index+1 < os->index));
-  for (i=frame->index+1;i<os->index;i++) {
-    Slot *slot = &os->slots[i];
-    if (inrange(slot->start, slot->end, p))
-      return 1;
+LUAI_FUNC LinkHeader *ostack_getlinkheader(OStack *os, Frame *frame, GCObject *o) {
+  LinkHeader *list, *head;
+  lua_assert(frame);
+  list = &frame->list;
+  head = list->next;
+  while (head != list) {
+    if (head->body == o)
+      return head;
+    head = head->next;
   }
-  return 0;
+  return NULL;
 }
 
 LUAI_FUNC Frame *ostack_getframe(lua_State *L, GCObject *o) {
   OStack *os = ostack(L);
-  Frame *f = os->last;
-  for (;f && !inframe(os,f,o);f=f->prevframe) ;
+  Frame *f = os->lastframe;
+  lua_assert(onstack(o));
+  while (!ostack_getlinkheader(os, f, o)) {
+    lua_assert(f);
+    f = f->prevframe;
+  }
   return f;
 }
 
 LUAI_FUNC GCObject *ostack2heap(lua_State *L, GCObject *src) {
-  GCObject *dup = NULL;
-  switch(src->gch.tt) {
-    case LUA_TTABLE: {
-      dup = obj2gco(luaH_ostack2heap(L, &src->h));
-      break;
-    }
-    // TODO: implement
-    case LUA_TSTRING:
-    case LUA_TFUNCTION:
-    case LUA_TUSERDATA:
-    case LUA_TTHREAD:
-    case LUA_TPROTO:
-    case LUA_TUPVAL:
-    default:
-      lua_assert(0); 
-      return NULL;
-  }
-  lua_ostack_fixptr(L, dup, src);
-  return dup;
-}
-
-LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s) {
   OStack *os = ostack(L);
-  TValue *t;
-  GCObject *o = os->lastobj;
-  Frame *f = ostack_getframe(L, s);
-  const GCObject *oend = f ? f->top->gch.next : NULL;
-
-  while (o != oend) {
-    lua_assert(onstack(o));
-    switch(o->gch.tt) {
-      case LUA_TTABLE: {
-        luaH_ostack_fixptr(L, &o->h, h, s);
-        break;
-      }
-      // TODO: implement
-      case LUA_TSTRING:
-      case LUA_TFUNCTION:
-      case LUA_TUSERDATA:
-      case LUA_TTHREAD:
-      case LUA_TPROTO:
-      case LUA_TUPVAL:
-      default:
-        lua_assert(0); 
-        return ;
-    }
-    o = o->gch.next;
+  Frame *f = os->lastframe;
+  LinkHeader *head;
+  while (!(head = ostack_getlinkheader(os, f, src))) {
+    lua_assert(f);
+    f = f->prevframe;
   }
-  for (t=L->stack;t < L->top;t++) {
-    if (iscollectable(t) && gcvalue(t)==s) {
-      t->value.gc = h;
-    }
-  }
+  lua_assert(head);
+  lua_assert(src == head->body);
+  head->prev->next = head->next;
+  head->next->prev = head->prev;
+  free(head);
+  luaC_link(L, src, src->gch.tt);
+  return src;
 }

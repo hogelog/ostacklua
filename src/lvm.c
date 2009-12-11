@@ -459,7 +459,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_NEWTABLE: {
         int nb = luaO_fb2int(GETARG_B(i));
         int nc = luaO_fb2int(GETARG_C(i));
-        if ((nb > 0 || nc > 0) && ostack(L)->last) {
+        if ((nb > 0 || nc > 0) && ostack(L)->lastframe) {
           sethvalue(L, ra, luaH_ostack_new(L, nb, nc));
         } else {
           sethvalue(L, ra, luaH_new(L, 0, 0));
@@ -662,10 +662,10 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
           setnvalue(ra, idx);  /* update internal index... */
           setnvalue(ra+3, idx);  /* ...and external index */
-          ostack_closeframe(L, L->ostack.last);
+          ostack_closeframe(L, L->ostack.lastframe);
           ostack_newframe(L);
         } else
-          ostack_closeframe(L, L->ostack.last);
+          ostack_closeframe(L, L->ostack.lastframe);
         continue;
       }
       case OP_FORPREP: {

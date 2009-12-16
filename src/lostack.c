@@ -35,8 +35,14 @@ static void freeobj (lua_State *L, GCObject *o) {
 
 LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size) {
   OStack *os = ostack(L);
-  LinkHeader *head = os->top;
+  LinkHeader *head = &os->links[os->top];
   Frame *f = os->lastframe;
+  if (head == os->links_last) {
+    size_t newsize = os->linksnum * 2;
+    luaM_reallocvector(L, os->links, os->linksnum, newsize, LinkHeader);
+    os->links_last = os->links + newsize;
+    os->linksnum = newsize;
+  }
   head->body = luaM_malloc(L, size);
   f->top = os->top = os->top + 1;
   return head->body;
@@ -55,7 +61,7 @@ LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
 
 LUAI_FUNC Frame *ostack_closeframe(lua_State *L, Frame *f) {
   OStack *os = ostack(L);
-  LinkHeader *top = os->top, *base = f->base;
+  LinkHeader *top = &os->links[os->top], *base = &os->links[f->base];
   while (top != base) {
     top -= 1;
     if (top->body) {
@@ -73,7 +79,10 @@ LUAI_FUNC OStack *ostack_init(lua_State *L) {
   os->frames = luaM_newvector(L, OSTACK_MAXFRAME, Frame);
   os->framenum = 0;
   os->lastframe = NULL;
-  os->top = os->links = luaM_newvector(L, OSTACK_MAXLINKS, LinkHeader);
+  os->links = luaM_newvector(L, OSTACK_MINLINKS, LinkHeader);
+  os->links_last = os->links + OSTACK_MINLINKS;
+  os->linksnum = OSTACK_MINLINKS;
+  os->top = 0;
   return os;
 }
 
@@ -82,10 +91,10 @@ LUAI_FUNC void ostack_close(lua_State *L) {
   while (os->lastframe)
     ostack_closeframe(L, os->lastframe);
   luaM_freearray(L, os->frames, OSTACK_MAXFRAME, Frame);
-  luaM_freearray(L, os->links, OSTACK_MAXLINKS, LinkHeader);
+  luaM_freearray(L, os->links, os->linksnum, LinkHeader);
 }
 LUAI_FUNC LinkHeader *ostack_getlinkheader(OStack *os, Frame *frame, GCObject *o) {
-  LinkHeader *top = check_exp(frame, frame->top), *base = frame->base;
+  LinkHeader *top = &os->links[check_exp(frame, frame->top)], *base = &os->links[frame->base];
   while (top != base) {
     top -= 1;
     if (top->body == o)

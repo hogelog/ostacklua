@@ -19,8 +19,6 @@ typedef struct OStack {
   LinkHeader *links, *top;
 } OStack;
 
-#define ONSTACKBIT 0
-
 #define OSTACK_MAXFRAME 256
 #define OSTACK_MAXLINKS (10*1024)
 
@@ -42,7 +40,7 @@ LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s);
 
 #define ostack_getframenum(L,o) (ostack_getframe(L,obj2gco(o))->framenum)
 
-#define isneedcopy(L,t,o) (onstack(o) && \
-     ((t)->onstack==0 || ostack_getframenum(L,t)<ostack_getframenum(L,o)))
+#define isneedcopy(L,t,o) (is_onstack(o) && \
+     (!is_onstack(obj2gco(t)) || ostack_getframenum(L,t)<ostack_getframenum(L,o)))
 
 #endif

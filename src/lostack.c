@@ -97,7 +97,7 @@ LUAI_FUNC LinkHeader *ostack_getlinkheader(OStack *os, Frame *frame, GCObject *o
 LUAI_FUNC Frame *ostack_getframe(lua_State *L, GCObject *o) {
   OStack *os = ostack(L);
   Frame *f = os->lastframe;
-  lua_assert(onstack(o));
+  lua_assert(is_onstack(o));
   lua_assert(f);
   while (f) {
     if (ostack_getlinkheader(os, f, o))

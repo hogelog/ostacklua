@@ -29,6 +29,7 @@ LUAI_FUNC void luaH_resizearray (lua_State *L, Table *t, int nasize);
 LUAI_FUNC void luaH_free (lua_State *L, Table *t);
 LUAI_FUNC int luaH_next (lua_State *L, Table *t, StkId key);
 LUAI_FUNC int luaH_getn (Table *t);
+LUAI_FUNC Table *luaH_ostack2heap(lua_State *L, Table *src);
 
 #if defined(LUA_DEBUG)
 LUAI_FUNC Node *luaH_mainposition (const Table *t, const TValue *key);

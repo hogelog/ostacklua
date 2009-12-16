@@ -5,23 +5,24 @@
 #include "lobject.h"
 
 typedef struct LinkHeader {
-  struct LinkHeader *prev, *next;
   GCObject *body;
 } LinkHeader;
 typedef struct Frame {
   struct Frame *prevframe;
   size_t framenum;
-  LinkHeader list;
+  LinkHeader *base, *top;
 } Frame;
 typedef struct OStack {
   Frame *frames;
   size_t framenum;
   Frame *lastframe;
+  LinkHeader *links, *top;
 } OStack;
 
 #define ONSTACKBIT 0
 
 #define OSTACK_MAXFRAME 256
+#define OSTACK_MAXLINKS (10*1024)
 
 #define ostack_new(L,t) cast(t *, ostack_alloc(L, sizeof(t)))
 

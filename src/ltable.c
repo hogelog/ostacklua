@@ -594,6 +594,32 @@ int luaH_getn (Table *t) {
   else return unbound_search(t, j);
 }
 
+Table *luaH_ostack2heap(lua_State *L, Table *src) {
+  int i;
+  int asize = src->sizearray;
+  int nsize = src->node == dummynode ? 0 : sizenode(src);
+  for (i=0;i<asize;i++) {
+    TValue *o = &src->array[i];
+    if (iscollectable(o) && gcvalue(o) != obj2gco(src) && onstack(gcvalue(o))) {
+      ostack2heap(L, gcvalue(o));
+    }
+  }
+  for (i=0;i<nsize;i++) {
+    Node *s = gnode(src, i);
+    TValue *skey = key2tval(s);
+    if (!ttisnil(skey)) {
+      TValue *sval = gval(s);
+      if (iscollectable(skey) && gcvalue(skey) != obj2gco(src) && onstack(gcvalue(skey))) {
+        ostack2heap(L, gcvalue(skey));
+      }
+      if (iscollectable(sval) && gcvalue(sval) != obj2gco(src) && onstack(gcvalue(sval))) {
+        ostack2heap(L, gcvalue(sval));
+      }
+    }
+  }
+  return src;
+}
+
 #if defined(LUA_DEBUG)
 
 Node *luaH_mainposition (const Table *t, const TValue *key) {

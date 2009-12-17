@@ -374,9 +374,8 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
 
 Table *luaH_ostack_new (lua_State *L, int narray, int nhash) {
   Table *t = ostack_new(L, Table);
-  //Table *t = luaM_new(L, Table);
   t->tt = LUA_TTABLE;
-  l_setbit(t->onstack, 0);
+  set_onstack(L, obj2gco(t));
   t->metatable = NULL;
   t->flags = cast_byte(~0);
   /* temporary values (kept only if some malloc fails) */
@@ -600,7 +599,7 @@ Table *luaH_ostack2heap(lua_State *L, Table *src) {
   int nsize = src->node == dummynode ? 0 : sizenode(src);
   for (i=0;i<asize;i++) {
     TValue *o = &src->array[i];
-    if (iscollectable(o) && gcvalue(o) != obj2gco(src) && onstack(gcvalue(o))) {
+    if (iscollectable(o) && gcvalue(o) != obj2gco(src) && is_onstack(gcvalue(o))) {
       ostack2heap(L, gcvalue(o));
     }
   }
@@ -609,10 +608,10 @@ Table *luaH_ostack2heap(lua_State *L, Table *src) {
     TValue *skey = key2tval(s);
     if (!ttisnil(skey)) {
       TValue *sval = gval(s);
-      if (iscollectable(skey) && gcvalue(skey) != obj2gco(src) && onstack(gcvalue(skey))) {
+      if (iscollectable(skey) && gcvalue(skey) != obj2gco(src) && is_onstack(gcvalue(skey))) {
         ostack2heap(L, gcvalue(skey));
       }
-      if (iscollectable(sval) && gcvalue(sval) != obj2gco(src) && onstack(gcvalue(sval))) {
+      if (iscollectable(sval) && gcvalue(sval) != obj2gco(src) && is_onstack(gcvalue(sval))) {
         ostack2heap(L, gcvalue(sval));
       }
     }

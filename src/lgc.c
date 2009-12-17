@@ -50,9 +50,9 @@
 
 
 #define markvalue(g,o) { checkconsistency(o); \
-  if (iscollectable(o) && !onstack(gcvalue(o)) && iswhite(gcvalue(o))) reallymarkobject(g,gcvalue(o)); }
+  if (iscollectable(o) && !is_onstack(gcvalue(o)) && iswhite(gcvalue(o))) reallymarkobject(g,gcvalue(o)); }
 
-#define markobject(g,t) { if (!onstack(obj2gco(t)) && iswhite(obj2gco(t))) \
+#define markobject(g,t) { if (!is_onstack(obj2gco(t)) && iswhite(obj2gco(t))) \
 		reallymarkobject(g, obj2gco(t)); }
 
 
@@ -67,7 +67,7 @@ static void removeentry (Node *n) {
 
 
 static void reallymarkobject (global_State *g, GCObject *o) {
-  lua_assert(!o->gch.onstack);
+  lua_assert(!is_onstack(o));
   lua_assert(iswhite(o) && !isdead(g, o));
   white2gray(o);
   switch (o->gch.tt) {
@@ -277,7 +277,7 @@ static void traversestack (global_State *g, lua_State *l) {
 */
 static l_mem propagatemark (global_State *g) {
   GCObject *o = g->gray;
-  lua_assert(!o->gch.onstack);
+  lua_assert(!is_onstack(o));
   lua_assert(isgray(o));
   gray2black(o);
   switch (o->gch.tt) {
@@ -378,7 +378,7 @@ static void cleartable (GCObject *l) {
 
 
 static void freeobj (lua_State *L, GCObject *o) {
-  lua_assert(!o->gch.onstack);
+  lua_assert(!is_onstack(o));
   switch (o->gch.tt) {
     case LUA_TPROTO: luaF_freeproto(L, gco2p(o)); break;
     case LUA_TFUNCTION: luaF_freeclosure(L, gco2cl(o)); break;
@@ -412,7 +412,7 @@ static GCObject **sweeplist (lua_State *L, GCObject **p, lu_mem count) {
   global_State *g = G(L);
   int deadmask = otherwhite(g);
   while ((curr = *p) != NULL && count-- > 0) {
-    lua_assert(!curr->gch.onstack);
+    lua_assert(!is_onstack(curr));
     if (curr->gch.tt == LUA_TTHREAD)  /* sweep open upvalues of each thread */
       sweepwholelist(L, &gco2th(curr)->openupval);
     if ((curr->gch.marked ^ WHITEBITS) & deadmask) {  /* not dead? */
@@ -681,7 +681,7 @@ void luaC_barrierback (lua_State *L, Table *t) {
   GCObject *o = obj2gco(t);
   
   // TODO: check is it okey
-  if (t->onstack) return;
+  if (is_onstack(obj2gco(t))) return;
 
   lua_assert(isblack(o) && !isdead(g, o));
   lua_assert(g->gcstate != GCSfinalize && g->gcstate != GCSpause);
@@ -697,7 +697,7 @@ void luaC_link (lua_State *L, GCObject *o, lu_byte tt) {
   g->rootgc = o;
   o->gch.marked = luaC_white(g);
   o->gch.tt = tt;
-  o->gch.onstack = 0;
+  set_onheap(L, o);
 }
 
 

@@ -714,7 +714,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         h = hvalue(ra);
         last = ((c-1)*LFIELDS_PER_FLUSH) + n;
         if (last > h->sizearray) { /* needs more space? */
-          if (onstack(gcvalue(ra)))
+          if (is_onstack(gcvalue(ra)))
             ostack2heap(L, gcvalue(ra));
           h = hvalue(ra);
           luaH_resizearray(L, h, last);  /* pre-alloc it at once */

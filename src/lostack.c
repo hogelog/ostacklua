@@ -49,6 +49,10 @@ static void sobjs_resize(lua_State *L, OStack *os, size_t nsize) {
     f = f->prevframe;
   }
 }
+static void frames_resize(lua_State *L, OStack *os, size_t nsize) {
+  luaM_reallocvector(L, os->frames, os->framesnum, nsize, Frame);
+  os->framesnum = nsize;
+}
 
 LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size) {
   OStack *os = ostack(L);
@@ -71,6 +75,7 @@ LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
   f->base = f->top = os->top;
   os->lastframe = f;
   os->findex += 1;
+  lua_assert(os->findex < os->framesnum);
   return f;
 }
 
@@ -91,9 +96,10 @@ LUAI_FUNC Frame *ostack_closeframe(lua_State *L, Frame *f) {
 
 LUAI_FUNC OStack *ostack_init(lua_State *L) {
   OStack *os = ostack(L);
-  os->frames = luaM_newvector(L, OSTACK_MAXFRAME, Frame);
+  os->framesnum = 0;
   os->findex = 0;
   os->lastframe = NULL;
+  frames_resize(L, os, OSTACK_MINFRAME);
   os->sobjs = NULL;
   os->sobjsnum = 0;
   os->top = NULL;
@@ -106,7 +112,7 @@ LUAI_FUNC void ostack_close(lua_State *L) {
   OStack *os = ostack(L);
   while (os->lastframe)
     ostack_closeframe(L, os->lastframe);
-  luaM_freearray(L, os->frames, OSTACK_MAXFRAME, Frame);
+  luaM_freearray(L, os->frames, os->framesnum, Frame);
   luaM_freearray(L, os->sobjs, os->sobjsnum, SObject);
 }
 LUAI_FUNC SObject *ostack_getsobj(OStack *os, Frame *frame, GCObject *o) {

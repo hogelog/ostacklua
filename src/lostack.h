@@ -14,14 +14,14 @@ typedef struct Frame {
 } Frame;
 typedef struct OStack {
   Frame *frames;
-  size_t findex;
+  size_t framesnum, findex;
   Frame *lastframe;
   SObject *sobjs, *sobjs_last;
   SObject *top;
   size_t sobjsnum;
 } OStack;
 
-#define OSTACK_MAXFRAME 256
+#define OSTACK_MINFRAME 256
 #define OSTACK_MINSOBJECTS 1024
 
 #define ostack_new(L,t) cast(t *, ostack_alloc(L, sizeof(t)))

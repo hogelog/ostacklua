@@ -98,6 +98,7 @@ LUAI_FUNC OStack *ostack_init(lua_State *L) {
   os->sobjsnum = 0;
   os->top = NULL;
   sobjs_resize(L, os, OSTACK_MINSOBJECTS);
+  ostack_newframe(L);
   return os;
 }
 

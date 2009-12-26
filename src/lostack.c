@@ -10,6 +10,7 @@
 #include "lstring.h"
 
 static void freeobj (lua_State *L, GCObject *o) {
+  lua_assert(is_onstack(o));
   switch (o->gch.tt) {
     case LUA_TPROTO: luaF_freeproto(L, gco2p(o)); break;
     case LUA_TFUNCTION: luaF_freeclosure(L, gco2cl(o)); break;

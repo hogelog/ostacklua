@@ -459,7 +459,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_NEWTABLE: {
         int nb = luaO_fb2int(GETARG_B(i));
         int nc = luaO_fb2int(GETARG_C(i));
-        if ((nb > 0 || nc > 0) && ostack(L)->lastframe) {
+        if (ostack(L)->lastframe) {
           sethvalue(L, ra, luaH_ostack_new(L, nb, nc));
         } else {
           sethvalue(L, ra, luaH_new(L, 0, 0));

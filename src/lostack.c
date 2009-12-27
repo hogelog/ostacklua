@@ -79,8 +79,9 @@ LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
   return f;
 }
 
-LUAI_FUNC Frame *ostack_closeframe(lua_State *L, Frame *f) {
+LUAI_FUNC Frame *ostack_closeframe(lua_State *L, int findex) {
   OStack *os = ostack(L);
+  Frame *f = &os->frames[findex];
   SObject *top = os->top, *base = f->base;
   while (top != base) {
     top -= 1;
@@ -88,8 +89,8 @@ LUAI_FUNC Frame *ostack_closeframe(lua_State *L, Frame *f) {
       freeobj(L, top->body);
     }
   }
-  os->lastframe = f->prevframe;
-  os->findex = f->findex;
+  os->lastframe = f - 1;
+  os->findex = findex;
   os->top = f->base;
   return os->lastframe;
 }
@@ -110,8 +111,7 @@ LUAI_FUNC OStack *ostack_init(lua_State *L) {
 
 LUAI_FUNC void ostack_close(lua_State *L) {
   OStack *os = ostack(L);
-  while (os->lastframe)
-    ostack_closeframe(L, os->lastframe);
+  ostack_closeframe(L, 0);
   luaM_freearray(L, os->frames, os->framesnum, Frame);
   luaM_freearray(L, os->sobjs, os->sobjsnum, SObject);
 }

@@ -9,16 +9,16 @@ typedef struct SObject {
 } SObject;
 typedef struct Frame {
   struct Frame *prevframe;
-  size_t findex;
+  int findex;
   SObject *base, *top;
 } Frame;
 typedef struct OStack {
   Frame *frames;
-  size_t framesnum, findex;
+  int framesnum, findex;
   Frame *lastframe;
   SObject *sobjs, *sobjs_last;
   SObject *top;
-  size_t sobjsnum;
+  int sobjsnum;
 } OStack;
 
 #define OSTACK_MINFRAME 256
@@ -28,7 +28,7 @@ typedef struct OStack {
 
 LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size);
 LUAI_FUNC Frame *ostack_newframe(lua_State *L);
-LUAI_FUNC Frame *ostack_closeframe(lua_State *L, Frame *f);
+LUAI_FUNC Frame *ostack_closeframe(lua_State *L, int findex);
 LUAI_FUNC OStack *ostack_init(lua_State *L);
 LUAI_FUNC void ostack_close(lua_State *L);
 

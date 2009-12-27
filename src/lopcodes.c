@@ -51,6 +51,8 @@ const char *const luaP_opnames[NUM_OPCODES+1] = {
   "SETLIST",
   "CLOSE",
   "CLOSURE",
+  "NEWFRAME",
+  "CLOSEFRAME",
   "VARARG",
   NULL
 };

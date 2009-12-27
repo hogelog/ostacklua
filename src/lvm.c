@@ -747,6 +747,14 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         Protect(luaC_checkGC(L));
         continue;
       }
+      case OP_NEWFRAME: {
+        // TODO: implement
+        lua_assert(0);
+      }
+      case OP_CLOSEFRAME: {
+        // TODO: implement
+        lua_assert(0);
+      }
       case OP_VARARG: {
         int b = GETARG_B(i) - 1;
         int j;

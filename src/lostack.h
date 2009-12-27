@@ -32,7 +32,6 @@ LUAI_FUNC void ostack_close(lua_State *L);
 LUAI_FUNC SObject *ostack_getsobj(OStack *os, Frame *frame, GCObject *o);
 LUAI_FUNC int ostack_getframe(lua_State *L, GCObject *o);
 LUAI_FUNC GCObject *ostack2heap(lua_State *L, GCObject *src);
-LUAI_FUNC void lua_ostack_fixptr(lua_State *L, GCObject *h, GCObject *s);
 
 #define isneedcopy(L,t,o) (is_onstack(o) && \
      (!is_onstack(obj2gco(t)) || ostack_getframe(L,obj2gco(t))<ostack_getframe(L,o)))

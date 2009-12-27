@@ -37,16 +37,16 @@ static void freeobj (lua_State *L, GCObject *o) {
 static void sobjs_resize(lua_State *L, OStack *os, size_t nsize) {
   SObject *old = os->sobjs;
   ptrdiff_t diff;
-  Frame *f = os->lastframe;
+  int i;
   luaM_reallocvector(L, os->sobjs, os->sobjsnum, nsize, SObject);
   os->sobjs_last = os->sobjs + nsize;
   diff = os->sobjs - old;
   os->sobjsnum = nsize;
   os->top += diff;
-  while (f) {
+  for (i=os->findex-1;i>=0;i--) {
+    Frame *f = &os->frames[i];
     f->base += diff;
     f->top += diff;
-    f = f->prevframe;
   }
 }
 static void frames_resize(lua_State *L, OStack *os, size_t nsize) {
@@ -57,23 +57,19 @@ static void frames_resize(lua_State *L, OStack *os, size_t nsize) {
 LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size) {
   OStack *os = ostack(L);
   SObject *head;
-  Frame *f = os->lastframe;
   if (os->top == os->sobjs_last) {
     sobjs_resize(L, os, os->sobjsnum * 2);
   }
   head = os->top;
   head->body = luaM_malloc(L, size);
-  f->top = os->top = os->top + 1;
+  os->frames[os->findex-1].top = os->top = os->top + 1;
   return head->body;
 }
 
 LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
   OStack *os = ostack(L);
   Frame *f = &os->frames[os->findex];
-  f->prevframe = os->lastframe;
-  f->findex = os->findex;
   f->base = f->top = os->top;
-  os->lastframe = f;
   os->findex += 1;
   lua_assert(os->findex < os->framesnum);
   return f;
@@ -89,17 +85,15 @@ LUAI_FUNC Frame *ostack_closeframe(lua_State *L, int findex) {
       freeobj(L, top->body);
     }
   }
-  os->lastframe = f - 1;
   os->findex = findex;
   os->top = f->base;
-  return os->lastframe;
+  return &os->frames[findex-1];
 }
 
 LUAI_FUNC OStack *ostack_init(lua_State *L) {
   OStack *os = ostack(L);
   os->framesnum = 0;
   os->findex = 0;
-  os->lastframe = NULL;
   frames_resize(L, os, OSTACK_MINFRAME);
   os->sobjs = NULL;
   os->sobjsnum = 0;
@@ -125,28 +119,25 @@ LUAI_FUNC SObject *ostack_getsobj(OStack *os, Frame *frame, GCObject *o) {
   return NULL;
 }
 
-LUAI_FUNC Frame *ostack_getframe(lua_State *L, GCObject *o) {
+LUAI_FUNC int ostack_getframe(lua_State *L, GCObject *o) {
   OStack *os = ostack(L);
-  Frame *f = os->lastframe;
+  int i;
   lua_assert(is_onstack(o));
-  lua_assert(f);
-  while (f) {
+  for (i=os->findex-1;i>=0;i--) {
+    Frame *f = &os->frames[i];
     if (ostack_getsobj(os, f, o))
-      return f;
-    f = f->prevframe;
+      return i;
   }
   lua_assert(0);
-  return NULL;
+  return -1;
 }
 
 LUAI_FUNC GCObject *ostack2heap(lua_State *L, GCObject *src) {
   OStack *os = ostack(L);
-  Frame *f = os->lastframe;
   SObject *head;
-  lua_assert(f);
-  while (!(head = ostack_getsobj(os, f, src))) {
-    f = f->prevframe;
-    lua_assert(f);
+  int i = os->findex - 1;
+  while (!(head = ostack_getsobj(os, &os->frames[i], src))) {
+    lua_assert(--i >= 0);
   }
   lua_assert(head);
   lua_assert(head->body && src == head->body);

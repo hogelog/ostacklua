@@ -650,24 +650,27 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         }
       }
       case OP_FORLOOP: {
+        lua_Number findex = nvalue(ra+3);
         lua_Number step = nvalue(ra+2);
         lua_Number idx = luai_numadd(nvalue(ra), step); /* increment index */
         lua_Number limit = nvalue(ra+1);
+        lua_assert(findex!=0.0);
         if (luai_numlt(0, step) ? luai_numle(idx, limit)
                                 : luai_numle(limit, idx)) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
           setnvalue(ra, idx);  /* update internal index... */
-          setnvalue(ra+3, idx);  /* ...and external index */
-          ostack_closeframe(L, L->ostack.findex-1);
-          ostack_newframe(L);
+          setnvalue(ra+4, idx);  /* ...and external index */
+          ostack_closeframe(L, cast(int, findex));
+          setnvalue(ra+3, ostack_newframe(L));
         } else
-          ostack_closeframe(L, L->ostack.findex-1);
+          ostack_closeframe(L, cast(int, findex));
         continue;
       }
       case OP_FORPREP: {
         const TValue *init = ra;
         const TValue *plimit = ra+1;
         const TValue *pstep = ra+2;
+        TValue *findex = ra+3;
         L->savedpc = pc;  /* next steps may throw errors */
         if (!tonumber(init, ra))
           luaG_runerror(L, LUA_QL("for") " initial value must be a number");
@@ -675,7 +678,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           luaG_runerror(L, LUA_QL("for") " limit must be a number");
         else if (!tonumber(pstep, ra+2))
           luaG_runerror(L, LUA_QL("for") " step must be a number");
-        ostack_newframe(L);
+        setnvalue(findex, ostack_newframe(L));
         setnvalue(ra, luai_numsub(nvalue(ra), nvalue(pstep)));
         dojump(L, pc, GETARG_sBx(i));
         continue;

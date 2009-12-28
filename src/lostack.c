@@ -66,16 +66,16 @@ LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size) {
   return head->body;
 }
 
-LUAI_FUNC Frame *ostack_newframe(lua_State *L) {
+LUAI_FUNC int ostack_newframe(lua_State *L) {
   OStack *os = ostack(L);
   Frame *f = &os->frames[os->findex];
+  lua_assert(os->findex < os->framesnum);
   f->base = f->top = os->top;
   os->findex += 1;
-  lua_assert(os->findex < os->framesnum);
-  return f;
+  return os->findex - 1;
 }
 
-LUAI_FUNC Frame *ostack_closeframe(lua_State *L, int findex) {
+LUAI_FUNC int ostack_closeframe(lua_State *L, int findex) {
   OStack *os = ostack(L);
   Frame *f = &os->frames[findex];
   SObject *top = os->top, *base = f->base;
@@ -87,7 +87,7 @@ LUAI_FUNC Frame *ostack_closeframe(lua_State *L, int findex) {
   }
   os->findex = findex;
   os->top = f->base;
-  return &os->frames[findex-1];
+  return findex - 1;
 }
 
 LUAI_FUNC OStack *ostack_init(lua_State *L) {

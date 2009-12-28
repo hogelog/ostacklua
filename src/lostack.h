@@ -24,8 +24,8 @@ typedef struct OStack {
 #define ostack_new(L,t) cast(t *, ostack_alloc(L, sizeof(t)))
 
 LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size);
-LUAI_FUNC Frame *ostack_newframe(lua_State *L);
-LUAI_FUNC Frame *ostack_closeframe(lua_State *L, int findex);
+LUAI_FUNC int ostack_newframe(lua_State *L);
+LUAI_FUNC int ostack_closeframe(lua_State *L, int findex);
 LUAI_FUNC OStack *ostack_init(lua_State *L);
 LUAI_FUNC void ostack_close(lua_State *L);
 

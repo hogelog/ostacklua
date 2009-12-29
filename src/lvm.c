@@ -662,8 +662,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           setnvalue(ra+4, idx);  /* ...and external index */
           ostack_closeframe(L, cast(int, findex));
           setnvalue(ra+3, ostack_newframe(L));
-        } else
-          ostack_closeframe(L, cast(int, findex));
+        }
         continue;
       }
       case OP_FORPREP: {
@@ -751,12 +750,16 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_NEWFRAME: {
-        // TODO: implement
-        lua_assert(0);
+        TValue *findex = ra;
+        setnvalue(findex, ostack_newframe(L));
+        continue;
       }
       case OP_CLOSEFRAME: {
-        // TODO: implement
-        lua_assert(0);
+        lua_Number findex = nvalue(ra);
+        lua_assert(findex!=0.0);
+        ostack_closeframe(L, cast(int, findex));
+        setnvalue(ra+3, ostack_newframe(L));
+        continue;
       }
       case OP_VARARG: {
         int b = GETARG_B(i) - 1;

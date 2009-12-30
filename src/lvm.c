@@ -755,10 +755,9 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_CLOSEFRAME: {
-        lua_Number findex = nvalue(ra);
-        lua_assert(findex!=0.0);
+        lua_Number findex = nvalue(ra) + GETARG_sBx(i);
+        lua_assert(findex>=0.0);
         ostack_closeframe(L, cast(int, findex));
-        setnvalue(ra+3, ostack_newframe(L));
         continue;
       }
       case OP_VARARG: {

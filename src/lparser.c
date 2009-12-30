@@ -1118,7 +1118,6 @@ static void forstat (LexState *ls, int line) {
   TString *varname;
   BlockCnt bl;
   int base = fs->freereg;
-  luaK_codeABx(fs, OP_NEWFRAME, base+3, 0);
   enterblock(fs, &bl, 1);  /* scope for loop and control variables */
   luaX_next(ls);  /* skip `for' */
   varname = str_checkname(ls);  /* first variable name */
@@ -1129,7 +1128,7 @@ static void forstat (LexState *ls, int line) {
   }
   check_match(ls, TK_END, TK_FOR, line);
   leaveblock(fs);  /* loop scope (`break' jumps to this point) */
-  luaK_codeABx(fs, OP_CLOSEFRAME, base+3, 0);
+  luaK_codeAsBx(fs, OP_CLOSEFRAME, base+3, 0);
 }
 
 

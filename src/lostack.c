@@ -90,6 +90,13 @@ LUAI_FUNC int ostack_closeframe(lua_State *L, int findex) {
   return findex - 1;
 }
 
+LUAI_FUNC int ostack_renewframe(lua_State *L, TValue *findex) {
+  int i;
+  ostack_closeframe(L, nvalue(findex));
+  setnvalue(findex, (i = ostack_newframe(L)));
+  return i;
+}
+
 LUAI_FUNC OStack *ostack_init(lua_State *L) {
   OStack *os = ostack(L);
   os->framesnum = 0;

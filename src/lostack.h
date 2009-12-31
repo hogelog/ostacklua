@@ -25,6 +25,7 @@ typedef struct OStack {
 
 LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size);
 LUAI_FUNC int ostack_newframe(lua_State *L);
+LUAI_FUNC int ostack_renewframe(lua_State *L, TValue *findex);
 LUAI_FUNC int ostack_closeframe(lua_State *L, int findex);
 LUAI_FUNC OStack *ostack_init(lua_State *L);
 LUAI_FUNC void ostack_close(lua_State *L);

@@ -653,7 +653,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         lua_Number step = nvalue(ra+3);
         lua_Number idx = luai_numadd(nvalue(ra+1), step); /* increment index */
         lua_Number limit = nvalue(ra+2);
-        lua_assert(nvalue(ra)!=0.0);
+        lua_assert(nvalue(ra)!=0);
         if (luai_numlt(0, step) ? luai_numle(idx, limit)
                                 : luai_numle(limit, idx)) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
@@ -754,7 +754,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_CLOSEFRAME: {
         lua_Number findex = nvalue(ra) + GETARG_sBx(i);
         lua_assert(findex>=0.0);
-        ostack_closeframe(L, cast(int, findex));
+        ostack_closeframe(L, cast_int(findex));
         continue;
       }
       case OP_VARARG: {

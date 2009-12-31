@@ -91,9 +91,9 @@ LUAI_FUNC int ostack_closeframe(lua_State *L, int findex) {
 }
 
 LUAI_FUNC int ostack_renewframe(lua_State *L, TValue *findex) {
-  int i;
-  ostack_closeframe(L, nvalue(findex));
-  setnvalue(findex, (i = ostack_newframe(L)));
+  int i = cast_int(nvalue(findex));
+  ostack_closeframe(L, i);
+  setnvalue(findex, ostack_newframe(L));
   return i;
 }
 

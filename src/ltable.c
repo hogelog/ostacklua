@@ -597,6 +597,10 @@ Table *luaH_ostack2heap(lua_State *L, Table *src) {
   int i;
   int asize = src->sizearray;
   int nsize = src->node == dummynode ? 0 : sizenode(src);
+  Table *mt = src->metatable;
+  if (mt && is_onstack(obj2gco(mt))) {
+    ostack2heap(L, obj2gco(mt));
+  }
   for (i=0;i<asize;i++) {
     TValue *o = &src->array[i];
     if (iscollectable(o) && gcvalue(o) != obj2gco(src) && is_onstack(gcvalue(o))) {

@@ -270,6 +270,17 @@ static void traversestack (global_State *g, lua_State *l) {
   checkstacksizes(l, lim);
 }
 
+static void traverseostack (global_State *g, lua_State *l) {
+  OStack *os = ostack(l);
+  SObject *sobjs = os->sobjs, *top = os->top, *o;
+  for (o = sobjs;o<top;o++) {
+    if (o->body) {
+      GCObject *obj = o->body;
+      lua_assert(obj->gch.tt == LUA_TTABLE);
+      traversetable(g, gco2h(obj));
+    }
+  }
+}
 
 /*
 ** traverse one gray object, turning it to black.
@@ -303,6 +314,7 @@ static l_mem propagatemark (global_State *g) {
       g->grayagain = o;
       black2gray(o);
       traversestack(g, th);
+      traverseostack(g, th);
       return sizeof(lua_State) + sizeof(TValue) * th->stacksize +
                                  sizeof(CallInfo) * th->size_ci;
     }

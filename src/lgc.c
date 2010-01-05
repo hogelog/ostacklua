@@ -691,8 +691,7 @@ void luaC_barrierf (lua_State *L, GCObject *o, GCObject *v) {
 void luaC_barrierback (lua_State *L, Table *t) {
   global_State *g = G(L);
   GCObject *o = obj2gco(t);
-  
-  // TODO: check is it okey
+ 
   if (is_onstack(obj2gco(t))) return;
 
   lua_assert(isblack(o) && !isdead(g, o));

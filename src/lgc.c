@@ -276,15 +276,20 @@ static void traverseostack (global_State *g, lua_State *l) {
   for (sobj=os->sobjs;sobj<top;sobj++) {
     if (sobj->body) {
       GCObject *o = sobj->body;
+      white2gray(o);
       switch(o->gch.tt) {
         case LUA_TTABLE: {
           traversetable(g, gco2h(o));
           break;
         }
+        case LUA_TUSERDATA: {
+          Table *mt = gco2u(o)->metatable;
+          markobject(g, obj2gco(mt));
+          break;
+        }
         // TODO: implement
         default: lua_assert(0);
       }
-      white2gray(o);
       gray2black(o);
     }
   }

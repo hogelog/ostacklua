@@ -374,7 +374,9 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
 Table *luaH_ostack_new (lua_State *L, int narray, int nhash) {
   Table *t = ostack_new(L, Table);
   t->tt = LUA_TTABLE;
+  t->marked = luaC_white(G(L));;
   set_onstack(L, obj2gco(t));
+  t->next = NULL;
   t->metatable = NULL;
   t->flags = cast_byte(~0);
   /* temporary values (kept only if some malloc fails) */

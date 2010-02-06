@@ -8,8 +8,10 @@
 #include "ltable.h"
 #include "lfunc.h"
 #include "lstring.h"
+#include "ldo.h"
 
 static void freeobj (lua_State *L, GCObject *o) {
+  global_State *g = G(L);
   lua_assert(is_onstack(o));
   switch (o->gch.tt) {
     case LUA_TPROTO: luaF_freeproto(L, gco2p(o)); break;
@@ -27,6 +29,20 @@ static void freeobj (lua_State *L, GCObject *o) {
       break;
     }
     case LUA_TUSERDATA: {
+      const Udata *udata = rawgco2u(o);
+      const TValue *tm = fasttm(L, udata->uv.metatable, TM_GC);
+      if (tm != NULL) {
+        lu_byte oldah = L->allowhook;
+        lu_mem oldt = g->GCthreshold;
+        L->allowhook = 0;  /* stop debug hooks during GC tag method */
+        g->GCthreshold = 2*g->totalbytes;  /* avoid GC steps */
+        setobj2s(L, L->top, tm);
+        setuvalue(L, L->top+1, udata);
+        L->top += 2;
+        luaD_call(L, L->top - 2, 0);
+        L->allowhook = oldah;  /* restore hooks */
+        g->GCthreshold = oldt;  /* restore threshold */
+      }
       luaM_freemem(L, o, sizeudata(gco2u(o)));
       break;
     }
@@ -150,7 +166,10 @@ LUAI_FUNC GCObject *ostack2heap(lua_State *L, GCObject *src) {
   lua_assert(head->body && src == head->body);
   switch(src->gch.tt) {
     case LUA_TTABLE:
-      luaH_ostack2heap(L, &src->h);
+      luaH_ostack2heap(L, gco2h(src));
+      break;
+    case LUA_TUSERDATA:
+      luaS_ostack2heapu(L, rawgco2u(src));
       break;
     // TODO: implement
     default:

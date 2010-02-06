@@ -110,3 +110,26 @@ Udata *luaS_newudata (lua_State *L, size_t s, Table *e) {
   G(L)->mainthread->next = obj2gco(u);
   return u;
 }
+
+Udata *luaS_ostack_newudata (lua_State *L, size_t s, Table *e) {
+  Udata *u;
+  if (s > MAX_SIZET - sizeof(Udata))
+    luaM_toobig(L);
+  u = cast(Udata *, ostack_alloc(L, s + sizeof(Udata)));
+  u->uv.marked = luaC_white(G(L));  /* is not finalized */
+  u->uv.tt = LUA_TUSERDATA;
+  set_onstack(L, obj2gco(&u->uv));
+  u->uv.next = NULL;
+  u->uv.len = s;
+  u->uv.metatable = NULL;
+  u->uv.env = e;
+  return u;
+}
+
+Udata *luaS_ostack2heapu(lua_State *L, Udata *src) {
+  Table *mt = src->uv.metatable;
+  if (mt && is_onstack(obj2gco(mt))) {
+    ostack2heap(L, obj2gco(mt));
+  }
+  return src;
+}

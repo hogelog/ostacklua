@@ -35,6 +35,7 @@ LUAI_FUNC int ostack_getframe(lua_State *L, GCObject *o);
 LUAI_FUNC GCObject *ostack2heap(lua_State *L, GCObject *src);
 
 #define isneedcopy(L,t,o) (is_onstack(o) && \
-     (!is_onstack(obj2gco(t)) || ostack_getframe(L,obj2gco(t))<ostack_getframe(L,o)))
+     (!is_onstack(obj2gco(t)) \
+      || ostack_getframe(L,obj2gco(t))<ostack_getframe(L,o)))
 
 #endif

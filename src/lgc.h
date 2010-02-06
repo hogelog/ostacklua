@@ -86,12 +86,6 @@
 #define luaC_barrier(L,p,v) { if (valiswhite(v) && isblack(obj2gco(p)))  \
 	luaC_barrierf(L,obj2gco(p),gcvalue(v)); }
 
-#define luaC_barriert(L,t,v) \
-  { if (iscollectable(v) && isneedcopy(L,(t),gcvalue(v))) \
-    ostack2heap(L, gcvalue(v)); \
-  if (valiswhite(v) && isblack(obj2gco(t))) \
-    luaC_barrierback(L,t); }
-
 #define luaC_objbarrier(L,p,o)  \
 	{ if (iswhite(obj2gco(o)) && isblack(obj2gco(p))) \
 		luaC_barrierf(L,obj2gco(p),obj2gco(o)); }
@@ -101,6 +95,9 @@
     ostack2heap(L, obj2gco(o)); \
   if (iswhite(obj2gco(o)) && isblack(obj2gco(t))) \
     luaC_barrierback(L,t); }
+
+#define luaC_barriert(L,t,v) \
+  if (iscollectable(v)) luaC_objbarriert(L,(t),gcvalue(v))
 
 LUAI_FUNC size_t luaC_separateudata (lua_State *L, int all);
 LUAI_FUNC void luaC_callGCTM (lua_State *L);

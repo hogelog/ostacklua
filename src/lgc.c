@@ -272,12 +272,18 @@ static void traversestack (global_State *g, lua_State *l) {
 
 static void traverseostack (global_State *g, lua_State *l) {
   OStack *os = ostack(l);
-  SObject *sobjs = os->sobjs, *top = os->top, *o;
-  for (o = sobjs;o<top;o++) {
-    if (o->body) {
-      GCObject *obj = o->body;
-      lua_assert(obj->gch.tt == LUA_TTABLE);
-      traversetable(g, gco2h(obj));
+  SObject *sobj, *top = os->top;
+  for (sobj=os->sobjs;sobj<top;sobj++) {
+    if (sobj->body) {
+      GCObject *o = sobj->body;
+      switch(o->gch.tt) {
+        case LUA_TTABLE: {
+          traversetable(g, gco2h(obj));
+          break;
+        }
+        // TODO: implement
+        default: lua_assert(0);
+      }
       white2gray(obj);
       gray2black(obj);
     }

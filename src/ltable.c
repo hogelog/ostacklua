@@ -296,7 +296,6 @@ static void setnodevector (lua_State *L, Table *t, int size) {
 
 
 static void resize (lua_State *L, Table *t, int nasize, int nhsize) {
-  // TODO: copy2heap table
   int i;
   int oldasize = t->sizearray;
   int oldhsize = t->lsizenode;

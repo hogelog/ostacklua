@@ -114,6 +114,7 @@ static void close_state (lua_State *L) {
   freestack(L, L);
   lua_assert(g->totalbytes == sizeof(LG));
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
+  printf("# gc: %.5f s\n", g->gctime);
 }
 
 lua_State *luaE_newthread (lua_State *L) {
@@ -181,6 +182,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcpause = LUAI_GCPAUSE;
   g->gcstepmul = LUAI_GCMUL;
   g->gcdept = 0;
+  g->gctime = 0.0;
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
 
   ostack_init(L);
@@ -218,3 +220,18 @@ LUA_API void lua_close (lua_State *L) {
   close_state(L);
 }
 
+__attribute__((noinline)) void profile_start() {
+  TIMER0_CR = 0;
+  TIMER0_DATA = 0;
+  TIMER0_CR = TIMER_ENABLE | TIMER_DIV;
+  TIMER1_CR = 0;
+  TIMER1_DATA = 0;
+  TIMER1_CR = TIMER_ENABLE | TIMER_CASCADE;
+}
+
+__attribute__((noinline)) float64 profile_end() {
+  vu32 t0d = TIMER0_DATA;
+  vu32 t1d = TIMER1_DATA;
+  u32 clk = (t1d<<16) | t0d;
+  return (float64)clk / TIMER_CLOCK;
+}

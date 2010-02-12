@@ -15,6 +15,7 @@
 #include "lzio.h"
 
 
+#include <PA9.h>
 
 struct lua_longjmp;  /* defined in ldo.c */
 
@@ -84,6 +85,7 @@ typedef struct global_State {
   lu_mem totalbytes;  /* number of bytes currently allocated */
   lu_mem estimate;  /* an estimate of number of bytes actually in use */
   lu_mem gcdept;  /* how much GC is `behind schedule' */
+  float64 gctime;
   int gcpause;  /* size of pause between successive GCs */
   int gcstepmul;  /* GC `granularity' */
   lua_CFunction panic;  /* to be called in unprotected errors */
@@ -165,6 +167,14 @@ union GCObject {
 
 LUAI_FUNC lua_State *luaE_newthread (lua_State *L);
 LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
+
+#define SYSTEM_TIMER_CLOCK (2<<25)
+#define TIMER_DIV TIMER_DIV_256
+#define TIMER_CLOCK (SYSTEM_TIMER_CLOCK/256)
+
+__attribute__((noinline)) void profile_start();
+
+__attribute__((noinline)) float64 profile_end();
 
 #endif
 

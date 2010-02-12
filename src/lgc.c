@@ -637,8 +637,11 @@ static l_mem singlestep (lua_State *L) {
 
 
 void luaC_step (lua_State *L) {
-  global_State *g = G(L);
-  l_mem lim = (GCSTEPSIZE/100) * g->gcstepmul;
+  global_State *g;
+  l_mem lim;
+  profile_start();
+  g = G(L);
+  lim = (GCSTEPSIZE/100) * g->gcstepmul;
   if (lim == 0)
     lim = (MAX_LUMEM-1)/2;  /* no limit */
   g->gcdept += g->totalbytes - g->GCthreshold;
@@ -659,6 +662,7 @@ void luaC_step (lua_State *L) {
     lua_assert(g->totalbytes >= g->estimate);
     setthreshold(g);
   }
+  g->gctime += profile_end();
 }
 
 

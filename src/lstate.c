@@ -139,6 +139,23 @@ void luaE_freethread (lua_State *L, lua_State *L1) {
   luaM_freemem(L, fromstate(L1), state_size(lua_State));
 }
 
+static void init_gcopool(lua_State *L, size_t size) {
+  global_State *g = G(L);
+  int i;
+  GCObject *top, *next = NULL;
+  g->gcopool.size = size;
+  top = luaM_newvector(L, size, GCObject);
+  g->gcopool.top = g->gcopool.freelist = top;
+  for (i=size-1;i>=0;--i) {
+    top[i].gch.next = next;
+    next = &top[i];
+  }
+}
+
+static void resize_gcopool(lua_State *L, size_t nsize) {
+  puts("not implemented resize_gcopool");
+  exit(1);
+}
 
 LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   int i;
@@ -178,6 +195,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcpause = LUAI_GCPAUSE;
   g->gcstepmul = LUAI_GCMUL;
   g->gcdept = 0;
+  init_gcopool(L, GCOPOOL_MINSIZE);
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
   if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
     /* memory allocation error: free partial state */
@@ -210,5 +228,21 @@ LUA_API void lua_close (lua_State *L) {
   lua_assert(G(L)->tmudata == NULL);
   luai_userstateclose(L);
   close_state(L);
+}
+
+void *lua_poolnew (lua_State *L) {
+  global_State *g = G(L);
+  GCObject *p = g->gcopool.freelist;
+  if (g->gcopool.freelist == NULL) {
+    resize_gcopool(L, g->gcopool.size*2);
+  }
+  g->gcopool.freelist = p->gch.next;
+  return p;
+}
+
+void lua_poolfree (lua_State *L, GCObject *p) {
+  global_State *g = G(L);
+  p->gch.next = g->gcopool.freelist;
+  g->gcopool.freelist = p;
 }
 

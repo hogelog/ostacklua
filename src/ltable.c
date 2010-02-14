@@ -356,7 +356,7 @@ static void rehash (lua_State *L, Table *t, const TValue *ek) {
 
 
 Table *luaH_new (lua_State *L, int narray, int nhash) {
-  Table *t = luaM_new(L, Table);
+  Table *t = lua_poolnew(L);
   luaC_link(L, obj2gco(t), LUA_TTABLE);
   t->metatable = NULL;
   t->flags = cast_byte(~0);
@@ -375,7 +375,7 @@ void luaH_free (lua_State *L, Table *t) {
   if (t->node != dummynode)
     luaM_freearray(L, t->node, sizenode(t), Node);
   luaM_freearray(L, t->array, t->sizearray, TValue);
-  luaM_free(L, t);
+  lua_poolfree(L, obj2gco(t));
 }
 
 

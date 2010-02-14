@@ -62,6 +62,8 @@ typedef struct CallInfo {
 #define isLua(ci)	(ttisfunction((ci)->func) && f_isLua(ci))
 
 
+#define GCOPOOL_MINSIZE 1024
+
 /*
 ** `global state', shared by all threads of this state
 */
@@ -91,8 +93,12 @@ typedef struct global_State {
   UpVal uvhead;  /* head of double-linked list of all open upvalues */
   struct Table *mt[NUM_TAGS];  /* metatables for basic types */
   TString *tmname[TM_N];  /* array with tag-method names */
+  struct {
+    int size; 
+    GCObject *top;
+    GCObject *freelist;
+  } gcopool;
 } global_State;
-
 
 /*
 ** `per thread' state
@@ -164,6 +170,9 @@ union GCObject {
 
 LUAI_FUNC lua_State *luaE_newthread (lua_State *L);
 LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
+
+LUAI_FUNC void *lua_poolnew (lua_State *L);
+LUAI_FUNC void lua_poolfree (lua_State *L, GCObject *p);
 
 #endif
 

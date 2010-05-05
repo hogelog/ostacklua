@@ -152,8 +152,7 @@ static void close_state (lua_State *L) {
   lua_assert(g->totalbytes == sizeof(LG));
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
   lua_end = rdtsc();
-  fprintf(stderr, "## execution: %llu cycle, gc: %llu cycle\n", (lua_end - g->lua_start), g->gctime);
-  //fprintf(stderr, "## execution: %.6f s, gc: %.6f s\n", (lua_end - g->lua_start)/1000000.0, g->gctime/1000000.0);
+  fprintf(stderr, "## execution: %llu cycle %d step, gc: %llu cycle\n", (lua_end - g->lua_start), g->gcstep, g->gctime);
 }
 
 
@@ -220,6 +219,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcstepmul = LUAI_GCMUL;
   g->gcdept = 0;
   g->gctime = 0;
+  g->gcstep = 0;
   g->lua_start = rdtsc();
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
   if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {

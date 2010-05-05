@@ -80,7 +80,6 @@ typedef LUAI_UACNUMBER l_uacNumber;
 #define cast_int(i)	cast(int, (i))
 
 
-
 /*
 ** type for virtual-machine instructions
 ** must be an unsigned with (at least) 4 bytes (see details in lopcodes.h)

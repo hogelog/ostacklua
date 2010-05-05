@@ -50,9 +50,9 @@
 
 
 #define markvalue(g,o) { checkconsistency(o); \
-  if (iscollectable(o) && iswhite(gcvalue(o))) reallymarkobject(g,gcvalue(o)); }
+  if (iscollectable(o) && !is_onstack(gcvalue(o)) && iswhite(gcvalue(o))) reallymarkobject(g,gcvalue(o)); }
 
-#define markobject(g,t) { if (iswhite(obj2gco(t))) \
+#define markobject(g,t) { if (!is_onstack(obj2gco(t)) && iswhite(obj2gco(t))) \
 		reallymarkobject(g, obj2gco(t)); }
 
 
@@ -67,7 +67,7 @@ static void removeentry (Node *n) {
 
 
 static void reallymarkobject (global_State *g, GCObject *o) {
-  lua_assert(!o->gch.onstack);
+  lua_assert(!is_onstack(o));
   lua_assert(iswhite(o) && !isdead(g, o));
   white2gray(o);
   switch (o->gch.tt) {
@@ -270,6 +270,30 @@ static void traversestack (global_State *g, lua_State *l) {
   checkstacksizes(l, lim);
 }
 
+static void traverseostack (global_State *g, lua_State *l) {
+  OStack *os = ostack(l);
+  SObject *sobj, *top = os->top;
+  for (sobj=os->sobjs;sobj<top;sobj++) {
+    if (sobj->body) {
+      GCObject *o = sobj->body;
+      white2gray(o);
+      switch(o->gch.tt) {
+        case LUA_TTABLE: {
+          traversetable(g, gco2h(o));
+          break;
+        }
+        case LUA_TUSERDATA: {
+          Table *mt = gco2u(o)->metatable;
+          markobject(g, obj2gco(mt));
+          break;
+        }
+        // TODO: implement
+        default: lua_assert(0);
+      }
+      gray2black(o);
+    }
+  }
+}
 
 /*
 ** traverse one gray object, turning it to black.
@@ -277,7 +301,7 @@ static void traversestack (global_State *g, lua_State *l) {
 */
 static l_mem propagatemark (global_State *g) {
   GCObject *o = g->gray;
-  lua_assert(!o->gch.onstack);
+  lua_assert(!is_onstack(o));
   lua_assert(isgray(o));
   gray2black(o);
   switch (o->gch.tt) {
@@ -303,6 +327,7 @@ static l_mem propagatemark (global_State *g) {
       g->grayagain = o;
       black2gray(o);
       traversestack(g, th);
+      traverseostack(g, th);
       return sizeof(lua_State) + sizeof(TValue) * th->stacksize +
                                  sizeof(CallInfo) * th->size_ci;
     }
@@ -378,7 +403,7 @@ static void cleartable (GCObject *l) {
 
 
 static void freeobj (lua_State *L, GCObject *o) {
-  lua_assert(!o->gch.onstack);
+  lua_assert(!is_onstack(o));
   switch (o->gch.tt) {
     case LUA_TPROTO: luaF_freeproto(L, gco2p(o)); break;
     case LUA_TFUNCTION: luaF_freeclosure(L, gco2cl(o)); break;
@@ -412,7 +437,7 @@ static GCObject **sweeplist (lua_State *L, GCObject **p, lu_mem count) {
   global_State *g = G(L);
   int deadmask = otherwhite(g);
   while ((curr = *p) != NULL && count-- > 0) {
-    lua_assert(!curr->gch.onstack);
+    lua_assert(!is_onstack(curr));
     if (curr->gch.tt == LUA_TTHREAD)  /* sweep open upvalues of each thread */
       sweepwholelist(L, &gco2th(curr)->openupval);
     if ((curr->gch.marked ^ WHITEBITS) & deadmask) {  /* not dead? */
@@ -667,7 +692,6 @@ void luaC_fullgc (lua_State *L) {
 
 
 void luaC_barrierf (lua_State *L, GCObject *o, GCObject *v) {
-  // TODO: if o1(onstack=0) -> o2(onstack=1) then move o2 to heap
   global_State *g = G(L);
   lua_assert(isblack(o) && iswhite(v) && !isdead(g, v) && !isdead(g, o));
   lua_assert(g->gcstate != GCSfinalize && g->gcstate != GCSpause);
@@ -683,9 +707,8 @@ void luaC_barrierf (lua_State *L, GCObject *o, GCObject *v) {
 void luaC_barrierback (lua_State *L, Table *t) {
   global_State *g = G(L);
   GCObject *o = obj2gco(t);
-  
-  // TODO: check is it okey
-  if (t->onstack) return;
+ 
+  if (is_onstack(obj2gco(t))) return;
 
   lua_assert(isblack(o) && !isdead(g, o));
   lua_assert(g->gcstate != GCSfinalize && g->gcstate != GCSpause);
@@ -701,7 +724,7 @@ void luaC_link (lua_State *L, GCObject *o, lu_byte tt) {
   g->rootgc = o;
   o->gch.marked = luaC_white(g);
   o->gch.tt = tt;
-  o->gch.onstack = 0;
+  set_onheap(L, o);
 }
 
 

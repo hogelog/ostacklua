@@ -10,6 +10,7 @@
 #include "lua.h"
 
 #include "lobject.h"
+#include "lostack.h"
 #include "ltm.h"
 #include "lzio.h"
 
@@ -61,14 +62,6 @@ typedef struct CallInfo {
 #define f_isLua(ci)	(!ci_func(ci)->c.isC)
 #define isLua(ci)	(ttisfunction((ci)->func) && f_isLua(ci))
 
-typedef struct ObjectStack {
-  void *head;
-  void *apoint;
-  void *tail;
-  size_t size;
-  void *gregion;
-  StkId tregion;
-} ObjectStack;
 
 /*
 ** `global state', shared by all threads of this state
@@ -103,8 +96,6 @@ typedef struct global_State {
   unsigned gctime;
 } global_State;
 
-#define OBJSTACK_SIZE 512 * 1024 * 1024
-
 LUA_API unsigned getmicrosec();
 
 /*
@@ -137,21 +128,12 @@ struct lua_State {
   GCObject *gclist;
   struct lua_longjmp *errorJmp;  /* current error recover point */
   ptrdiff_t errfunc;  /* current error handling function (stack index) */
-  ObjectStack objstack;
+  OStack ostack;
 };
 
 
 #define G(L)	(L->l_G)
-
-#define ostack_head(L) (L->objstack.head)
-#define ostack_apoint(L) (L->objstack.apoint)
-#define ostack_size(L) (L->objstack.size)
-#define ostack_tail(L) (L->objstack.tail)
-#define ostack_gregion(L) (L->objstack.gregion)
-#define ostack_tregion(L) (L->objstack.tregion)
-#define ostack_alloc(L,t,c) ostack_alloc_(L, sizeof(t)*(c))
-#define ostack_usage(L) cast(size_t, cast(lu_byte *, ostack_apoint(L)) - cast(lu_byte *, L->objstack.head))
-
+#define ostack(L) (&L->ostack)
 
 /*
 ** Union of all collectable objects
@@ -187,22 +169,6 @@ union GCObject {
 
 LUAI_FUNC lua_State *luaE_newthread (lua_State *L);
 LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
-
-LUA_API void* ostack_alloc_(lua_State *L, size_t size) ;
-LUA_API GCObject *lua_ostack_dupgcobj(lua_State *L, GCObject *src);
-LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src);
-LUA_API int lua_ostack_refix(lua_State *L, GCObject *heap, GCObject *stack);
-
-#define lua_copy2heap(L,v) { \
-    GCObject *dup; \
-    lua_assert(iscollectable(v) && onstack(gcvalue(v))); \
-    dup = lua_dupgcobj(L, gcvalue(v)); \
-    dup->gch.marked = luaC_white(G(L)); \
-    (v)->value.gc = dup; \
-  }
-
-#define isneedcopy(L,t,v) (onstack((v)) && \
-     ((t)->onstack==0 || (cast(void *,(t)) < ostack_gregion(L))))
 
 #endif
 

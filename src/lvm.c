@@ -20,6 +20,7 @@
 #include "lgc.h"
 #include "lobject.h"
 #include "lopcodes.h"
+#include "lostack.h"
 #include "lstate.h"
 #include "lstring.h"
 #include "ltable.h"
@@ -104,7 +105,6 @@ static void callTM (lua_State *L, const TValue *f, const TValue *p1,
   luaD_call(L, L->top - 4, 0);
 }
 
-
 void luaV_gettable (lua_State *L, const TValue *t, TValue *key, StkId val) {
   int loop;
   for (loop = 0; loop < MAXTAGLOOP; loop++) {
@@ -140,6 +140,8 @@ void luaV_settable (lua_State *L, const TValue *t, TValue *key, StkId val) {
       TValue *oldval = luaH_set(L, h, key); /* do a primitive set */
       if (!ttisnil(oldval) ||  /* result is no nil? */
           (tm = fasttm(L, h->metatable, TM_NEWINDEX)) == NULL) { /* or no TM? */
+        if (iscollectable(val) && isneedcopy(L,h,gcvalue(val)))
+          ostack2heap(L, gcvalue(val));
         setobj2t(L, oldval, val);
         luaC_barriert(L, h, val);
         return;
@@ -457,11 +459,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_NEWTABLE: {
         int nb = luaO_fb2int(GETARG_B(i));
         int nc = luaO_fb2int(GETARG_C(i));
-        if (nb > 0 || nc > 0) {
-          sethvalue(L, ra, luaH_ostack_new(L, nb, nc));
-        } else {
-          sethvalue(L, ra, luaH_new(L, 0, 0));
-        }
+        sethvalue(L, ra, luaH_ostack_new(L, nb, nc));
         Protect(luaC_checkGC(L));
         continue;
       }
@@ -652,53 +650,47 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         }
       }
       case OP_FORLOOP: {
-        TValue *objstack = ra+3;
-        lua_Number step = nvalue(ra+2);
-        lua_Number idx = luai_numadd(nvalue(ra), step); /* increment index */
-        lua_Number limit = nvalue(ra+1);
-        lua_assert(pvalue(objstack) && pvalue(objstack) <= ostack_apoint(L));
-        ostack_apoint(L) = pvalue(objstack);
+        lua_Number step = nvalue(ra+3);
+        lua_Number idx = luai_numadd(nvalue(ra+1), step); /* increment index */
+        lua_Number limit = nvalue(ra+2);
+        lua_assert(nvalue(ra)!=0);
         if (luai_numlt(0, step) ? luai_numle(idx, limit)
                                 : luai_numle(limit, idx)) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
-          setnvalue(ra, idx);  /* update internal index... */
+          setnvalue(ra+1, idx);  /* update internal index... */
           setnvalue(ra+4, idx);  /* ...and external index */
+          ostack_renewframe(L, ra);
         }
         continue;
       }
       case OP_FORPREP: {
-        const TValue *init = ra;
-        const TValue *plimit = ra+1;
-        const TValue *pstep = ra+2;
-        TValue *objstack = ra+3;
+        const TValue *init = ra+1;
+        const TValue *plimit = ra+2;
+        const TValue *pstep = ra+3;
         L->savedpc = pc;  /* next steps may throw errors */
-        if (!tonumber(init, ra))
+        if (!tonumber(init, ra+1))
           luaG_runerror(L, LUA_QL("for") " initial value must be a number");
-        else if (!tonumber(plimit, ra+1))
+        else if (!tonumber(plimit, ra+2))
           luaG_runerror(L, LUA_QL("for") " limit must be a number");
-        else if (!tonumber(pstep, ra+2))
-          luaG_runerror(L, LUA_QL("for") " step must be a number");
         else if (!tonumber(pstep, ra+3))
           luaG_runerror(L, LUA_QL("for") " step must be a number");
-        lua_assert(ttype(objstack) == LUA_TLIGHTUSERDATA);
-        setpvalue(objstack, ostack_apoint(L));
-        ostack_gregion(L) = pvalue(objstack);
-        setnvalue(ra, luai_numsub(nvalue(ra), nvalue(pstep)));
+        setnvalue(ra+1, luai_numsub(nvalue(ra+1), nvalue(pstep)));
         dojump(L, pc, GETARG_sBx(i));
         continue;
       }
       case OP_TFORLOOP: {
-        StkId cb = ra + 3;  /* call base */
-        setobjs2s(L, cb+2, ra+2);
-        setobjs2s(L, cb+1, ra+1);
-        setobjs2s(L, cb, ra);
+        StkId cb = ra + 4;  /* call base */
+        setobjs2s(L, cb+2, ra+3);
+        setobjs2s(L, cb+1, ra+2);
+        setobjs2s(L, cb, ra+1);
         L->top = cb+3;  /* func. + 2 args (state and index) */
         Protect(luaD_call(L, cb, GETARG_C(i)));
         L->top = L->ci->top;
-        cb = RA(i) + 3;  /* previous call may change the stack */
+        cb = RA(i) + 4;  /* previous call may change the stack */
         if (!ttisnil(cb)) {  /* continue loop? */
           setobjs2s(L, cb-1, cb);  /* save control variable */
           dojump(L, pc, GETARG_sBx(*pc));  /* jump back */
+          ostack_renewframe(L, RA(i));
         }
         pc++;
         continue;
@@ -717,12 +709,13 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         h = hvalue(ra);
         last = ((c-1)*LFIELDS_PER_FLUSH) + n;
         if (last > h->sizearray) { /* needs more space? */
-          if (onstack(gcvalue(ra))) lua_copy2heap(L, ra);
           h = hvalue(ra);
           luaH_resizearray(L, h, last);  /* pre-alloc it at once */
         }
         for (; n > 0; n--) {
           TValue *val = ra+n;
+          if (iscollectable(val) && isneedcopy(L,h,gcvalue(val)))
+            ostack2heap(L, gcvalue(val));
           setobj2t(L, luaH_setnum(L, h, last--), val);
           luaC_barriert(L, h, val);
         }
@@ -733,7 +726,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_CLOSURE: {
-        // TODO: to ostack_alloc
+        // TODO: to ostack_new
         Proto *p;
         Closure *ncl;
         int nup, j;
@@ -751,6 +744,17 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         }
         setclvalue(L, ra, ncl);
         Protect(luaC_checkGC(L));
+        continue;
+      }
+      case OP_NEWFRAME: {
+        setnvalue(ra, ostack_newframe(L));
+        lua_assert(nvalue(ra)>=0.0);
+        continue;
+      }
+      case OP_CLOSEFRAME: {
+        lua_Number findex = nvalue(ra) + GETARG_sBx(i);
+        lua_assert(findex>=0.0);
+        ostack_closeframe(L, cast_int(findex));
         continue;
       }
       case OP_VARARG: {

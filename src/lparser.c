@@ -994,16 +994,25 @@ static void whilestat (LexState *ls, int line) {
   int whileinit;
   int condexit;
   BlockCnt bl;
+  int base = fs->freereg;
+  luaK_codeAsBx(fs, OP_NEWFRAME, base, 0);
+  new_localvarliteral(ls, "(for frame)", 0);
+  luaK_reserveregs(fs, 1); /* frame index */
+  adjustlocalvars(ls, 1);
+
   luaX_next(ls);  /* skip WHILE */
   whileinit = luaK_getlabel(fs);
   condexit = cond(ls);
   enterblock(fs, &bl, 1);
   checknext(ls, TK_DO);
   block(ls);
+  luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
+  luaK_codeAsBx(fs, OP_NEWFRAME, base, 0);
   luaK_patchlist(fs, luaK_jump(fs), whileinit);
   check_match(ls, TK_END, TK_WHILE, line);
   leaveblock(fs);
   luaK_patchtohere(fs, condexit);  /* false conditions finish the loop */
+  luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
 }
 
 
@@ -1013,10 +1022,17 @@ static void repeatstat (LexState *ls, int line) {
   FuncState *fs = ls->fs;
   int repeat_init = luaK_getlabel(fs);
   BlockCnt bl1, bl2;
+  int base = fs->freereg;
+  luaK_codeAsBx(fs, OP_NEWFRAME, base, 0);
+  new_localvarliteral(ls, "(for frame)", 0);
+  luaK_reserveregs(fs, 1); /* frame index */
+  adjustlocalvars(ls, 1);
+
   enterblock(fs, &bl1, 1);  /* loop block */
   enterblock(fs, &bl2, 0);  /* scope block */
   luaX_next(ls);  /* skip REPEAT */
   chunk(ls);
+  luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
   check_match(ls, TK_UNTIL, TK_REPEAT, line);
   condexit = cond(ls);  /* read condition (inside scope block) */
   if (!bl2.upval) {  /* no upvalues? */
@@ -1030,6 +1046,7 @@ static void repeatstat (LexState *ls, int line) {
     luaK_patchlist(ls->fs, luaK_jump(fs), repeat_init);  /* and repeat */
   }
   leaveblock(fs);  /* finish loop */
+  luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
 }
 
 
@@ -1043,13 +1060,12 @@ static int exp1 (LexState *ls) {
 }
 
 
-#define FOR_CONTROLVARS 4
 static void forbody (LexState *ls, int base, int line, int nvars, int isnum) {
   /* forbody -> DO block */
   BlockCnt bl;
   FuncState *fs = ls->fs;
   int prep, endfor;
-  adjustlocalvars(ls, FOR_CONTROLVARS);  /* control variables */
+  adjustlocalvars(ls, 4);  /* control variables */
   checknext(ls, TK_DO);
   prep = isnum ? luaK_codeAsBx(fs, OP_FORPREP, base, NO_JUMP) : luaK_jump(fs);
   enterblock(fs, &bl, 0);  /* scope for declared variables */
@@ -1069,11 +1085,12 @@ static void fornum (LexState *ls, TString *varname, int line) {
   /* fornum -> NAME = exp1,exp1[,exp1] forbody */
   FuncState *fs = ls->fs;
   int base = fs->freereg;
-  new_localvarliteral(ls, "(for index)", 0);
-  new_localvarliteral(ls, "(for limit)", 1);
-  new_localvarliteral(ls, "(for step)", 2);
-  new_localvarliteral(ls, "(for objstack)", 3);
+  new_localvarliteral(ls, "(for frame)", 0);
+  new_localvarliteral(ls, "(for index)", 1);
+  new_localvarliteral(ls, "(for limit)", 2);
+  new_localvarliteral(ls, "(for step)", 3);
   new_localvar(ls, varname, 4);
+  luaK_reserveregs(fs, 1); /* frame index */
   checknext(ls, '=');
   exp1(ls);  /* initial value */
   checknext(ls, ',');
@@ -1084,10 +1101,6 @@ static void fornum (LexState *ls, TString *varname, int line) {
     luaK_codeABx(fs, OP_LOADK, fs->freereg, luaK_numberK(fs, 1));
     luaK_reserveregs(fs, 1);
   }
-  /* objstack */
-  luaK_codeABx(fs, OP_LOADK, fs->freereg, luaK_ludataK(fs, NULL));
-  luaK_reserveregs(fs, 1);
-
   forbody(ls, base, line, 1, 1);
 }
 
@@ -1099,6 +1112,7 @@ static void forlist (LexState *ls, TString *indexname) {
   int nvars = 0;
   int line;
   int base = fs->freereg;
+  new_localvarliteral(ls, "(for frame)", nvars++);
   /* create control variables */
   new_localvarliteral(ls, "(for generator)", nvars++);
   new_localvarliteral(ls, "(for state)", nvars++);
@@ -1107,11 +1121,12 @@ static void forlist (LexState *ls, TString *indexname) {
   new_localvar(ls, indexname, nvars++);
   while (testnext(ls, ','))
     new_localvar(ls, str_checkname(ls), nvars++);
+  luaK_reserveregs(fs, 1); /* frame index */
   checknext(ls, TK_IN);
   line = ls->linenumber;
-  adjust_assign(ls, FOR_CONTROLVARS, explist1(ls, &e), &e);
-  luaK_checkstack(fs, FOR_CONTROLVARS);  /* extra space to call generator */
-  forbody(ls, base, line, nvars - FOR_CONTROLVARS, 0);
+  adjust_assign(ls, 3, explist1(ls, &e), &e);
+  luaK_checkstack(fs, 3);  /* extra space to call generator */
+  forbody(ls, base, line, nvars - 4, 0);
 }
 
 
@@ -1120,8 +1135,10 @@ static void forstat (LexState *ls, int line) {
   FuncState *fs = ls->fs;
   TString *varname;
   BlockCnt bl;
+  int base = fs->freereg;
   enterblock(fs, &bl, 1);  /* scope for loop and control variables */
   luaX_next(ls);  /* skip `for' */
+  luaK_codeAsBx(fs, OP_NEWFRAME, base, 0);
   varname = str_checkname(ls);  /* first variable name */
   switch (ls->t.token) {
     case '=': fornum(ls, varname, line); break;
@@ -1130,6 +1147,7 @@ static void forstat (LexState *ls, int line) {
   }
   check_match(ls, TK_END, TK_FOR, line);
   leaveblock(fs);  /* loop scope (`break' jumps to this point) */
+  luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
 }
 
 

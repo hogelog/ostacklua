@@ -143,7 +143,7 @@ static void preinit_state (lua_State *L, global_State *g) {
 static void close_state (lua_State *L) {
   global_State *g = G(L);
   unsigned long long lua_end;
-  luaM_freearray(L, ostack_head(L), ostack_size(L), lu_byte);
+  ostack_close(L);
   luaF_close(L, L->stack);  /* close all upvalues for this thread */
   luaC_freeall(L);  /* collect all objects */
   lua_assert(g->rootgc == obj2gco(L));
@@ -155,14 +155,6 @@ static void close_state (lua_State *L) {
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
   lua_end = getmicrosec();
   fprintf(stderr, "## execution: %.6f s, gc: %.6f s\n", (lua_end - g->lua_start)/1000000.0, g->gctime/1000000.0);
-}
-
-static lua_State *ostack_init(lua_State *L) {
-  ostack_head(L) = ostack_apoint(L) = ostack_gregion(L) = luaM_malloc(L, OBJSTACK_SIZE);
-  if (!ostack_head(L)) return NULL;
-  ostack_size(L) = OBJSTACK_SIZE;
-  ostack_tail(L) = cast(lu_byte *, ostack_head(L)) + ostack_size(L);
-  return L;
 }
 
 lua_State *luaE_newthread (lua_State *L) {
@@ -182,6 +174,7 @@ lua_State *luaE_newthread (lua_State *L) {
 
 
 void luaE_freethread (lua_State *L, lua_State *L1) {
+  ostack_close(L1);
   luaF_close(L1, L1->stack);  /* close all upvalues for this thread */
   lua_assert(L1->openupval == NULL);
   luai_userstatefree(L1);
@@ -200,7 +193,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g = &((LG *)L)->g;
   L->next = NULL;
   L->tt = LUA_TTHREAD;
-  L->onstack = 0;
+  set_onheap(L, obj2gco(L));
   g->currentwhite = bit2mask(WHITE0BIT, FIXEDBIT);
   L->marked = luaC_white(g);
   set2bits(L->marked, FIXEDBIT, SFIXEDBIT);
@@ -268,83 +261,3 @@ LUA_API void lua_close (lua_State *L) {
   close_state(L);
 }
 
-LUA_API void* ostack_alloc_(lua_State *L, size_t size) {
-  // TODO: resizable objstack
-  lu_byte *ap = ostack_apoint(L);
-  ostack_apoint(L) = ap + size;
-  lua_assert(ostack_apoint(L) <= ostack_tail(L));
-  return ap;
-}
-
-LUA_API GCObject *lua_ostack_dupgcobj(lua_State *L, GCObject *src) {
-  switch(src->gch.tt) {
-    case LUA_TSTRING: {
-      GCObject *new = ostack_alloc(L, GCObject, 1);
-      memcpy(new, src, sizeof(GCObject));
-      return new;
-    }
-    case LUA_TTABLE: {
-      return obj2gco(luaH_ostack_duphobj(L, &src->h));
-    }
-    // TODO: implement
-    case LUA_TFUNCTION:
-    case LUA_TUSERDATA:
-    case LUA_TTHREAD:
-    default:
-      lua_assert(0); 
-      return NULL;
-  }
-}
-
-LUA_API GCObject *lua_dupgcobj(lua_State *L, GCObject *src) {
-  switch(src->gch.tt) {
-    case LUA_TSTRING: {
-      TString *new = luaS_newlstr(L, getstr(rawgco2ts(src)), gco2ts(src)->len);
-      new->tsv.onstack = 0;
-      return obj2gco(new);
-    }
-    case LUA_TTABLE: {
-      return obj2gco(luaH_duphobj(L, &src->h));
-    }
-    // TODO: implement
-    case LUA_TFUNCTION:
-    case LUA_TUSERDATA:
-    case LUA_TTHREAD:
-    default:
-      lua_assert(0); 
-      return NULL;
-  }
-}
-
-LUA_API int lua_ostack_refix(lua_State *L, GCObject *h, GCObject *s) {
-  void *apoint  = ostack_apoint(L);
-  GCObject *o = ostack_gregion(L);
-  //TValue *t = ostack_tregion(L);
-  TValue *t = L->stack;
-  int count = 0;
-  while (o < cast(GCObject *, apoint)) {
-    if (!onstack(o)) continue;
-    switch(o->gch.tt) {
-      case LUA_TTABLE: {
-        count += luaH_ostack_refix(L, &o->h, h, s);
-        break;
-      }
-      // TODO: implement
-      case LUA_TSTRING:
-      case LUA_TFUNCTION:
-      case LUA_TUSERDATA:
-      case LUA_TTHREAD:
-      default:
-        lua_assert(0); 
-        return -1;
-    }
-    o = o->gch.next;
-  }
-  for (;t < L->stack_last;t++) {
-    if (iscollectable(t) && gcvalue(t)!=s) {
-      ++count;
-      t->value.gc = h;
-    }
-  }
-  return count;
-}

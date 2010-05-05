@@ -141,7 +141,7 @@ static void preinit_state (lua_State *L, global_State *g) {
 
 static void close_state (lua_State *L) {
   global_State *g = G(L);
-  unsigned long long lua_end;
+  uint64_t lua_end;
   luaF_close(L, L->stack);  /* close all upvalues for this thread */
   luaC_freeall(L);  /* collect all objects */
   lua_assert(g->rootgc == obj2gco(L));
@@ -151,8 +151,9 @@ static void close_state (lua_State *L) {
   freestack(L, L);
   lua_assert(g->totalbytes == sizeof(LG));
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
-  lua_end = getmicrosec();
-  fprintf(stderr, "## execution: %.6f s, gc: %.6f s\n", (lua_end - g->lua_start)/1000000.0, g->gctime/1000000.0);
+  lua_end = rdtsc();
+  fprintf(stderr, "## execution: %llu cycle, gc: %llu cycle\n", (lua_end - g->lua_start), g->gctime);
+  //fprintf(stderr, "## execution: %.6f s, gc: %.6f s\n", (lua_end - g->lua_start)/1000000.0, g->gctime/1000000.0);
 }
 
 
@@ -219,7 +220,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcstepmul = LUAI_GCMUL;
   g->gcdept = 0;
   g->gctime = 0;
-  g->lua_start = getmicrosec();
+  g->lua_start = rdtsc();
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
   if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
     /* memory allocation error: free partial state */
@@ -254,3 +255,8 @@ LUA_API void lua_close (lua_State *L) {
   close_state(L);
 }
 
+uint64_t rdtsc () {
+    unsigned int eax, edx;
+    __asm__ volatile("rdtsc" : "=a"(eax), "=d"(edx));
+    return ((uint64_t)edx << 32) | eax;
+}

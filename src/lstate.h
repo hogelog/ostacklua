@@ -92,8 +92,9 @@ typedef struct global_State {
   UpVal uvhead;  /* head of double-linked list of all open upvalues */
   struct Table *mt[NUM_TAGS];  /* metatables for basic types */
   TString *tmname[TM_N];  /* array with tag-method names */
-  unsigned lua_start;
-  unsigned gctime;
+  uint64_t lua_start;
+  uint64_t gctime;
+  int gcstep;
 } global_State;
 
 LUA_API unsigned getmicrosec();
@@ -172,3 +173,4 @@ LUAI_FUNC void luaE_freethread (lua_State *L, lua_State *L1);
 
 #endif
 
+LUAI_FUNC uint64_t rdtsc();

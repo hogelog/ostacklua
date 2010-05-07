@@ -92,6 +92,9 @@ LUAI_FUNC int ostack_newframe(lua_State *L) {
 }
 
 LUAI_FUNC int ostack_closeframe(lua_State *L, int findex) {
+  global_State *g = G(L);
+  uint64_t count_start = rdtsc();
+  uint64_t count_end;
   OStack *os = ostack(L);
   Frame *f = &os->frames[findex];
   SObject *top = os->top, *base = f->base;
@@ -103,6 +106,9 @@ LUAI_FUNC int ostack_closeframe(lua_State *L, int findex) {
   }
   os->findex = findex;
   os->top = f->base;
+  count_end = rdtsc();
+  ++g->cframestep;
+  g->cframetime += count_end - count_start;
   return findex - 1;
 }
 

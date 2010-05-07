@@ -94,7 +94,9 @@ typedef struct global_State {
   TString *tmname[TM_N];  /* array with tag-method names */
   uint64_t lua_start;
   uint64_t gctime;
-  int gcstep;
+  uint64_t cframetime;
+  uint32_t gcstep;
+  uint32_t cframestep;
 } global_State;
 
 LUA_API unsigned getmicrosec();

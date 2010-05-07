@@ -152,7 +152,7 @@ static void close_state (lua_State *L) {
   lua_assert(g->totalbytes == sizeof(LG));
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
   lua_end = rdtsc();
-  fprintf(stderr, "## execution: %lu cycle %d step, gc: %lu cycle\n", (lua_end - g->lua_start), g->gcstep, g->gctime);
+  fprintf(stderr, "## execution: %lu cycle, gc: %lu cycle %d step\n", (lua_end - g->lua_start), g->gctime, g->gcstep);
 }
 
 

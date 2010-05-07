@@ -556,6 +556,7 @@ static void atomic (lua_State *L) {
 
 static l_mem singlestep (lua_State *L) {
   global_State *g = G(L);
+  ++g->gcstep;
   /*lua_checkmemory(L);*/
   switch (g->gcstate) {
     case GCSpause: {
@@ -610,8 +611,7 @@ static l_mem singlestep (lua_State *L) {
 
 void luaC_step (lua_State *L) {
   global_State *g = G(L);
-  uint64_t count_start, count_end;
-  count_start = rdtsc();
+  uint64_t count_start = rdtsc(), count_end;
   l_mem lim = (GCSTEPSIZE/100) * g->gcstepmul;
   if (lim == 0)
     lim = (MAX_LUMEM-1)/2;  /* no limit */
@@ -640,6 +640,7 @@ void luaC_step (lua_State *L) {
 
 void luaC_fullgc (lua_State *L) {
   global_State *g = G(L);
+  uint64_t count_start = rdtsc(), count_end;
   if (g->gcstate <= GCSpropagate) {
     /* reset sweep marks to sweep all elements (returning them to white) */
     g->sweepstrgc = 0;
@@ -661,6 +662,8 @@ void luaC_fullgc (lua_State *L) {
     singlestep(L);
   }
   setthreshold(g);
+  count_end = rdtsc();
+  g->gctime += count_end - count_start;
 }
 
 

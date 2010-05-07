@@ -634,7 +634,6 @@ void luaC_step (lua_State *L) {
     setthreshold(g);
   }
   count_end = rdtsc();
-  fprintf(stderr, "s %d %lu\n", ++g->gcstep, (count_end - count_start));
   g->gctime += count_end - count_start;
 }
 

@@ -1,0 +1,619 @@
+--------------------------------------------------------------------------------
+Command:            ../src/bin/lua-original binarytrees.lua 16
+Massif arguments:   --massif-out-file=tmp.out
+ms_print arguments: binarytrees.out
+--------------------------------------------------------------------------------
+
+
+    MB
+81.95^                                                                 #      
+     |                                                                @#      
+     |                                                                @#   :  
+     |                                                               @@# : :  
+     |                                                               @@# : :  
+     |                                                               @@# : : :
+     |                                                              @@@#:: : :
+     |                                                              @@@#:::: :
+     |                                                        @     @@@#::::::
+     |                                                       @@::   @@@#::::::
+     |                                                     @ @@:::::@@@#::::::
+     | @  @                 :      ::   @                  @:@@:::::@@@#::::::
+     | @  @               : :    : :    @       ::       @@@:@@:::::@@@#::::::
+     | @  @ :::           : :   :: : :  @:     ::: :  :: @ @:@@:::::@@@#::::::
+     | @  @ ::    ::  :   : ::  :: : :: @::    ::: :  : :@ @:@@:::::@@@#::::::
+     | @ :@ ::  : : : :   : ::: :::: :::@:: :::::: :  : :@ @:@@:::::@@@#::::::
+     | @::@ :: :::: ::::::::::: :::: :::@:::: ::::::  : :@ @:@@:::::@@@#::::::
+     | @::@::: :::: :::: ::::::::::: :::@:::: ::::::::: :@ @:@@:::::@@@#::::::
+     | @::@::: :::: :::: ::::::::::: :::@:::: ::::::: : :@ @:@@:::::@@@#::::::
+     | @::@::: :::: :::: ::::::::::: :::@:::: ::::::: : :@ @:@@:::::@@@#::::::
+   0 +----------------------------------------------------------------------->Gi
+     0                                                                   53.72
+
+Number of snapshots: 76
+ Detailed snapshots: [1, 4, 30, 45, 46, 48, 50, 60, 62, 64, 66 (peak)]
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+  0              0                0                0             0            0
+  1  1,095,702,642       39,920,488       34,197,228     5,723,260            0
+85.66% (34,197,228B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->85.66% (34,196,612B) 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| ->57.26% (22,856,512B) 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->57.25% (22,855,168B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->57.25% (22,855,168B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |   ->57.25% (22,855,168B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |     ->57.25% (22,855,168B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |       ->57.25% (22,855,168B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |         ->57.25% (22,855,168B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |           ->57.25% (22,855,168B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |             ->57.25% (22,855,168B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |               ->57.25% (22,855,168B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                 ->57.25% (22,855,168B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                   ->57.25% (22,855,168B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                     ->57.25% (22,855,168B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                       ->57.25% (22,855,168B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                         
+| | ->00.00% (1,344B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->28.33% (11,310,896B) 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->28.33% (11,310,864B) 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->28.33% (11,310,848B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | | ->28.33% (11,310,848B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |   ->28.33% (11,310,848B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |     ->28.33% (11,310,848B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |       ->28.33% (11,310,848B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |         ->28.33% (11,310,848B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |           ->28.33% (11,310,848B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |             ->28.33% (11,310,848B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |               ->28.33% (11,310,848B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                 ->28.33% (11,310,848B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                   ->28.33% (11,310,848B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                     ->28.33% (11,310,848B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                       ->28.33% (11,310,848B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                         
+| | | ->00.00% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+| | | 
+| | ->00.00% (32B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->00.07% (29,204B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->00.00% (616B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+  2  1,626,768,432       17,900,448       15,337,212     2,563,236            0
+  3  2,593,250,290       23,591,680       20,211,404     3,380,276            0
+  4  3,723,821,138       39,035,312       33,438,412     5,596,900            0
+85.66% (33,438,412B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->85.66% (33,437,796B) 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| ->57.25% (22,347,904B) 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->57.25% (22,346,560B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->57.25% (22,346,560B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |   ->57.25% (22,346,560B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |     ->57.25% (22,346,560B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |       ->57.25% (22,346,560B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |         ->57.25% (22,346,560B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |           ->57.25% (22,346,560B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |             ->57.25% (22,346,560B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |               ->57.25% (22,346,560B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                 ->57.25% (22,346,560B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                   ->57.25% (22,346,560B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                     ->57.25% (22,346,560B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                       ->57.25% (22,346,560B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                         
+| | ->00.00% (1,344B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->28.34% (11,060,688B) 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->28.34% (11,060,656B) 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->28.33% (11,060,640B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | | ->28.33% (11,060,640B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |   ->28.33% (11,060,640B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |     ->28.33% (11,060,640B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |       ->28.33% (11,060,640B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |         ->28.33% (11,060,640B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |           ->28.33% (11,060,640B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |             ->28.33% (11,060,640B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |               ->28.33% (11,060,640B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                 ->28.33% (11,060,640B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                   ->28.33% (11,060,640B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                     ->28.33% (11,060,640B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                       ->28.33% (11,060,640B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                         
+| | | ->00.00% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+| | | 
+| | ->00.00% (32B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->00.07% (29,204B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->00.00% (616B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+  5  4,689,526,639       16,575,872       14,202,716     2,373,156            0
+  6  5,350,530,658       31,006,640       26,562,028     4,444,612            0
+  7  6,265,812,516       33,044,704       28,307,548     4,737,156            0
+  8  7,367,467,526       18,837,296       16,139,420     2,697,876            0
+  9  8,299,597,266       22,243,808       19,057,052     3,186,756            0
+ 10  9,146,989,616       20,038,720       17,170,876     2,867,844            0
+ 11 10,163,887,224       29,130,400       24,962,412     4,167,988            0
+ 12 11,418,525,743       24,749,168       21,207,740     3,541,428            0
+ 13 12,232,978,509       20,351,712       17,439,004     2,912,708            0
+ 14 13,454,664,773       28,617,264       24,522,268     4,094,996            0
+ 15 14,404,732,099       18,432,704       15,794,716     2,637,988            0
+ 16 15,762,127,856       20,891,904       17,902,156     2,989,748            0
+ 17 16,440,835,175       35,993,120       30,843,484     5,149,636            0
+ 18 17,526,783,326       21,079,280       18,063,564     3,015,716            0
+ 19 18,257,524,282       39,217,408       33,609,580     5,607,828            0
+ 20 18,945,732,248       27,582,040       23,636,812     3,945,228            0
+ 21 19,633,940,280       24,257,184       20,786,876     3,470,308            0
+ 22 20,552,314,505       16,983,200       14,552,876     2,430,324            0
+ 23 21,240,839,552       33,032,656       28,308,460     4,724,196            0
+ 24 22,158,995,202       35,173,904       30,143,948     5,029,956            0
+ 25 22,847,505,675       22,894,688       19,619,516     3,275,172            0
+ 26 23,995,441,533       39,432,632       33,794,060     5,638,572            0
+ 27 24,913,393,383       31,232,224       26,765,420     4,466,804            0
+ 28 26,022,659,995       28,366,144       24,309,580     4,056,564            0
+ 29 26,710,867,543       24,723,848       21,187,356     3,536,492            0
+ 30 27,566,522,949       40,882,104       35,037,004     5,845,100            0
+85.70% (35,037,004B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->85.70% (35,036,388B) 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| ->57.09% (23,339,840B) 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->57.09% (23,338,496B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->57.09% (23,338,496B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |   ->57.09% (23,338,496B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |     ->57.09% (23,338,496B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |       ->57.09% (23,338,496B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |         ->57.09% (23,338,496B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |           ->57.09% (23,338,496B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |             ->57.09% (23,338,496B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |               ->57.09% (23,338,496B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                 ->57.09% (23,338,496B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                   ->57.09% (23,338,496B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                     ->57.09% (23,338,496B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                       ->57.09% (23,338,496B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                         
+| | ->00.00% (1,344B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->28.54% (11,667,344B) 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->28.54% (11,667,312B) 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->28.54% (11,667,296B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | | ->28.54% (11,667,296B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |   ->28.54% (11,667,296B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |     ->28.54% (11,667,296B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |       ->28.54% (11,667,296B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |         ->28.54% (11,667,296B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |           ->28.54% (11,667,296B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |             ->28.54% (11,667,296B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |               ->28.54% (11,667,296B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                 ->28.54% (11,667,296B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                   ->28.54% (11,667,296B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                     ->28.54% (11,667,296B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                       ->28.54% (11,667,296B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                         
+| | | ->00.00% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+| | | 
+| | ->00.00% (32B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->00.07% (29,204B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->00.00% (616B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 31 28,484,132,618       32,405,944       27,771,932     4,634,012            0
+ 32 29,172,341,803       29,403,432       25,198,540     4,204,892            0
+ 33 29,850,232,791       20,077,456       17,204,780     2,872,676            0
+ 34 30,867,441,054       23,923,696       20,501,692     3,422,004            0
+ 35 32,223,440,041       25,641,296       21,973,948     3,667,348            0
+ 36 33,241,556,665       33,208,152       28,459,387     4,748,765            0
+ 37 34,160,269,349       34,783,728       29,810,172     4,973,556            0
+ 38 35,098,582,413       34,889,664       29,900,924     4,988,740            0
+ 39 35,776,473,379       19,406,272       16,629,692     2,776,580            0
+ 40 36,461,134,206       33,800,560       28,967,452     4,833,108            0
+ 41 37,139,436,718       17,088,432       14,643,132     2,445,300            0
+ 42 38,495,218,213       24,431,064       20,936,316     3,494,748            0
+ 43 39,174,671,343       30,640,656       26,258,972     4,381,684            0
+ 44 40,534,156,936       28,803,536       24,684,332     4,119,204            0
+ 45 41,556,485,667       37,116,680       31,811,865     5,304,815            0
+85.71% (31,811,865B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->85.71% (31,811,249B) 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| ->57.08% (21,187,072B) 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->57.08% (21,185,728B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->57.08% (21,185,728B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |   ->57.08% (21,185,728B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |     ->57.08% (21,185,728B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |       ->57.08% (21,185,728B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |         ->57.08% (21,185,728B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |           ->57.08% (21,185,728B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |             ->57.08% (21,185,728B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |               ->57.08% (21,185,728B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                 ->57.08% (21,185,728B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                   ->57.08% (21,185,728B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                     ->57.08% (21,185,728B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                       ->57.08% (21,185,728B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                         
+| | ->00.00% (1,344B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->28.54% (10,592,496B) 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->28.54% (10,592,464B) 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->28.54% (10,592,448B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | | ->28.54% (10,592,448B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |   ->28.54% (10,592,448B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |     ->28.54% (10,592,448B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |       ->28.54% (10,592,448B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |         ->28.54% (10,592,448B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |           ->28.54% (10,592,448B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |             ->28.54% (10,592,448B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |               ->28.54% (10,592,448B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                 ->28.54% (10,592,448B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                   ->28.54% (10,592,448B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                     ->28.54% (10,592,448B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                       ->28.54% (10,592,448B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                         
+| | | ->00.00% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+| | | 
+| | ->00.00% (32B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->00.09% (31,681B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->00.00% (616B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 46 42,639,782,373       46,351,976       39,727,868     6,624,108            0
+85.71% (39,727,868B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->85.71% (39,727,252B) 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| ->57.09% (26,464,448B) 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->57.09% (26,463,104B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->57.09% (26,463,104B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |   ->57.09% (26,463,104B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |     ->57.09% (26,463,104B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |       ->57.09% (26,463,104B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |         ->57.09% (26,463,104B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |           ->57.09% (26,463,104B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |             ->57.09% (26,463,104B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |               ->57.09% (26,463,104B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                 ->57.09% (26,463,104B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                   ->57.09% (26,463,104B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                     ->57.09% (26,463,104B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                       ->57.09% (26,463,104B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                         
+| | ->00.00% (1,344B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->28.55% (13,231,184B) 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->28.54% (13,231,152B) 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->28.54% (13,231,136B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | | ->28.54% (13,231,136B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |   ->28.54% (13,231,136B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |     ->28.54% (13,231,136B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |       ->28.54% (13,231,136B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |         ->28.54% (13,231,136B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |           ->28.54% (13,231,136B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |             ->28.54% (13,231,136B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |               ->28.54% (13,231,136B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                 ->28.54% (13,231,136B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                   ->28.54% (13,231,136B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                     ->28.54% (13,231,136B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                       ->28.54% (13,231,136B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                         
+| | | ->00.00% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+| | | 
+| | ->00.00% (32B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->00.07% (31,620B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->00.00% (616B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 47 43,522,581,742       38,792,016       33,248,012     5,544,004            0
+ 48 44,755,907,258       51,357,144       44,018,172     7,338,972            0
+85.71% (44,018,172B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->85.71% (44,017,556B) 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| ->57.10% (29,324,608B) 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->57.10% (29,323,264B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->57.10% (29,323,264B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |   ->57.10% (29,323,264B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |     ->57.10% (29,323,264B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |       ->57.10% (29,323,264B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |         ->57.10% (29,323,264B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |           ->57.10% (29,323,264B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |             ->57.10% (29,323,264B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |               ->57.10% (29,323,264B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                 ->57.10% (29,323,264B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                   ->57.10% (29,323,264B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                     ->57.10% (29,323,264B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                       ->57.10% (29,323,264B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                         
+| | ->00.00% (1,344B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->28.55% (14,661,328B) 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->28.55% (14,661,296B) 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->28.55% (14,661,280B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | | ->28.55% (14,661,280B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |   ->28.55% (14,661,280B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |     ->28.55% (14,661,280B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |       ->28.55% (14,661,280B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |         ->28.55% (14,661,280B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |           ->28.55% (14,661,280B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |             ->28.55% (14,661,280B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |               ->28.55% (14,661,280B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                 ->28.55% (14,661,280B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                   ->28.55% (14,661,280B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                     ->28.55% (14,661,280B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                       ->28.55% (14,661,280B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                         
+| | | ->00.00% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+| | | 
+| | ->00.00% (32B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->00.06% (31,620B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->00.00% (616B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 49 45,094,854,979       39,424,352       33,789,884     5,634,468            0
+ 50 45,324,947,250       52,425,096       44,933,260     7,491,836            0
+85.71% (44,933,260B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->85.71% (44,932,644B) 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| ->57.10% (29,934,720B) 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->57.10% (29,933,376B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->57.10% (29,933,376B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |   ->57.10% (29,933,376B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |     ->57.10% (29,933,376B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |       ->57.10% (29,933,376B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |         ->57.10% (29,933,376B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |           ->57.10% (29,933,376B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |             ->57.10% (29,933,376B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |               ->57.10% (29,933,376B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                 ->57.10% (29,933,376B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                   ->57.10% (29,933,376B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                     ->57.10% (29,933,376B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                       ->57.10% (29,933,376B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                         
+| | ->00.00% (1,344B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->28.55% (14,966,304B) 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->28.55% (14,966,272B) 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->28.55% (14,966,256B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | | ->28.55% (14,966,256B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |   ->28.55% (14,966,256B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |     ->28.55% (14,966,256B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |       ->28.55% (14,966,256B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |         ->28.55% (14,966,256B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |           ->28.55% (14,966,256B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |             ->28.55% (14,966,256B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |               ->28.55% (14,966,256B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                 ->28.55% (14,966,256B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                   ->28.55% (14,966,256B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                     ->28.55% (14,966,256B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                       ->28.55% (14,966,256B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                         
+| | | ->00.00% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+| | | 
+| | ->00.00% (32B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->00.06% (31,620B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->00.00% (616B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 51 45,858,780,270       49,858,240       42,733,052     7,125,188            0
+ 52 46,403,633,142       49,611,536       42,521,772     7,089,764            0
+ 53 46,934,699,736       49,208,688       42,176,588     7,032,100            0
+ 54 47,465,766,767       46,749,104       40,068,108     6,680,996            0
+ 55 48,014,091,115       43,155,072       36,987,612     6,167,460            0
+ 56 48,545,157,299       45,772,624       39,231,260     6,541,364            0
+ 57 49,076,223,099       46,547,488       39,895,516     6,651,972            0
+ 58 49,607,288,958       23,159,192       19,848,796     3,310,396            0
+ 59 50,138,355,037       58,311,040       49,978,444     8,332,596            0
+ 60 50,257,570,813       61,050,296       52,326,380     8,723,916            0
+85.71% (52,326,380B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->85.71% (52,325,764B) 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| ->57.11% (34,863,360B) 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->57.10% (34,862,016B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->57.10% (34,862,016B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |   ->57.10% (34,862,016B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |     ->57.10% (34,862,016B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |       ->57.10% (34,862,016B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |         ->57.10% (34,862,016B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |           ->57.10% (34,862,016B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |             ->57.10% (34,862,016B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |               ->57.10% (34,862,016B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                 ->57.10% (34,862,016B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                   ->57.10% (34,862,016B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                     ->57.10% (34,862,016B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                       ->57.10% (34,862,016B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                         
+| | ->00.00% (1,344B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->28.55% (17,430,784B) 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->28.55% (17,430,752B) 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->28.55% (17,430,736B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | | ->28.55% (17,430,736B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |   ->28.55% (17,430,736B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |     ->28.55% (17,430,736B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |       ->28.55% (17,430,736B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |         ->28.55% (17,430,736B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |           ->28.55% (17,430,736B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |             ->28.55% (17,430,736B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |               ->28.55% (17,430,736B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                 ->28.55% (17,430,736B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                   ->28.55% (17,430,736B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                     ->28.55% (17,430,736B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                       ->28.55% (17,430,736B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                         
+| | | ->00.00% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+| | | 
+| | ->00.00% (32B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->00.05% (31,620B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->00.00% (616B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 61 50,788,638,095       59,430,944       50,938,508     8,492,436            0
+ 62 51,053,444,646       75,229,848       64,480,364    10,749,484            0
+85.71% (64,480,364B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->85.71% (64,479,748B) 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| ->57.11% (42,966,016B) 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->57.11% (42,964,672B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->57.11% (42,964,672B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |   ->57.11% (42,964,672B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |     ->57.11% (42,964,672B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |       ->57.11% (42,964,672B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |         ->57.11% (42,964,672B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |           ->57.11% (42,964,672B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |             ->57.11% (42,964,672B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |               ->57.11% (42,964,672B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                 ->57.11% (42,964,672B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                   ->57.11% (42,964,672B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                     ->57.11% (42,964,672B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                       ->57.11% (42,964,672B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                         
+| | ->00.00% (1,344B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->28.56% (21,482,112B) 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->28.56% (21,482,080B) 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->28.56% (21,482,064B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | | ->28.56% (21,482,064B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |   ->28.56% (21,482,064B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |     ->28.56% (21,482,064B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |       ->28.56% (21,482,064B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |         ->28.56% (21,482,064B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |           ->28.56% (21,482,064B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |             ->28.56% (21,482,064B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |               ->28.56% (21,482,064B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                 ->28.56% (21,482,064B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                   ->28.56% (21,482,064B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                     ->28.56% (21,482,064B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                       ->28.56% (21,482,064B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                         
+| | | ->00.00% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+| | | 
+| | ->00.00% (32B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->00.04% (31,620B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->00.00% (616B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 63 51,584,511,200       64,708,576       55,461,900     9,246,676            0
+ 64 51,879,028,904       82,904,840       71,058,588    11,846,252            0
+85.71% (71,058,588B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->85.71% (71,057,972B) 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| ->57.12% (47,351,616B) 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->57.11% (47,350,272B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->57.11% (47,350,272B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |   ->57.11% (47,350,272B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |     ->57.11% (47,350,272B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |       ->57.11% (47,350,272B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |         ->57.11% (47,350,272B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |           ->57.11% (47,350,272B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |             ->57.11% (47,350,272B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |               ->57.11% (47,350,272B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                 ->57.11% (47,350,272B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                   ->57.11% (47,350,272B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                     ->57.11% (47,350,272B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                       ->57.11% (47,350,272B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                         
+| | ->00.00% (1,344B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->28.56% (23,674,736B) 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->28.56% (23,674,704B) 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->28.56% (23,674,688B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | | ->28.56% (23,674,688B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |   ->28.56% (23,674,688B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |     ->28.56% (23,674,688B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |       ->28.56% (23,674,688B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |         ->28.56% (23,674,688B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |           ->28.56% (23,674,688B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |             ->28.56% (23,674,688B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |               ->28.56% (23,674,688B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                 ->28.56% (23,674,688B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                   ->28.56% (23,674,688B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                     ->28.56% (23,674,688B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                       ->28.56% (23,674,688B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                         
+| | | ->00.00% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+| | | 
+| | ->00.00% (32B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->00.04% (31,620B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->00.00% (616B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 65 52,410,096,060       63,607,840       54,518,316     9,089,524            0
+ 66 52,829,412,952       85,935,224       73,655,932    12,279,292            0
+85.71% (73,655,932B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->85.71% (73,655,316B) 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| ->57.12% (49,083,072B) 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->57.11% (49,081,728B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->57.11% (49,081,728B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |   ->57.11% (49,081,728B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |     ->57.11% (49,081,728B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |       ->57.11% (49,081,728B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |         ->57.11% (49,081,728B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |           ->57.11% (49,081,728B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |             ->57.11% (49,081,728B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |               ->57.11% (49,081,728B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                 ->57.11% (49,081,728B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                   ->57.11% (49,081,728B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                     ->57.11% (49,081,728B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                       ->57.11% (49,081,728B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | |                         
+| | ->00.00% (1,344B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->28.56% (24,540,624B) 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | ->28.56% (24,540,592B) 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | ->28.56% (24,540,576B) 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | | ->28.56% (24,540,576B) 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |   ->28.56% (24,540,576B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |     ->28.56% (24,540,576B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |       ->28.56% (24,540,576B) 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |         ->28.56% (24,540,576B) 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |           ->28.56% (24,540,576B) 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |             ->28.56% (24,540,576B) 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |               ->28.56% (24,540,576B) 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                 ->28.56% (24,540,576B) 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                   ->28.56% (24,540,576B) 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                     ->28.56% (24,540,576B) 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                       ->28.56% (24,540,576B) 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+| | | |                         
+| | | ->00.00% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+| | | 
+| | ->00.00% (32B) in 1+ places, all below ms_print's threshold (01.00%)
+| | 
+| ->00.04% (31,620B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->00.00% (616B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 67 53,360,479,210       61,758,096       52,932,828     8,825,268            0
+ 68 53,891,548,665       36,997,008       31,709,372     5,287,636            0
+ 69 54,422,615,339       73,290,592       62,817,804    10,472,788            0
+ 70 54,953,681,348       59,577,312       51,063,484     8,513,828            0
+ 71 55,484,748,983       43,378,736       37,179,388     6,199,348            0
+ 72 56,015,814,838       79,903,184       68,485,804    11,417,380            0
+ 73 56,546,881,065       53,963,216       46,251,532     7,711,684            0
+ 74 57,077,947,229       44,441,984       38,090,796     6,351,188            0
+ 75 57,683,993,441       65,571,392       56,201,255     9,370,137            0

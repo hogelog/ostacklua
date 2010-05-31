@@ -1,0 +1,824 @@
+#start test
+desc: --massif-out-file=tmp.out
+cmd: ../src/bin/lua-luajit pidigits.lua 10000
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=626226
+mem_heap_B=568
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=detailed
+n1: 568 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 568 0x5524728: ??? (in /lib/libc-2.7.so)
+  n1: 568 0x415B65: luaL_loadfile (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+   n1: 568 0x404CA3: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+    n1: 568 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+     n1: 568 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      n0: 568 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+#-----------
+snapshot=2
+#-----------
+time=400279345
+mem_heap_B=42041
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=747294518
+mem_heap_B=58721
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=999086676
+mem_heap_B=68521
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=detailed
+n3: 68521 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 65744 0x5E2C86A: ???
+  n3: 65744 0x5E4110F: ???
+   n1: 52584 0x5E33CC6: ???
+    n1: 52584 0x5C1F531: ???
+     n1: 52584 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      n1: 52584 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+       n1: 52584 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+        n1: 52584 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+         n1: 52584 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+          n1: 52584 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+           n0: 52584 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+   n1: 13144 0x5E3E0BE: ???
+    n1: 13144 0x5C1CFD3: ???
+     n1: 13144 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      n1: 13144 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+       n1: 13144 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+        n1: 13144 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+         n1: 13144 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+          n1: 13144 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+           n0: 13144 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+   n0: 16 in 1 place, below massif's threshold (01.00%)
+ n1: 2341 0x400A2C9: ??? (in /lib/ld-2.7.so)
+  n1: 2341 0x40060B6: ??? (in /lib/ld-2.7.so)
+   n2: 2341 0x4007F1B: ??? (in /lib/ld-2.7.so)
+    n1: 1185 0x401171F: ??? (in /lib/ld-2.7.so)
+     n1: 1185 0x400D384: ??? (in /lib/ld-2.7.so)
+      n1: 1185 0x4011119: ??? (in /lib/ld-2.7.so)
+       n1: 1185 0x50A5FB9: ??? (in /lib/libdl-2.7.so)
+        n1: 1185 0x400D384: ??? (in /lib/ld-2.7.so)
+         n1: 1185 0x50A636A: ??? (in /lib/libdl-2.7.so)
+          n1: 1185 0x50A5F1F: dlopen (in /lib/libdl-2.7.so)
+           n1: 1185 0x4349A3: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+            n1: 1185 0x434B34: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+             n1: 1185 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+              n1: 1185 0x43424B: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+               n1: 1185 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                n1: 1185 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                 n1: 1185 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                  n1: 1185 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                   n1: 1185 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                    n1: 1185 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                     n0: 1185 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+    n1: 1156 0x400C9BB: ??? (in /lib/ld-2.7.so)
+     n1: 1156 0x400D384: ??? (in /lib/ld-2.7.so)
+      n1: 1156 0x400BA55: ??? (in /lib/ld-2.7.so)
+       n1: 1156 0x401177F: ??? (in /lib/ld-2.7.so)
+        n1: 1156 0x400D384: ??? (in /lib/ld-2.7.so)
+         n1: 1156 0x4011119: ??? (in /lib/ld-2.7.so)
+          n1: 1156 0x50A5FB9: ??? (in /lib/libdl-2.7.so)
+           n1: 1156 0x400D384: ??? (in /lib/ld-2.7.so)
+            n1: 1156 0x50A636A: ??? (in /lib/libdl-2.7.so)
+             n1: 1156 0x50A5F1F: dlopen (in /lib/libdl-2.7.so)
+              n1: 1156 0x4349A3: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+               n1: 1156 0x434B34: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                n1: 1156 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                 n1: 1156 0x43424B: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                  n1: 1156 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                   n1: 1156 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                    n1: 1156 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                     n1: 1156 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                      n1: 1156 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                       n1: 1156 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+                        n0: 1156 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+ n0: 436 in 8 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=5
+#-----------
+time=1284326578
+mem_heap_B=78321
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=1552898038
+mem_heap_B=86641
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=1909061645
+mem_heap_B=96681
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=2134566040
+mem_heap_B=102561
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=2405049252
+mem_heap_B=109273
+mem_heap_extra_B=239
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=2718675242
+mem_heap_B=116593
+mem_heap_extra_B=279
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=2899521320
+mem_heap_B=120609
+mem_heap_extra_B=263
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=3207772302
+mem_heap_B=127201
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=3477067619
+mem_heap_B=132745
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=3861447018
+mem_heap_B=140281
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=4130605327
+mem_heap_B=145321
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=4515148364
+mem_heap_B=152281
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=4826403186
+mem_heap_B=157721
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=5201073023
+mem_heap_B=164049
+mem_heap_extra_B=263
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=5514210640
+mem_heap_B=169193
+mem_heap_extra_B=239
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=5829866284
+mem_heap_B=174201
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=6142037729
+mem_heap_B=179041
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=6394022708
+mem_heap_B=182881
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=6707189942
+mem_heap_B=187521
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=7084668037
+mem_heap_B=193001
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=7397808291
+mem_heap_B=197441
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=7650183295
+mem_heap_B=200961
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=7966942640
+mem_heap_B=205281
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=8186800263
+mem_heap_B=208241
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=8404748888
+mem_heap_B=211121
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=8624633534
+mem_heap_B=214001
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=8846697184
+mem_heap_B=216881
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=9065867045
+mem_heap_B=219681
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=9286747025
+mem_heap_B=222481
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=9507127950
+mem_heap_B=225241
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=9835176431
+mem_heap_B=229281
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=10055345351
+mem_heap_B=231961
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=10273246044
+mem_heap_B=234633
+mem_heap_extra_B=239
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=10601910498
+mem_heap_B=238521
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=10929975073
+mem_heap_B=242361
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=11148417410
+mem_heap_B=244905
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=11475917810
+mem_heap_B=248665
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=11694275196
+mem_heap_B=251121
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=11915864379
+mem_heap_B=253601
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=12351453335
+mem_heap_B=258409
+mem_heap_extra_B=255
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=12570310553
+mem_heap_B=260801
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=12792002670
+mem_heap_B=263201
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=13010558089
+mem_heap_B=265561
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=13338513573
+mem_heap_B=269041
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=13448646243
+mem_heap_B=270201
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=13559259995
+mem_heap_B=271361
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=13669956593
+mem_heap_B=272521
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=13780980354
+mem_heap_B=273681
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=detailed
+n2: 273681 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 270904 0x5E2C86A: ???
+  n3: 270904 0x5E4110F: ???
+   n1: 162536 0x5E33CC6: ???
+    n1: 162536 0x5C1F531: ???
+     n1: 162536 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      n1: 162536 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+       n1: 162536 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+        n1: 162536 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+         n1: 162536 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+          n1: 162536 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+           n0: 162536 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+   n1: 108352 0x5E3E0BE: ???
+    n1: 108352 0x5C1CFD3: ???
+     n1: 108352 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      n1: 108352 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+       n1: 108352 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+        n1: 108352 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+         n1: 108352 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+          n1: 108352 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+           n0: 108352 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+   n0: 16 in 1 place, below massif's threshold (01.00%)
+ n0: 2777 in 9 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=53
+#-----------
+time=13892997316
+mem_heap_B=274841
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=14005992581
+mem_heap_B=276001
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=14117765680
+mem_heap_B=277161
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=14228332690
+mem_heap_B=278281
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=14340374275
+mem_heap_B=279441
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=14450987236
+mem_heap_B=280561
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=14561787012
+mem_heap_B=281681
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=14671960360
+mem_heap_B=282809
+mem_heap_extra_B=255
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=14782125737
+mem_heap_B=283945
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=14893161571
+mem_heap_B=285041
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=detailed
+n2: 285041 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 282264 0x5E2C86A: ???
+  n3: 282264 0x5E4110F: ???
+   n1: 225800 0x5E33CC6: ???
+    n1: 225800 0x5C1F531: ???
+     n1: 225800 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      n1: 225800 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+       n1: 225800 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+        n1: 225800 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+         n1: 225800 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+          n1: 225800 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+           n0: 225800 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+   n1: 56448 0x5E3E0BE: ???
+    n1: 56448 0x5C1CFD3: ???
+     n1: 56448 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      n1: 56448 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+       n1: 56448 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+        n1: 56448 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+         n1: 56448 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+          n1: 56448 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+           n0: 56448 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+   n0: 16 in 1 place, below massif's threshold (01.00%)
+ n0: 2777 in 9 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=63
+#-----------
+time=15005789239
+mem_heap_B=286161
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=15118334125
+mem_heap_B=287281
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=65
+#-----------
+time=15228762694
+mem_heap_B=288393
+mem_heap_extra_B=239
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=15339122864
+mem_heap_B=289481
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=15449628159
+mem_heap_B=290593
+mem_heap_extra_B=279
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=15562209577
+mem_heap_B=291681
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=69
+#-----------
+time=15673145088
+mem_heap_B=292761
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=70
+#-----------
+time=15783303281
+mem_heap_B=293873
+mem_heap_extra_B=279
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=71
+#-----------
+time=15893649675
+mem_heap_B=294937
+mem_heap_extra_B=255
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=72
+#-----------
+time=16003858521
+mem_heap_B=296009
+mem_heap_extra_B=255
+mem_stacks_B=0
+heap_tree=detailed
+n2: 296009 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 293232 0x5E2C86A: ???
+  n3: 293232 0x5E4110F: ???
+   n1: 175936 0x5E33CC6: ???
+    n1: 175936 0x5C1F531: ???
+     n1: 175936 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      n1: 175936 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+       n1: 175936 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+        n1: 175936 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+         n1: 175936 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+          n1: 175936 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+           n0: 175936 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+   n1: 117280 0x5E3E0BE: ???
+    n1: 117280 0x5C1CFD3: ???
+     n1: 117280 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      n1: 117280 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+       n1: 117280 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+        n1: 117280 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+         n1: 117280 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+          n1: 117280 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+           n0: 117280 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+   n0: 16 in 1 place, below massif's threshold (01.00%)
+ n0: 2777 in 9 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=73
+#-----------
+time=16114939656
+mem_heap_B=297081
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=74
+#-----------
+time=16227657431
+mem_heap_B=298161
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=75
+#-----------
+time=16339620216
+mem_heap_B=299241
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=76
+#-----------
+time=16451272147
+mem_heap_B=300321
+mem_heap_extra_B=247
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=77
+#-----------
+time=16561942403
+mem_heap_B=301393
+mem_heap_extra_B=279
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=78
+#-----------
+time=16673094126
+mem_heap_B=302441
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=79
+#-----------
+time=16783351290
+mem_heap_B=303481
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=80
+#-----------
+time=16893652911
+mem_heap_B=304521
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=81
+#-----------
+time=16986458789
+mem_heap_B=305401
+mem_heap_extra_B=271
+mem_stacks_B=0
+heap_tree=peak
+n2: 305401 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 302624 0x5E2C86A: ???
+  n3: 302624 0x5E4110F: ???
+   n1: 181568 0x5E33CC6: ???
+    n1: 181568 0x5C1F531: ???
+     n1: 181568 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      n1: 181568 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+       n1: 181568 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+        n1: 181568 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+         n1: 181568 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+          n1: 181568 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+           n0: 181568 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+   n1: 121040 0x5E3E0BE: ???
+    n1: 121040 0x5C1CFD3: ???
+     n1: 121040 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      n1: 121040 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+       n1: 121040 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+        n1: 121040 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+         n1: 121040 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+          n1: 121040 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+           n0: 121040 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+   n0: 16 in 1 place, below massif's threshold (01.00%)
+ n0: 2777 in 9 places, all below massif's threshold (01.00%)

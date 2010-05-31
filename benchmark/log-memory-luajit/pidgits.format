@@ -1,0 +1,321 @@
+--------------------------------------------------------------------------------
+Command:            ../src/bin/lua-luajit pidigits.lua 10000
+Massif arguments:   --massif-out-file=tmp.out
+ms_print arguments: pidgits.out
+--------------------------------------------------------------------------------
+
+
+    KB
+298.5^                                                                       #
+     |                                                                 ::@:::#
+     |                                                          :::::@:::@:::#
+     |                                                     :::::@::::@:::@:::#
+     |                                               :::::::::::@::::@:::@:::#
+     |                                         :::::::::: ::::::@::::@:::@:::#
+     |                                    ::::::::: ::::: ::::::@::::@:::@:::#
+     |                                ::::::::::::: ::::: ::::::@::::@:::@:::#
+     |                            ::::::::::::::::: ::::: ::::::@::::@:::@:::#
+     |                       :::::: ::::::::::::::: ::::: ::::::@::::@:::@:::#
+     |                    ::::: ::: ::::::::::::::: ::::: ::::::@::::@:::@:::#
+     |                ::::: ::: ::: ::::::::::::::: ::::: ::::::@::::@:::@:::#
+     |             ::::: :: ::: ::: ::::::::::::::: ::::: ::::::@::::@:::@:::#
+     |          ::::: :: :: ::: ::: ::::::::::::::: ::::: ::::::@::::@:::@:::#
+     |        ::::::: :: :: ::: ::: ::::::::::::::: ::::: ::::::@::::@:::@:::#
+     |     :::::::::: :: :: ::: ::: ::::::::::::::: ::::: ::::::@::::@:::@:::#
+     |    @:: ::::::: :: :: ::: ::: ::::::::::::::: ::::: ::::::@::::@:::@:::#
+     |   :@:: ::::::: :: :: ::: ::: ::::::::::::::: ::::: ::::::@::::@:::@:::#
+     | :::@:: ::::::: :: :: ::: ::: ::::::::::::::: ::::: ::::::@::::@:::@:::#
+     | : :@:: ::::::: :: :: ::: ::: ::::::::::::::: ::::: ::::::@::::@:::@:::#
+   0 +----------------------------------------------------------------------->Gi
+     0                                                                   15.82
+
+Number of snapshots: 82
+ Detailed snapshots: [1, 4, 52, 62, 72, 81 (peak)]
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+  0              0                0                0             0            0
+  1        626,226              584              568            16            0
+97.26% (568B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->97.26% (568B) 0x5524728: ??? (in /lib/libc-2.7.so)
+  ->97.26% (568B) 0x415B65: luaL_loadfile (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+    ->97.26% (568B) 0x404CA3: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      ->97.26% (568B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+        ->97.26% (568B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+          ->97.26% (568B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+            
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+  2    400,279,345           42,312           42,041           271            0
+  3    747,294,518           58,968           58,721           247            0
+  4    999,086,676           68,792           68,521           271            0
+99.61% (68,521B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->95.57% (65,744B) 0x5E2C86A: ???
+| ->95.57% (65,744B) 0x5E4110F: ???
+|   ->76.44% (52,584B) 0x5E33CC6: ???
+|   | ->76.44% (52,584B) 0x5C1F531: ???
+|   |   ->76.44% (52,584B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |     ->76.44% (52,584B) 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |       ->76.44% (52,584B) 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |         ->76.44% (52,584B) 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |           ->76.44% (52,584B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |             ->76.44% (52,584B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |               ->76.44% (52,584B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |                 
+|   ->19.11% (13,144B) 0x5E3E0BE: ???
+|   | ->19.11% (13,144B) 0x5C1CFD3: ???
+|   |   ->19.11% (13,144B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |     ->19.11% (13,144B) 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |       ->19.11% (13,144B) 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |         ->19.11% (13,144B) 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |           ->19.11% (13,144B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |             ->19.11% (13,144B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |               ->19.11% (13,144B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |                 
+|   ->00.02% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+|   
+->03.40% (2,341B) 0x400A2C9: ??? (in /lib/ld-2.7.so)
+| ->03.40% (2,341B) 0x40060B6: ??? (in /lib/ld-2.7.so)
+|   ->03.40% (2,341B) 0x4007F1B: ??? (in /lib/ld-2.7.so)
+|     ->01.72% (1,185B) 0x401171F: ??? (in /lib/ld-2.7.so)
+|     | ->01.72% (1,185B) 0x400D384: ??? (in /lib/ld-2.7.so)
+|     |   ->01.72% (1,185B) 0x4011119: ??? (in /lib/ld-2.7.so)
+|     |     ->01.72% (1,185B) 0x50A5FB9: ??? (in /lib/libdl-2.7.so)
+|     |       ->01.72% (1,185B) 0x400D384: ??? (in /lib/ld-2.7.so)
+|     |         ->01.72% (1,185B) 0x50A636A: ??? (in /lib/libdl-2.7.so)
+|     |           ->01.72% (1,185B) 0x50A5F1F: dlopen (in /lib/libdl-2.7.so)
+|     |             ->01.72% (1,185B) 0x4349A3: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|     |               ->01.72% (1,185B) 0x434B34: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|     |                 ->01.72% (1,185B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|     |                   ->01.72% (1,185B) 0x43424B: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|     |                     ->01.72% (1,185B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|     |                       ->01.72% (1,185B) 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|     |                         ->01.72% (1,185B) 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|     |                           ->01.72% (1,185B) 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|     |                             ->01.72% (1,185B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|     |                               ->01.72% (1,185B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|     |                                 ->01.72% (1,185B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|     |                                   
+|     ->01.68% (1,156B) 0x400C9BB: ??? (in /lib/ld-2.7.so)
+|       ->01.68% (1,156B) 0x400D384: ??? (in /lib/ld-2.7.so)
+|         ->01.68% (1,156B) 0x400BA55: ??? (in /lib/ld-2.7.so)
+|           ->01.68% (1,156B) 0x401177F: ??? (in /lib/ld-2.7.so)
+|             ->01.68% (1,156B) 0x400D384: ??? (in /lib/ld-2.7.so)
+|               ->01.68% (1,156B) 0x4011119: ??? (in /lib/ld-2.7.so)
+|                 ->01.68% (1,156B) 0x50A5FB9: ??? (in /lib/libdl-2.7.so)
+|                   ->01.68% (1,156B) 0x400D384: ??? (in /lib/ld-2.7.so)
+|                     ->01.68% (1,156B) 0x50A636A: ??? (in /lib/libdl-2.7.so)
+|                       ->01.68% (1,156B) 0x50A5F1F: dlopen (in /lib/libdl-2.7.so)
+|                         ->01.68% (1,156B) 0x4349A3: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|                           ->01.68% (1,156B) 0x434B34: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|                             ->01.68% (1,156B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|                               ->01.68% (1,156B) 0x43424B: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|                                 ->01.68% (1,156B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|                                   ->01.68% (1,156B) 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|                                     ->01.68% (1,156B) 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|                                       ->01.68% (1,156B) 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|                                         ->01.68% (1,156B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|                                           ->01.68% (1,156B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|                                             ->01.68% (1,156B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|                                               
+->00.63% (436B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+  5  1,284,326,578           78,568           78,321           247            0
+  6  1,552,898,038           86,888           86,641           247            0
+  7  1,909,061,645           96,952           96,681           271            0
+  8  2,134,566,040          102,808          102,561           247            0
+  9  2,405,049,252          109,512          109,273           239            0
+ 10  2,718,675,242          116,872          116,593           279            0
+ 11  2,899,521,320          120,872          120,609           263            0
+ 12  3,207,772,302          127,448          127,201           247            0
+ 13  3,477,067,619          133,016          132,745           271            0
+ 14  3,861,447,018          140,552          140,281           271            0
+ 15  4,130,605,327          145,592          145,321           271            0
+ 16  4,515,148,364          152,552          152,281           271            0
+ 17  4,826,403,186          157,992          157,721           271            0
+ 18  5,201,073,023          164,312          164,049           263            0
+ 19  5,514,210,640          169,432          169,193           239            0
+ 20  5,829,866,284          174,472          174,201           271            0
+ 21  6,142,037,729          179,288          179,041           247            0
+ 22  6,394,022,708          183,128          182,881           247            0
+ 23  6,707,189,942          187,768          187,521           247            0
+ 24  7,084,668,037          193,272          193,001           271            0
+ 25  7,397,808,291          197,688          197,441           247            0
+ 26  7,650,183,295          201,208          200,961           247            0
+ 27  7,966,942,640          205,528          205,281           247            0
+ 28  8,186,800,263          208,488          208,241           247            0
+ 29  8,404,748,888          211,368          211,121           247            0
+ 30  8,624,633,534          214,248          214,001           247            0
+ 31  8,846,697,184          217,128          216,881           247            0
+ 32  9,065,867,045          219,928          219,681           247            0
+ 33  9,286,747,025          222,728          222,481           247            0
+ 34  9,507,127,950          225,512          225,241           271            0
+ 35  9,835,176,431          229,528          229,281           247            0
+ 36 10,055,345,351          232,232          231,961           271            0
+ 37 10,273,246,044          234,872          234,633           239            0
+ 38 10,601,910,498          238,792          238,521           271            0
+ 39 10,929,975,073          242,632          242,361           271            0
+ 40 11,148,417,410          245,176          244,905           271            0
+ 41 11,475,917,810          248,936          248,665           271            0
+ 42 11,694,275,196          251,368          251,121           247            0
+ 43 11,915,864,379          253,848          253,601           247            0
+ 44 12,351,453,335          258,664          258,409           255            0
+ 45 12,570,310,553          261,048          260,801           247            0
+ 46 12,792,002,670          263,448          263,201           247            0
+ 47 13,010,558,089          265,832          265,561           271            0
+ 48 13,338,513,573          269,288          269,041           247            0
+ 49 13,448,646,243          270,472          270,201           271            0
+ 50 13,559,259,995          271,608          271,361           247            0
+ 51 13,669,956,593          272,792          272,521           271            0
+ 52 13,780,980,354          273,928          273,681           247            0
+99.91% (273,681B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->98.90% (270,904B) 0x5E2C86A: ???
+| ->98.90% (270,904B) 0x5E4110F: ???
+|   ->59.34% (162,536B) 0x5E33CC6: ???
+|   | ->59.34% (162,536B) 0x5C1F531: ???
+|   |   ->59.34% (162,536B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |     ->59.34% (162,536B) 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |       ->59.34% (162,536B) 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |         ->59.34% (162,536B) 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |           ->59.34% (162,536B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |             ->59.34% (162,536B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |               ->59.34% (162,536B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |                 
+|   ->39.55% (108,352B) 0x5E3E0BE: ???
+|   | ->39.55% (108,352B) 0x5C1CFD3: ???
+|   |   ->39.55% (108,352B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |     ->39.55% (108,352B) 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |       ->39.55% (108,352B) 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |         ->39.55% (108,352B) 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |           ->39.55% (108,352B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |             ->39.55% (108,352B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |               ->39.55% (108,352B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |                 
+|   ->00.01% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+|   
+->01.01% (2,777B) in 9 places, all below massif's threshold (01.00%)
+  
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 53 13,892,997,316          275,112          274,841           271            0
+ 54 14,005,992,581          276,248          276,001           247            0
+ 55 14,117,765,680          277,432          277,161           271            0
+ 56 14,228,332,690          278,552          278,281           271            0
+ 57 14,340,374,275          279,688          279,441           247            0
+ 58 14,450,987,236          280,808          280,561           247            0
+ 59 14,561,787,012          281,928          281,681           247            0
+ 60 14,671,960,360          283,064          282,809           255            0
+ 61 14,782,125,737          284,216          283,945           271            0
+ 62 14,893,161,571          285,288          285,041           247            0
+99.91% (285,041B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->98.94% (282,264B) 0x5E2C86A: ???
+| ->98.94% (282,264B) 0x5E4110F: ???
+|   ->79.15% (225,800B) 0x5E33CC6: ???
+|   | ->79.15% (225,800B) 0x5C1F531: ???
+|   |   ->79.15% (225,800B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |     ->79.15% (225,800B) 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |       ->79.15% (225,800B) 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |         ->79.15% (225,800B) 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |           ->79.15% (225,800B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |             ->79.15% (225,800B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |               ->79.15% (225,800B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |                 
+|   ->19.79% (56,448B) 0x5E3E0BE: ???
+|   | ->19.79% (56,448B) 0x5C1CFD3: ???
+|   |   ->19.79% (56,448B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |     ->19.79% (56,448B) 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |       ->19.79% (56,448B) 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |         ->19.79% (56,448B) 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |           ->19.79% (56,448B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |             ->19.79% (56,448B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |               ->19.79% (56,448B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |                 
+|   ->00.01% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+|   
+->00.97% (2,777B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 63 15,005,789,239          286,408          286,161           247            0
+ 64 15,118,334,125          287,528          287,281           247            0
+ 65 15,228,762,694          288,632          288,393           239            0
+ 66 15,339,122,864          289,752          289,481           271            0
+ 67 15,449,628,159          290,872          290,593           279            0
+ 68 15,562,209,577          291,928          291,681           247            0
+ 69 15,673,145,088          293,032          292,761           271            0
+ 70 15,783,303,281          294,152          293,873           279            0
+ 71 15,893,649,675          295,192          294,937           255            0
+ 72 16,003,858,521          296,264          296,009           255            0
+99.91% (296,009B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->98.98% (293,232B) 0x5E2C86A: ???
+| ->98.98% (293,232B) 0x5E4110F: ???
+|   ->59.38% (175,936B) 0x5E33CC6: ???
+|   | ->59.38% (175,936B) 0x5C1F531: ???
+|   |   ->59.38% (175,936B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |     ->59.38% (175,936B) 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |       ->59.38% (175,936B) 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |         ->59.38% (175,936B) 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |           ->59.38% (175,936B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |             ->59.38% (175,936B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |               ->59.38% (175,936B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |                 
+|   ->39.59% (117,280B) 0x5E3E0BE: ???
+|   | ->39.59% (117,280B) 0x5C1CFD3: ???
+|   |   ->39.59% (117,280B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |     ->39.59% (117,280B) 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |       ->39.59% (117,280B) 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |         ->39.59% (117,280B) 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |           ->39.59% (117,280B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |             ->39.59% (117,280B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |               ->39.59% (117,280B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |                 
+|   ->00.01% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+|   
+->00.94% (2,777B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 73 16,114,939,656          297,352          297,081           271            0
+ 74 16,227,657,431          298,408          298,161           247            0
+ 75 16,339,620,216          299,512          299,241           271            0
+ 76 16,451,272,147          300,568          300,321           247            0
+ 77 16,561,942,403          301,672          301,393           279            0
+ 78 16,673,094,126          302,712          302,441           271            0
+ 79 16,783,351,290          303,752          303,481           271            0
+ 80 16,893,652,911          304,792          304,521           271            0
+ 81 16,986,458,789          305,672          305,401           271            0
+99.91% (305,401B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->99.00% (302,624B) 0x5E2C86A: ???
+| ->99.00% (302,624B) 0x5E4110F: ???
+|   ->59.40% (181,568B) 0x5E33CC6: ???
+|   | ->59.40% (181,568B) 0x5C1F531: ???
+|   |   ->59.40% (181,568B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |     ->59.40% (181,568B) 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |       ->59.40% (181,568B) 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |         ->59.40% (181,568B) 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |           ->59.40% (181,568B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |             ->59.40% (181,568B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |               ->59.40% (181,568B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |                 
+|   ->39.60% (121,040B) 0x5E3E0BE: ???
+|   | ->39.60% (121,040B) 0x5C1CFD3: ???
+|   |   ->39.60% (121,040B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |     ->39.60% (121,040B) 0x40AB2E: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |       ->39.60% (121,040B) 0x403D74: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |         ->39.60% (121,040B) 0x404CF4: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |           ->39.60% (121,040B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |             ->39.60% (121,040B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |               ->39.60% (121,040B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+|   |                 
+|   ->00.01% (16B) in 1+ places, all below ms_print's threshold (01.00%)
+|   
+->00.91% (2,777B) in 1+ places, all below ms_print's threshold (01.00%)
+

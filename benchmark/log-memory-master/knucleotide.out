@@ -1,0 +1,1739 @@
+desc: --massif-out-file=tmp.out
+cmd: ../src/bin/lua-master knucleotide.lua 0
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=57783014
+mem_heap_B=381927
+mem_heap_extra_B=61025
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=138986040
+mem_heap_B=6246060
+mem_heap_extra_B=230316
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=1348449347
+mem_heap_B=3566558
+mem_heap_extra_B=854242
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=2581448311
+mem_heap_B=3568150
+mem_heap_extra_B=854666
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=3830593321
+mem_heap_B=3573594
+mem_heap_extra_B=855870
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=3832470916
+mem_heap_B=3591333
+mem_heap_extra_B=858723
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=5097381715
+mem_heap_B=3591397
+mem_heap_extra_B=858731
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=5124758907
+mem_heap_B=3878721
+mem_heap_extra_B=894599
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=5317918816
+mem_heap_B=3878752
+mem_heap_extra_B=894608
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=5340082000
+mem_heap_B=3882255
+mem_heap_extra_B=895625
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=6405103459
+mem_heap_B=3882350
+mem_heap_extra_B=895642
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=6427260497
+mem_heap_B=5072408
+mem_heap_extra_B=1102888
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=6532582403
+mem_heap_B=5097235
+mem_heap_extra_B=1115637
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=6556255034
+mem_heap_B=6440646
+mem_heap_extra_B=1334362
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=6660709916
+mem_heap_B=6443199
+mem_heap_extra_B=1335673
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=6695346061
+mem_heap_B=7843863
+mem_heap_extra_B=1854785
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=6819341310
+mem_heap_B=8270843
+mem_heap_extra_B=2074045
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=6924846427
+mem_heap_B=8297002
+mem_heap_extra_B=2087478
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=6946738681
+mem_heap_B=9247234
+mem_heap_extra_B=2306206
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=7051306157
+mem_heap_B=9249306
+mem_heap_extra_B=2307270
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=7082370462
+mem_heap_B=12274897
+mem_heap_extra_B=2514807
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=7206224513
+mem_heap_B=12698362
+mem_heap_extra_B=2732278
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=7330296173
+mem_heap_B=13120791
+mem_heap_extra_B=2949201
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=7454504335
+mem_heap_B=13542887
+mem_heap_extra_B=3165953
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=7560095936
+mem_heap_B=13570378
+mem_heap_extra_B=3180070
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=7583021159
+mem_heap_B=16071829
+mem_heap_extra_B=3387691
+mem_stacks_B=0
+heap_tree=detailed
+n2: 16071829 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n6: 16071165 0x40AF1F: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+  n3: 6630721 0x40F71C: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n3: 5373913 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n1: 4381835 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 4381835 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 4381835 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 4381835 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 4381835 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 4381835 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 4381835 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 4381835 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 4381835 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 4381835 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 4381835 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 4381835 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 4381835 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 4381835 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 4381835 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 991610 0x41442A: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 991485 0x41AEFA: read_line (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 991485 0x41B785: io_readline (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 991485 0x412729: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 991485 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 991485 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 991485 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 991485 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n1: 991485 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                     n0: 991485 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 125 in 4 places, all below massif's threshold (01.00%)
+    n0: 468 in 9 places, all below massif's threshold (01.00%)
+   n2: 1250066 0x411EB3: luaV_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 1250025 0x40573D: lua_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 1250025 0x41443D: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 1250025 0x41D91E: str_upper (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 1250025 0x412936: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 1250025 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 1250025 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 1250025 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 1250025 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 1250025 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 1250025 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n0: 1250025 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 0 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 41 in 1 place, below massif's threshold (01.00%)
+   n0: 6742 in 7 places, all below massif's threshold (01.00%)
+  n2: 5430160 0x40FAFE: setnodevector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 5424680 0x410536: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 5424680 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 5424680 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 5420320 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 5420320 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 5420320 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 5420320 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 5420320 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 5420320 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 5420320 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 5420320 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 5420320 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 5420320 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 5420320 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 5420320 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 5420320 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 4360 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 5480 in 3 places, all below massif's threshold (01.00%)
+  n2: 3145728 0x40F565: luaS_resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n2: 3145728 0x40F7A9: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 3145728 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 3145728 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 3145728 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 3145728 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 3145728 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 3145728 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 3145728 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 3145728 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 3145728 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 3145728 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 3145728 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 3145728 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 3145728 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 3145728 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 3145728 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n0: 3145728 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 0 in 1 place, below massif's threshold (01.00%)
+  n2: 524656 0x40FA06: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 524640 0x410687: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 524640 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 524608 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 524608 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 524608 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 524608 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 524608 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 524608 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 524608 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 524608 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 524608 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 524608 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 32 in 3 places, all below massif's threshold (01.00%)
+   n0: 16 in 1 place, below massif's threshold (01.00%)
+  n1: 312500 0x40A9B0: singlestep (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n2: 312500 0x40AE26: luaC_step (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n1: 312500 0x4113F7: callTMres (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 312500 0x412F9D: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 312500 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 312500 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 312500 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 312500 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 312500 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 312500 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 312500 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 312500 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 312500 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 312500 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 312500 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n0: 312500 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n0: 0 in 1 place, below massif's threshold (01.00%)
+  n0: 27400 in 20 places, all below massif's threshold (01.00%)
+ n0: 664 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=27
+#-----------
+time=7688741726
+mem_heap_B=15042308
+mem_heap_extra_B=3397468
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=7707527795
+mem_heap_B=15435692
+mem_heap_extra_B=3599476
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=7813343172
+mem_heap_B=15465366
+mem_heap_extra_B=3614714
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=7887118162
+mem_heap_B=20961549
+mem_heap_extra_B=3981275
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=7991824469
+mem_heap_B=20975414
+mem_heap_extra_B=3988370
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=8081902553
+mem_heap_B=21637394
+mem_heap_extra_B=4089454
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=8172088281
+mem_heap_B=22299227
+mem_heap_extra_B=4190477
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=8276686279
+mem_heap_B=23600705
+mem_heap_extra_B=4385815
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=8361196177
+mem_heap_B=26316702
+mem_heap_extra_B=4414410
+mem_stacks_B=0
+heap_tree=detailed
+n2: 26316702 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n5: 26316038 0x40AF1F: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+  n2: 14605240 0x40FAFE: setnodevector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 14599720 0x410536: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 14599720 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 14599720 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 14595360 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 14595360 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 14595360 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 14595360 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 14595360 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 14595360 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 14595360 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 14595360 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 14595360 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 14595360 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 14595360 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 14595360 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 14595360 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 4360 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 5520 in 3 places, all below massif's threshold (01.00%)
+  n3: 8905212 0x40F71C: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n3: 7648404 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n1: 6656326 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 6656326 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 6656326 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 6656326 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 6656326 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 6656326 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 6656326 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 6656326 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 6656326 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 6656326 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 6656326 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 6656326 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 6656326 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 6656326 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 6656326 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 991610 0x41442A: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 991485 0x41AEFA: read_line (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 991485 0x41B785: io_readline (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 991485 0x412729: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 991485 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 991485 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 991485 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 991485 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n1: 991485 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                     n0: 991485 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 125 in 4 places, all below massif's threshold (01.00%)
+    n0: 468 in 9 places, all below massif's threshold (01.00%)
+   n2: 1250066 0x411EB3: luaV_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 1250025 0x40573D: lua_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 1250025 0x41443D: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 1250025 0x41D91E: str_upper (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 1250025 0x412936: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 1250025 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 1250025 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 1250025 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 1250025 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 1250025 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 1250025 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n0: 1250025 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 0 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 41 in 1 place, below massif's threshold (01.00%)
+   n0: 6742 in 7 places, all below massif's threshold (01.00%)
+  n2: 2097152 0x40F565: luaS_resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n2: 2097152 0x40F7A9: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 2097152 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 2097152 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 2097152 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 2097152 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 2097152 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 2097152 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 2097152 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 2097152 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 2097152 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 2097152 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 2097152 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 2097152 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 2097152 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 2097152 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 2097152 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n0: 2097152 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 0 in 1 place, below massif's threshold (01.00%)
+  n2: 524656 0x40FA06: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 524640 0x410687: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 524640 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 524608 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 524608 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 524608 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 524608 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 524608 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 524608 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 524608 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 524608 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 524608 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 524608 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 32 in 3 places, all below massif's threshold (01.00%)
+   n0: 16 in 1 place, below massif's threshold (01.00%)
+  n0: 183778 in 21 places, all below massif's threshold (01.00%)
+ n0: 664 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=36
+#-----------
+time=8446652199
+mem_heap_B=25267680
+mem_heap_extra_B=4493520
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=8535248277
+mem_heap_B=25601747
+mem_heap_extra_B=4594517
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=8623994627
+mem_heap_B=25935986
+mem_heap_extra_B=4695566
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=8712904737
+mem_heap_B=26270053
+mem_heap_extra_B=4796563
+mem_stacks_B=0
+heap_tree=detailed
+n2: 26270053 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n5: 26269389 0x40AF1F: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+  n2: 13294520 0x40FAFE: setnodevector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 13289000 0x410536: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 13289000 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 13289000 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 13284640 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 13284640 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 13284640 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 13284640 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 13284640 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 13284640 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 13284640 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 13284640 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 13284640 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 13284640 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 13284640 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 13284640 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 13284640 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 4360 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 5520 in 3 places, all below massif's threshold (01.00%)
+  n3: 10169283 0x40F71C: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n3: 8912475 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n1: 7920397 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 7920397 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 7920397 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 7920397 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 7920397 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 7920397 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 7920397 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 7920397 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 7920397 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 7920397 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 7920397 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 7920397 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 7920397 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 7920397 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 7920397 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 991610 0x41442A: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 991485 0x41AEFA: read_line (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 991485 0x41B785: io_readline (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 991485 0x412729: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 991485 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 991485 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 991485 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 991485 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n1: 991485 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                     n0: 991485 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 125 in 4 places, all below massif's threshold (01.00%)
+    n0: 468 in 9 places, all below massif's threshold (01.00%)
+   n2: 1250066 0x411EB3: luaV_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 1250025 0x40573D: lua_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 1250025 0x41443D: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 1250025 0x41D91E: str_upper (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 1250025 0x412936: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 1250025 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 1250025 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 1250025 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 1250025 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 1250025 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 1250025 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n0: 1250025 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 0 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 41 in 1 place, below massif's threshold (01.00%)
+   n0: 6742 in 7 places, all below massif's threshold (01.00%)
+  n2: 2097152 0x40F565: luaS_resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n2: 2097152 0x40F7A9: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 2097152 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 2097152 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 2097152 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 2097152 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 2097152 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 2097152 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 2097152 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 2097152 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 2097152 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 2097152 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 2097152 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 2097152 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 2097152 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 2097152 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 2097152 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n0: 2097152 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 0 in 1 place, below massif's threshold (01.00%)
+  n2: 524656 0x40FA06: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 524640 0x410687: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 524640 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 524608 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 524608 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 524608 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 524608 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 524608 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 524608 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 524608 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 524608 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 524608 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 524608 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 32 in 3 places, all below massif's threshold (01.00%)
+   n0: 16 in 1 place, below massif's threshold (01.00%)
+  n0: 183778 in 21 places, all below massif's threshold (01.00%)
+ n0: 664 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=40
+#-----------
+time=8826103034
+mem_heap_B=29541180
+mem_heap_extra_B=4992980
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=8914609001
+mem_heap_B=29874430
+mem_heap_extra_B=5093730
+mem_stacks_B=0
+heap_tree=detailed
+n2: 29874430 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n5: 29873766 0x40AF1F: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+  n2: 15915960 0x40FAFE: setnodevector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 15910440 0x410536: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 15910440 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 15910440 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 15906080 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 15906080 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 15906080 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 15906080 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 15906080 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 15906080 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 15906080 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 15906080 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 15906080 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 15906080 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 15906080 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 15906080 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 15906080 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 4360 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 5520 in 3 places, all below massif's threshold (01.00%)
+  n3: 11152220 0x40F71C: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n3: 9895412 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n1: 8903334 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 8903334 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 8903334 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 8903334 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 8903334 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 8903334 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 8903334 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 8903334 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 8903334 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 8903334 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 8903334 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 8903334 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 8903334 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 8903334 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 8903334 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 991610 0x41442A: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 991485 0x41AEFA: read_line (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 991485 0x41B785: io_readline (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 991485 0x412729: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 991485 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 991485 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 991485 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 991485 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n1: 991485 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                     n0: 991485 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 125 in 4 places, all below massif's threshold (01.00%)
+    n0: 468 in 9 places, all below massif's threshold (01.00%)
+   n2: 1250066 0x411EB3: luaV_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 1250025 0x40573D: lua_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 1250025 0x41443D: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 1250025 0x41D91E: str_upper (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 1250025 0x412936: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 1250025 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 1250025 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 1250025 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 1250025 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 1250025 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 1250025 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n0: 1250025 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 0 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 41 in 1 place, below massif's threshold (01.00%)
+   n0: 6742 in 7 places, all below massif's threshold (01.00%)
+  n2: 2097152 0x40F565: luaS_resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n2: 2097152 0x40F7A9: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 2097152 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 2097152 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 2097152 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 2097152 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 2097152 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 2097152 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 2097152 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 2097152 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 2097152 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 2097152 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 2097152 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 2097152 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 2097152 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 2097152 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 2097152 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n0: 2097152 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 0 in 1 place, below massif's threshold (01.00%)
+  n2: 524656 0x40FA06: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 524640 0x410687: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 524640 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 524608 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 524608 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 524608 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 524608 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 524608 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 524608 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 524608 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 524608 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 524608 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 524608 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 32 in 3 places, all below massif's threshold (01.00%)
+   n0: 16 in 1 place, below massif's threshold (01.00%)
+  n0: 183778 in 21 places, all below massif's threshold (01.00%)
+ n0: 664 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=42
+#-----------
+time=9003182943
+mem_heap_B=30207551
+mem_heap_extra_B=5194441
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=9091834861
+mem_heap_B=30540715
+mem_heap_extra_B=5295165
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=9186805724
+mem_heap_B=35042985
+mem_heap_extra_B=5388279
+mem_stacks_B=0
+heap_tree=detailed
+n2: 35042985 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n5: 35042321 0x40AF1F: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+  n2: 15915960 0x40FAFE: setnodevector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 15910440 0x410536: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 15910440 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 15910440 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 15906080 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 15906080 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 15906080 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 15906080 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 15906080 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 15906080 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 15906080 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 15906080 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 15906080 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 15906080 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 15906080 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 15906080 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 15906080 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 4360 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 5520 in 3 places, all below massif's threshold (01.00%)
+  n3: 12126471 0x40F71C: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n3: 10869663 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n1: 9877585 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 9877585 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 9877585 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 9877585 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 9877585 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 9877585 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 9877585 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 9877585 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 9877585 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 9877585 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 9877585 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 9877585 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 9877585 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 9877585 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 9877585 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 991610 0x41442A: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 991485 0x41AEFA: read_line (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 991485 0x41B785: io_readline (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 991485 0x412729: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 991485 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 991485 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 991485 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 991485 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n1: 991485 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                     n0: 991485 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 125 in 4 places, all below massif's threshold (01.00%)
+    n0: 468 in 9 places, all below massif's threshold (01.00%)
+   n2: 1250066 0x411EB3: luaV_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 1250025 0x40573D: lua_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 1250025 0x41443D: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 1250025 0x41D91E: str_upper (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 1250025 0x412936: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 1250025 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 1250025 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 1250025 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 1250025 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 1250025 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 1250025 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n0: 1250025 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 0 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 41 in 1 place, below massif's threshold (01.00%)
+   n0: 6742 in 7 places, all below massif's threshold (01.00%)
+  n2: 6291456 0x40F565: luaS_resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n2: 6291456 0x40F7A9: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 6291456 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 6291456 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 6291456 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 6291456 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 6291456 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 6291456 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 6291456 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 6291456 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 6291456 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 6291456 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 6291456 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 6291456 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 6291456 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 6291456 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 6291456 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n0: 6291456 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 0 in 1 place, below massif's threshold (01.00%)
+  n2: 524656 0x40FA06: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 524640 0x410687: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 524640 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 524608 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 524608 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 524608 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 524608 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 524608 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 524608 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 524608 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 524608 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 524608 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 524608 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 32 in 3 places, all below massif's threshold (01.00%)
+   n0: 16 in 1 place, below massif's threshold (01.00%)
+  n0: 183778 in 21 places, all below massif's threshold (01.00%)
+ n0: 664 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=45
+#-----------
+time=9243504431
+mem_heap_B=32993047
+mem_heap_extra_B=5402545
+mem_stacks_B=0
+heap_tree=detailed
+n2: 32993047 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n5: 32992383 0x40AF1F: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+  n2: 15915960 0x40FAFE: setnodevector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 15910440 0x410536: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 15910440 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 15910440 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 15906080 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 15906080 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 15906080 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 15906080 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 15906080 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 15906080 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 15906080 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 15906080 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 15906080 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 15906080 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 15906080 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 15906080 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 15906080 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 4360 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 5520 in 3 places, all below massif's threshold (01.00%)
+  n3: 12173685 0x40F71C: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n3: 10916877 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n1: 9924799 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 9924799 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 9924799 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 9924799 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 9924799 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 9924799 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 9924799 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 9924799 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 9924799 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 9924799 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 9924799 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 9924799 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 9924799 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 9924799 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 9924799 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 991610 0x41442A: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 991485 0x41AEFA: read_line (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 991485 0x41B785: io_readline (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 991485 0x412729: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 991485 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 991485 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 991485 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 991485 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n1: 991485 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                     n0: 991485 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 125 in 4 places, all below massif's threshold (01.00%)
+    n0: 468 in 9 places, all below massif's threshold (01.00%)
+   n2: 1250066 0x411EB3: luaV_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 1250025 0x40573D: lua_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 1250025 0x41443D: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 1250025 0x41D91E: str_upper (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 1250025 0x412936: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 1250025 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 1250025 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 1250025 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 1250025 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 1250025 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 1250025 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n0: 1250025 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 0 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 41 in 1 place, below massif's threshold (01.00%)
+   n0: 6742 in 7 places, all below massif's threshold (01.00%)
+  n2: 4194304 0x40F565: luaS_resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n2: 4194304 0x40F7A9: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 4194304 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 4194304 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 4194304 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 4194304 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 4194304 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 4194304 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 4194304 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 4194304 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 4194304 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 4194304 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 4194304 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 4194304 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 4194304 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 4194304 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 4194304 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n0: 4194304 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 0 in 1 place, below massif's threshold (01.00%)
+  n2: 524656 0x40FA06: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 524640 0x410687: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 524640 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 524608 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 524608 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 524608 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 524608 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 524608 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 524608 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 524608 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 524608 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 524608 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 524608 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 32 in 3 places, all below massif's threshold (01.00%)
+   n0: 16 in 1 place, below massif's threshold (01.00%)
+  n0: 183778 in 21 places, all below massif's threshold (01.00%)
+ n0: 664 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=46
+#-----------
+time=9337247349
+mem_heap_B=33319159
+mem_heap_extra_B=5501137
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=9429390174
+mem_heap_B=33554332
+mem_heap_extra_B=5673980
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=9541611523
+mem_heap_B=44359281
+mem_heap_extra_B=5770487
+mem_stacks_B=0
+heap_tree=peak
+n2: 44359281 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n5: 44358617 0x40AF1F: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+  n2: 26401720 0x40FAFE: setnodevector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 26396200 0x410536: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 26396200 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 26396200 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 26391840 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 26391840 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 26391840 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 26391840 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 26391840 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 26391840 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 26391840 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 26391840 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 26391840 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 26391840 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 26391840 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 26391840 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 26391840 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 4360 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 5520 in 3 places, all below massif's threshold (01.00%)
+  n3: 13132284 0x40F71C: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n3: 11875476 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n1: 10883398 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 10883398 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 10883398 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 10883398 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 10883398 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 10883398 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 10883398 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 10883398 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 10883398 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 10883398 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 10883398 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 10883398 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 10883398 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 10883398 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 10883398 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 991610 0x41442A: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 991485 0x41AEFA: read_line (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 991485 0x41B785: io_readline (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 991485 0x412729: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 991485 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 991485 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 991485 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 991485 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 991485 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 991485 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 991485 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 991485 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n1: 991485 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                     n0: 991485 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 125 in 4 places, all below massif's threshold (01.00%)
+    n0: 468 in 9 places, all below massif's threshold (01.00%)
+   n2: 1250066 0x411EB3: luaV_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 1250025 0x40573D: lua_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 1250025 0x41443D: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 1250025 0x41D91E: str_upper (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 1250025 0x412936: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 1250025 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 1250025 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 1250025 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 1250025 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 1250025 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 1250025 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n0: 1250025 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 0 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 41 in 1 place, below massif's threshold (01.00%)
+   n0: 6742 in 7 places, all below massif's threshold (01.00%)
+  n2: 4194304 0x40F565: luaS_resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n2: 4194304 0x40F7A9: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 4194304 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 4194304 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 4194304 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 4194304 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 4194304 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 4194304 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 4194304 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 4194304 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 4194304 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 4194304 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 4194304 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 4194304 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 4194304 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 4194304 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 4194304 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n0: 4194304 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 0 in 1 place, below massif's threshold (01.00%)
+  n2: 524656 0x40FA06: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n1: 524640 0x410687: resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 524640 0x41039A: newkey (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 524608 0x411931: luaV_settable (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 524608 0x412EFC: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 524608 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 524608 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 524608 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 524608 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 524608 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 524608 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 524608 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 524608 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 524608 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 524608 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 32 in 3 places, all below massif's threshold (01.00%)
+   n0: 16 in 1 place, below massif's threshold (01.00%)
+  n0: 105653 in 21 places, all below massif's threshold (01.00%)
+ n0: 664 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=49
+#-----------
+time=9619858767
+mem_heap_B=39206099
+mem_heap_extra_B=5797597
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=9621737666
+mem_heap_B=39251163
+mem_heap_extra_B=5811221
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=9623615687
+mem_heap_B=39296227
+mem_heap_extra_B=5824845
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=9625494292
+mem_heap_B=39341291
+mem_heap_extra_B=5838469
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=9627373156
+mem_heap_B=39386355
+mem_heap_extra_B=5852093
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=9629251124
+mem_heap_B=39431333
+mem_heap_extra_B=5865691
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=9631129296
+mem_heap_B=39476311
+mem_heap_extra_B=5879289
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=9706457619
+mem_heap_B=39495148
+mem_heap_extra_B=5884980
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=9708335278
+mem_heap_B=17301275
+mem_heap_extra_B=5693245
+mem_stacks_B=0
+heap_tree=detailed
+n2: 17301275 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 17300611 0x40AF1F: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+  n3: 13026326 0x40F71C: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n3: 11770388 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n1: 10816862 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 10816862 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 10816862 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 10816862 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 10816862 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 10816862 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 10816862 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 10816862 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 10816862 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 10816862 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 10816862 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 10816862 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 10816862 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 10816862 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 10816862 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 953190 0x41442A: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 953065 0x41AEFA: read_line (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 953065 0x41B785: io_readline (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 953065 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 953065 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 953065 0x412729: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 953065 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 953065 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 953065 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 953065 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 953065 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 953065 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 953065 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 953065 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 953065 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 953065 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n1: 953065 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                     n0: 953065 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 125 in 4 places, all below massif's threshold (01.00%)
+    n0: 336 in 9 places, all below massif's threshold (01.00%)
+   n2: 1250066 0x411EB3: luaV_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 1250025 0x40573D: lua_concat (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n2: 1250025 0x41443D: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 1250025 0x41D91E: str_upper (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 1250025 0x412936: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 1250025 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 1250025 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 1250025 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 1250025 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 1250025 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 1250025 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 1250025 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 1250025 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 1250025 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n0: 1250025 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n0: 0 in 1 place, below massif's threshold (01.00%)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 41 in 1 place, below massif's threshold (01.00%)
+   n0: 5872 in 7 places, all below massif's threshold (01.00%)
+  n2: 4194304 0x40F565: luaS_resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n2: 4194304 0x40F7A9: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 4194304 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 4194304 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 4194304 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 4194304 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 4194304 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 4194304 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 4194304 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 4194304 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 4194304 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 4194304 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 4194304 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 4194304 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 4194304 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 4194304 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 4194304 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n0: 4194304 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 0 in 1 place, below massif's threshold (01.00%)
+  n0: 79981 in 23 places, all below massif's threshold (01.00%)
+ n0: 664 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=58
+#-----------
+time=9710213036
+mem_heap_B=16810527
+mem_heap_extra_B=5504697
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=9712090726
+mem_heap_B=16317024
+mem_heap_extra_B=5315656
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=9713968368
+mem_heap_B=15829696
+mem_heap_extra_B=5128632
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=9715846075
+mem_heap_B=14086554
+mem_heap_extra_B=4937782
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=9717723794
+mem_heap_B=13593475
+mem_heap_extra_B=4748421
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=63
+#-----------
+time=9719601412
+mem_heap_B=13099543
+mem_heap_extra_B=4559761
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=9721479152
+mem_heap_B=12607896
+mem_heap_extra_B=4371360
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=65
+#-----------
+time=9723356838
+mem_heap_B=12115449
+mem_heap_extra_B=4182703
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=9725234496
+mem_heap_B=11625251
+mem_heap_extra_B=3995397
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=9727112104
+mem_heap_B=11136433
+mem_heap_extra_B=3808023
+mem_stacks_B=0
+heap_tree=detailed
+n2: 11136433 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 11135769 0x40AF1F: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+  n2: 6861484 0x40F71C: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n3: 6858284 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n1: 6305891 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 6305891 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 6305891 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 6305891 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 6305891 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 6305891 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 6305891 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 6305891 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 6305891 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 6305891 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 6305891 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 6305891 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 6305891 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 6305891 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 6305891 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 552245 0x41442A: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 552245 0x41AEFA: read_line (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 552245 0x41B785: io_readline (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 552245 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 552245 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 552245 0x412729: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 552245 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 552245 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 552245 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 552245 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 552245 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 552245 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 552245 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 552245 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 552245 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 552245 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n1: 552245 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                     n0: 552245 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 0 in 4 places, all below massif's threshold (01.00%)
+    n0: 148 in 9 places, all below massif's threshold (01.00%)
+   n0: 3200 in 8 places, all below massif's threshold (01.00%)
+  n2: 4194304 0x40F565: luaS_resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n2: 4194304 0x40F7A9: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 4194304 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 4194304 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 4194304 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 4194304 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 4194304 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 4194304 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 4194304 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 4194304 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 4194304 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 4194304 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 4194304 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 4194304 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 4194304 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 4194304 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 4194304 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n0: 4194304 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 0 in 1 place, below massif's threshold (01.00%)
+  n0: 79981 in 23 places, all below massif's threshold (01.00%)
+ n0: 664 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=68
+#-----------
+time=9728989766
+mem_heap_B=10646783
+mem_heap_extra_B=3619753
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=69
+#-----------
+time=9730867488
+mem_heap_B=10159606
+mem_heap_extra_B=3431522
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=70
+#-----------
+time=9732745107
+mem_heap_B=9668105
+mem_heap_extra_B=3243463
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=71
+#-----------
+time=9734622797
+mem_heap_B=9178805
+mem_heap_extra_B=3055307
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=72
+#-----------
+time=9736500747
+mem_heap_B=8687303
+mem_heap_extra_B=2867385
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=73
+#-----------
+time=9738378420
+mem_heap_B=8194520
+mem_heap_extra_B=2677696
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=74
+#-----------
+time=9740256085
+mem_heap_B=7699300
+mem_heap_extra_B=2486652
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=75
+#-----------
+time=9742133804
+mem_heap_B=7207028
+mem_heap_extra_B=2297668
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=76
+#-----------
+time=9744011476
+mem_heap_B=6715696
+mem_heap_extra_B=2108568
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=77
+#-----------
+time=9745889106
+mem_heap_B=6225548
+mem_heap_extra_B=1920220
+mem_stacks_B=0
+heap_tree=detailed
+n2: 6225548 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 6224884 0x40AF1F: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+  n2: 4194304 0x40F565: luaS_resize (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n2: 4194304 0x40F7A9: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 4194304 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 4194304 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 4194304 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 4194304 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 4194304 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 4194304 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 4194304 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 4194304 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 4194304 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 4194304 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 4194304 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 4194304 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 4194304 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 4194304 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 4194304 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n0: 4194304 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 0 in 1 place, below massif's threshold (01.00%)
+    n0: 0 in 2 places, all below massif's threshold (01.00%)
+   n0: 0 in 1 place, below massif's threshold (01.00%)
+  n2: 1950599 0x40F71C: luaS_newlstr (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+   n3: 1949811 0x4057E4: lua_pushlstring (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n1: 1793580 0x41DAEA: str_sub (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 1793580 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 1793580 0x412E27: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 1793580 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 1793580 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 1793580 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 1793580 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 1793580 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 1793580 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 1793580 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 1793580 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 1793580 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 1793580 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 1793580 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n0: 1793580 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+    n2: 156145 0x41442A: luaL_pushresult (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n1: 156145 0x41AEFA: read_line (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+      n1: 156145 0x41B785: io_readline (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+       n1: 156145 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+        n1: 156145 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+         n1: 156145 0x412729: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+          n1: 156145 0x408EB3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+           n1: 156145 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+            n1: 156145 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+             n1: 156145 0x405AA0: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+              n1: 156145 0x404284: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+               n1: 156145 0x404D31: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                n1: 156145 0x408944: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                 n1: 156145 0x408E57: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                  n1: 156145 0x408535: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                   n1: 156145 0x4085B3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                    n1: 156145 0x405A43: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+                     n0: 156145 0x4041BB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-master)
+     n0: 0 in 4 places, all below massif's threshold (01.00%)
+    n0: 86 in 9 places, all below massif's threshold (01.00%)
+   n0: 788 in 8 places, all below massif's threshold (01.00%)
+  n0: 79981 in 23 places, all below massif's threshold (01.00%)
+ n0: 664 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=78
+#-----------
+time=9747766798
+mem_heap_B=5734085
+mem_heap_extra_B=1732627
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=79
+#-----------
+time=9749644421
+mem_heap_B=5240395
+mem_heap_extra_B=1542389
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=80
+#-----------
+time=9751522132
+mem_heap_B=4746636
+mem_heap_extra_B=1353100
+mem_stacks_B=0
+heap_tree=empty

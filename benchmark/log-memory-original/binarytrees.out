@@ -1,0 +1,1007 @@
+desc: --massif-out-file=tmp.out
+cmd: ../src/bin/lua-original binarytrees.lua 16
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=1095702642
+mem_heap_B=34197228
+mem_heap_extra_B=5723260
+mem_stacks_B=0
+heap_tree=detailed
+n2: 34197228 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 34196612 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+  n2: 22856512 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n1: 22855168 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 22855168 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 22855168 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 22855168 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 22855168 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 22855168 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 22855168 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 22855168 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 22855168 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 22855168 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 22855168 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 22855168 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n0: 22855168 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n0: 1344 in 4 places, all below massif's threshold (01.00%)
+  n2: 11310896 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n2: 11310864 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 11310848 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 11310848 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 11310848 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 11310848 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 11310848 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 11310848 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 11310848 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 11310848 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 11310848 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 11310848 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 11310848 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n1: 11310848 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+                n0: 11310848 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n0: 16 in 1 place, below massif's threshold (01.00%)
+   n0: 32 in 1 place, below massif's threshold (01.00%)
+  n0: 29204 in 22 places, all below massif's threshold (01.00%)
+ n0: 616 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=2
+#-----------
+time=1626768432
+mem_heap_B=15337212
+mem_heap_extra_B=2563236
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=2593250290
+mem_heap_B=20211404
+mem_heap_extra_B=3380276
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=3723821138
+mem_heap_B=33438412
+mem_heap_extra_B=5596900
+mem_stacks_B=0
+heap_tree=detailed
+n2: 33438412 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 33437796 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+  n2: 22347904 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n1: 22346560 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 22346560 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 22346560 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 22346560 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 22346560 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 22346560 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 22346560 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 22346560 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 22346560 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 22346560 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 22346560 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 22346560 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n0: 22346560 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n0: 1344 in 4 places, all below massif's threshold (01.00%)
+  n2: 11060688 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n2: 11060656 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 11060640 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 11060640 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 11060640 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 11060640 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 11060640 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 11060640 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 11060640 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 11060640 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 11060640 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 11060640 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 11060640 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n1: 11060640 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+                n0: 11060640 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n0: 16 in 1 place, below massif's threshold (01.00%)
+   n0: 32 in 1 place, below massif's threshold (01.00%)
+  n0: 29204 in 22 places, all below massif's threshold (01.00%)
+ n0: 616 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=5
+#-----------
+time=4689526639
+mem_heap_B=14202716
+mem_heap_extra_B=2373156
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=5350530658
+mem_heap_B=26562028
+mem_heap_extra_B=4444612
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=6265812516
+mem_heap_B=28307548
+mem_heap_extra_B=4737156
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=7367467526
+mem_heap_B=16139420
+mem_heap_extra_B=2697876
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=8299597266
+mem_heap_B=19057052
+mem_heap_extra_B=3186756
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=9146989616
+mem_heap_B=17170876
+mem_heap_extra_B=2867844
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=10163887224
+mem_heap_B=24962412
+mem_heap_extra_B=4167988
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=11418525743
+mem_heap_B=21207740
+mem_heap_extra_B=3541428
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=12232978509
+mem_heap_B=17439004
+mem_heap_extra_B=2912708
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=13454664773
+mem_heap_B=24522268
+mem_heap_extra_B=4094996
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=14404732099
+mem_heap_B=15794716
+mem_heap_extra_B=2637988
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=15762127856
+mem_heap_B=17902156
+mem_heap_extra_B=2989748
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=16440835175
+mem_heap_B=30843484
+mem_heap_extra_B=5149636
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=17526783326
+mem_heap_B=18063564
+mem_heap_extra_B=3015716
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=18257524282
+mem_heap_B=33609580
+mem_heap_extra_B=5607828
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=18945732248
+mem_heap_B=23636812
+mem_heap_extra_B=3945228
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=19633940280
+mem_heap_B=20786876
+mem_heap_extra_B=3470308
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=20552314505
+mem_heap_B=14552876
+mem_heap_extra_B=2430324
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=21240839552
+mem_heap_B=28308460
+mem_heap_extra_B=4724196
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=22158995202
+mem_heap_B=30143948
+mem_heap_extra_B=5029956
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=22847505675
+mem_heap_B=19619516
+mem_heap_extra_B=3275172
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=23995441533
+mem_heap_B=33794060
+mem_heap_extra_B=5638572
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=24913393383
+mem_heap_B=26765420
+mem_heap_extra_B=4466804
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=26022659995
+mem_heap_B=24309580
+mem_heap_extra_B=4056564
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=26710867543
+mem_heap_B=21187356
+mem_heap_extra_B=3536492
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=27566522949
+mem_heap_B=35037004
+mem_heap_extra_B=5845100
+mem_stacks_B=0
+heap_tree=detailed
+n2: 35037004 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 35036388 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+  n2: 23339840 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n1: 23338496 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 23338496 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 23338496 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 23338496 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 23338496 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 23338496 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 23338496 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 23338496 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 23338496 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 23338496 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 23338496 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 23338496 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n0: 23338496 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n0: 1344 in 4 places, all below massif's threshold (01.00%)
+  n2: 11667344 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n2: 11667312 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 11667296 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 11667296 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 11667296 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 11667296 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 11667296 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 11667296 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 11667296 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 11667296 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 11667296 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 11667296 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 11667296 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n1: 11667296 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+                n0: 11667296 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n0: 16 in 1 place, below massif's threshold (01.00%)
+   n0: 32 in 1 place, below massif's threshold (01.00%)
+  n0: 29204 in 22 places, all below massif's threshold (01.00%)
+ n0: 616 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=31
+#-----------
+time=28484132618
+mem_heap_B=27771932
+mem_heap_extra_B=4634012
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=29172341803
+mem_heap_B=25198540
+mem_heap_extra_B=4204892
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=29850232791
+mem_heap_B=17204780
+mem_heap_extra_B=2872676
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=30867441054
+mem_heap_B=20501692
+mem_heap_extra_B=3422004
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=32223440041
+mem_heap_B=21973948
+mem_heap_extra_B=3667348
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=33241556665
+mem_heap_B=28459387
+mem_heap_extra_B=4748765
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=34160269349
+mem_heap_B=29810172
+mem_heap_extra_B=4973556
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=35098582413
+mem_heap_B=29900924
+mem_heap_extra_B=4988740
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=35776473379
+mem_heap_B=16629692
+mem_heap_extra_B=2776580
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=36461134206
+mem_heap_B=28967452
+mem_heap_extra_B=4833108
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=37139436718
+mem_heap_B=14643132
+mem_heap_extra_B=2445300
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=38495218213
+mem_heap_B=20936316
+mem_heap_extra_B=3494748
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=39174671343
+mem_heap_B=26258972
+mem_heap_extra_B=4381684
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=40534156936
+mem_heap_B=24684332
+mem_heap_extra_B=4119204
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=41556485667
+mem_heap_B=31811865
+mem_heap_extra_B=5304815
+mem_stacks_B=0
+heap_tree=detailed
+n2: 31811865 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 31811249 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+  n2: 21187072 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n1: 21185728 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 21185728 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 21185728 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 21185728 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 21185728 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 21185728 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 21185728 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 21185728 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 21185728 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 21185728 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 21185728 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 21185728 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n0: 21185728 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n0: 1344 in 4 places, all below massif's threshold (01.00%)
+  n2: 10592496 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n2: 10592464 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 10592448 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 10592448 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 10592448 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 10592448 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 10592448 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 10592448 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 10592448 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 10592448 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 10592448 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 10592448 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 10592448 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n1: 10592448 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+                n0: 10592448 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n0: 16 in 1 place, below massif's threshold (01.00%)
+   n0: 32 in 1 place, below massif's threshold (01.00%)
+  n0: 31681 in 22 places, all below massif's threshold (01.00%)
+ n0: 616 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=46
+#-----------
+time=42639782373
+mem_heap_B=39727868
+mem_heap_extra_B=6624108
+mem_stacks_B=0
+heap_tree=detailed
+n2: 39727868 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 39727252 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+  n2: 26464448 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n1: 26463104 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 26463104 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 26463104 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 26463104 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 26463104 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 26463104 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 26463104 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 26463104 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 26463104 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 26463104 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 26463104 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 26463104 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n0: 26463104 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n0: 1344 in 4 places, all below massif's threshold (01.00%)
+  n2: 13231184 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n2: 13231152 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 13231136 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 13231136 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 13231136 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 13231136 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 13231136 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 13231136 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 13231136 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 13231136 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 13231136 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 13231136 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 13231136 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n1: 13231136 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+                n0: 13231136 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n0: 16 in 1 place, below massif's threshold (01.00%)
+   n0: 32 in 1 place, below massif's threshold (01.00%)
+  n0: 31620 in 22 places, all below massif's threshold (01.00%)
+ n0: 616 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=47
+#-----------
+time=43522581742
+mem_heap_B=33248012
+mem_heap_extra_B=5544004
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=44755907258
+mem_heap_B=44018172
+mem_heap_extra_B=7338972
+mem_stacks_B=0
+heap_tree=detailed
+n2: 44018172 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 44017556 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+  n2: 29324608 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n1: 29323264 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 29323264 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 29323264 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 29323264 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 29323264 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 29323264 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 29323264 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 29323264 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 29323264 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 29323264 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 29323264 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 29323264 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n0: 29323264 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n0: 1344 in 4 places, all below massif's threshold (01.00%)
+  n2: 14661328 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n2: 14661296 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 14661280 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 14661280 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 14661280 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 14661280 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 14661280 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 14661280 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 14661280 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 14661280 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 14661280 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 14661280 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 14661280 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n1: 14661280 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+                n0: 14661280 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n0: 16 in 1 place, below massif's threshold (01.00%)
+   n0: 32 in 1 place, below massif's threshold (01.00%)
+  n0: 31620 in 22 places, all below massif's threshold (01.00%)
+ n0: 616 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=49
+#-----------
+time=45094854979
+mem_heap_B=33789884
+mem_heap_extra_B=5634468
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=45324947250
+mem_heap_B=44933260
+mem_heap_extra_B=7491836
+mem_stacks_B=0
+heap_tree=detailed
+n2: 44933260 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 44932644 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+  n2: 29934720 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n1: 29933376 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 29933376 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 29933376 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 29933376 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 29933376 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 29933376 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 29933376 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 29933376 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 29933376 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 29933376 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 29933376 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 29933376 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n0: 29933376 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n0: 1344 in 4 places, all below massif's threshold (01.00%)
+  n2: 14966304 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n2: 14966272 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 14966256 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 14966256 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 14966256 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 14966256 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 14966256 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 14966256 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 14966256 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 14966256 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 14966256 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 14966256 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 14966256 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n1: 14966256 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+                n0: 14966256 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n0: 16 in 1 place, below massif's threshold (01.00%)
+   n0: 32 in 1 place, below massif's threshold (01.00%)
+  n0: 31620 in 22 places, all below massif's threshold (01.00%)
+ n0: 616 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=51
+#-----------
+time=45858780270
+mem_heap_B=42733052
+mem_heap_extra_B=7125188
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=46403633142
+mem_heap_B=42521772
+mem_heap_extra_B=7089764
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=46934699736
+mem_heap_B=42176588
+mem_heap_extra_B=7032100
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=47465766767
+mem_heap_B=40068108
+mem_heap_extra_B=6680996
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=48014091115
+mem_heap_B=36987612
+mem_heap_extra_B=6167460
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=48545157299
+mem_heap_B=39231260
+mem_heap_extra_B=6541364
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=49076223099
+mem_heap_B=39895516
+mem_heap_extra_B=6651972
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=49607288958
+mem_heap_B=19848796
+mem_heap_extra_B=3310396
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=50138355037
+mem_heap_B=49978444
+mem_heap_extra_B=8332596
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=50257570813
+mem_heap_B=52326380
+mem_heap_extra_B=8723916
+mem_stacks_B=0
+heap_tree=detailed
+n2: 52326380 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 52325764 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+  n2: 34863360 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n1: 34862016 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 34862016 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 34862016 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 34862016 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 34862016 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 34862016 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 34862016 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 34862016 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 34862016 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 34862016 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 34862016 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 34862016 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n0: 34862016 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n0: 1344 in 4 places, all below massif's threshold (01.00%)
+  n2: 17430784 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n2: 17430752 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 17430736 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 17430736 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 17430736 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 17430736 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 17430736 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 17430736 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 17430736 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 17430736 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 17430736 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 17430736 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 17430736 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n1: 17430736 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+                n0: 17430736 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n0: 16 in 1 place, below massif's threshold (01.00%)
+   n0: 32 in 1 place, below massif's threshold (01.00%)
+  n0: 31620 in 22 places, all below massif's threshold (01.00%)
+ n0: 616 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=61
+#-----------
+time=50788638095
+mem_heap_B=50938508
+mem_heap_extra_B=8492436
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=51053444646
+mem_heap_B=64480364
+mem_heap_extra_B=10749484
+mem_stacks_B=0
+heap_tree=detailed
+n2: 64480364 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 64479748 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+  n2: 42966016 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n1: 42964672 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 42964672 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 42964672 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 42964672 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 42964672 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 42964672 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 42964672 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 42964672 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 42964672 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 42964672 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 42964672 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 42964672 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n0: 42964672 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n0: 1344 in 4 places, all below massif's threshold (01.00%)
+  n2: 21482112 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n2: 21482080 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 21482064 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 21482064 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 21482064 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 21482064 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 21482064 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 21482064 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 21482064 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 21482064 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 21482064 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 21482064 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 21482064 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n1: 21482064 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+                n0: 21482064 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n0: 16 in 1 place, below massif's threshold (01.00%)
+   n0: 32 in 1 place, below massif's threshold (01.00%)
+  n0: 31620 in 22 places, all below massif's threshold (01.00%)
+ n0: 616 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=63
+#-----------
+time=51584511200
+mem_heap_B=55461900
+mem_heap_extra_B=9246676
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=51879028904
+mem_heap_B=71058588
+mem_heap_extra_B=11846252
+mem_stacks_B=0
+heap_tree=detailed
+n2: 71058588 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 71057972 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+  n2: 47351616 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n1: 47350272 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 47350272 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 47350272 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 47350272 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 47350272 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 47350272 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 47350272 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 47350272 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 47350272 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 47350272 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 47350272 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 47350272 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n0: 47350272 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n0: 1344 in 4 places, all below massif's threshold (01.00%)
+  n2: 23674736 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n2: 23674704 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 23674688 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 23674688 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 23674688 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 23674688 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 23674688 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 23674688 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 23674688 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 23674688 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 23674688 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 23674688 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 23674688 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n1: 23674688 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+                n0: 23674688 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n0: 16 in 1 place, below massif's threshold (01.00%)
+   n0: 32 in 1 place, below massif's threshold (01.00%)
+  n0: 31620 in 22 places, all below massif's threshold (01.00%)
+ n0: 616 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=65
+#-----------
+time=52410096060
+mem_heap_B=54518316
+mem_heap_extra_B=9089524
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=52829412952
+mem_heap_B=73655932
+mem_heap_extra_B=12279292
+mem_stacks_B=0
+heap_tree=peak
+n2: 73655932 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 73655316 0x40ABFF: luaM_realloc_ (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+  n2: 49083072 0x40FBBD: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n1: 49081728 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 49081728 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 49081728 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 49081728 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 49081728 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 49081728 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 49081728 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 49081728 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 49081728 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 49081728 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 49081728 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 49081728 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n0: 49081728 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n0: 1344 in 4 places, all below massif's threshold (01.00%)
+  n2: 24540624 0x40ECE6: setarrayvector (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+   n2: 24540592 0x40FC05: luaH_new (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n1: 24540576 0x41194B: luaV_execute (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+     n1: 24540576 0x408CF3: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+      n1: 24540576 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+       n1: 24540576 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+        n1: 24540576 0x405A70: lua_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+         n1: 24540576 0x404254: docall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+          n1: 24540576 0x404D01: pmain (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+           n1: 24540576 0x408784: luaD_precall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+            n1: 24540576 0x408C97: luaD_call (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+             n1: 24540576 0x408375: luaD_rawrunprotected (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+              n1: 24540576 0x4083F3: luaD_pcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+               n1: 24540576 0x405A13: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+                n0: 24540576 0x40418B: main (in /home/komuro/lang/lua/mylua/src/bin/lua-original)
+    n0: 16 in 1 place, below massif's threshold (01.00%)
+   n0: 32 in 1 place, below massif's threshold (01.00%)
+  n0: 31620 in 22 places, all below massif's threshold (01.00%)
+ n0: 616 in 2 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=67
+#-----------
+time=53360479210
+mem_heap_B=52932828
+mem_heap_extra_B=8825268
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=53891548665
+mem_heap_B=31709372
+mem_heap_extra_B=5287636
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=69
+#-----------
+time=54422615339
+mem_heap_B=62817804
+mem_heap_extra_B=10472788
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=70
+#-----------
+time=54953681348
+mem_heap_B=51063484
+mem_heap_extra_B=8513828
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=71
+#-----------
+time=55484748983
+mem_heap_B=37179388
+mem_heap_extra_B=6199348
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=72
+#-----------
+time=56015814838
+mem_heap_B=68485804
+mem_heap_extra_B=11417380
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=73
+#-----------
+time=56546881065
+mem_heap_B=46251532
+mem_heap_extra_B=7711684
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=74
+#-----------
+time=57077947229
+mem_heap_B=38090796
+mem_heap_extra_B=6351188
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=75
+#-----------
+time=57683993441
+mem_heap_B=56201255
+mem_heap_extra_B=9370137
+mem_stacks_B=0
+heap_tree=empty

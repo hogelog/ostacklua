@@ -1,0 +1,43 @@
+#start test
+desc: --massif-out-file=tmp.out
+cmd: ../src/bin/lua-luajit revcomp.lua 0
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=352062
+mem_heap_B=568
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=530693
+mem_heap_B=568
+mem_heap_extra_B=16
+mem_stacks_B=0
+heap_tree=peak
+n1: 568 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 568 0x5524728: ??? (in /lib/libc-2.7.so)
+  n1: 568 0x415B65: luaL_loadfile (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+   n1: 568 0x404CA3: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+    n1: 568 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+     n1: 568 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      n0: 568 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+#-----------
+snapshot=3
+#-----------
+time=530693
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty

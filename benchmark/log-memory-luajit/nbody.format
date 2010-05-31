@@ -1,0 +1,52 @@
+--------------------------------------------------------------------------------
+Command:            ../src/bin/lua-luajit nbody.lua 50000000
+Massif arguments:   --massif-out-file=tmp.out
+ms_print arguments: nbody.out
+--------------------------------------------------------------------------------
+
+
+     B
+  584^                             ::::::::::::::::::::::::::::::::::::::::::#
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+     |                             :                                         #
+   0 +----------------------------------------------------------------------->ki
+     0                                                                   837.9
+
+Number of snapshots: 4
+ Detailed snapshots: [2 (peak)]
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+  0              0                0                0             0            0
+  1        352,423              584              568            16            0
+  2        858,009              584              568            16            0
+97.26% (568B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->97.26% (568B) 0x5524728: ??? (in /lib/libc-2.7.so)
+  ->97.26% (568B) 0x415B65: luaL_loadfile (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+    ->97.26% (568B) 0x404CA3: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+      ->97.26% (568B) 0x417C45: ??? (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+        ->97.26% (568B) 0x40A2F0: lua_cpcall (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+          ->97.26% (568B) 0x403CAB: main (in /home/komuro/lang/lua/mylua/src/bin/lua-luajit)
+            
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+  3        858,009                0                0             0            0

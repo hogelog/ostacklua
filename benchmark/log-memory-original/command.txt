@@ -1,0 +1,66 @@
+~/lang/lua/mylua/benchmark[0] % time (./test-memory.sh ../src/bin/lua-original)                     ==5462== Massif, a heap profiler                                                                    ==5462== Copyright (C) 2003-2009, and GNU GPL'd, by Nicholas Nethercote
+==5462== Using Valgrind-3.6.0.SVN and LibVEX; rerun with -h for copyright info
+==5462== Command: ../src/bin/lua-original revcomp.lua 0
+==5462==
+==5462==
+==5465== Massif, a heap profiler
+==5465== Copyright (C) 2003-2009, and GNU GPL'd, by Nicholas Nethercote
+==5465== Using Valgrind-3.6.0.SVN and LibVEX; rerun with -h for copyright info
+==5465== Command: ../src/bin/lua-original meteor.lua 2098
+==5465==
+==5465==
+==5470== Massif, a heap profiler
+==5470== Copyright (C) 2003-2009, and GNU GPL'd, by Nicholas Nethercote
+==5470== Using Valgrind-3.6.0.SVN and LibVEX; rerun with -h for copyright info
+==5470== Command: ../src/bin/lua-original knucleotide.lua 0
+==5470==
+==5470==
+==5473== Massif, a heap profiler
+==5473== Copyright (C) 2003-2009, and GNU GPL'd, by Nicholas Nethercote
+==5473== Using Valgrind-3.6.0.SVN and LibVEX; rerun with -h for copyright info
+==5473== Command: ../src/bin/lua-original pidigits.lua 10000
+==5473==
+==5473==
+==5476== Massif, a heap profiler
+==5476== Copyright (C) 2003-2009, and GNU GPL'd, by Nicholas Nethercote
+==5476== Using Valgrind-3.6.0.SVN and LibVEX; rerun with -h for copyright info
+==5476== Command: ../src/bin/lua-original binarytrees.lua 16
+==5476==
+==5476==
+==5479== Massif, a heap profiler
+==5479== Copyright (C) 2003-2009, and GNU GPL'd, by Nicholas Nethercote
+==5479== Using Valgrind-3.6.0.SVN and LibVEX; rerun with -h for copyright info
+==5479== Command: ../src/bin/lua-original fasta.lua 25000000
+==5479==
+==5479==
+==5482== Massif, a heap profiler
+==5482== Copyright (C) 2003-2009, and GNU GPL'd, by Nicholas Nethercote
+==5482== Using Valgrind-3.6.0.SVN and LibVEX; rerun with -h for copyright info
+==5482== Command: ../src/bin/lua-original ao.lua 0
+==5482==
+==5482==
+==5487== Massif, a heap profiler
+==5487== Copyright (C) 2003-2009, and GNU GPL'd, by Nicholas Nethercote
+==5487== Using Valgrind-3.6.0.SVN and LibVEX; rerun with -h for copyright info
+==5487== Command: ../src/bin/lua-original spectralnorm.lua 5500
+==5487==
+==5487==
+==5491== Massif, a heap profiler
+==5491== Copyright (C) 2003-2009, and GNU GPL'd, by Nicholas Nethercote
+==5491== Using Valgrind-3.6.0.SVN and LibVEX; rerun with -h for copyright info
+==5491== Command: ../src/bin/lua-original nbody.lua 50000000
+==5491==
+==5491==
+==5497== Massif, a heap profiler
+==5497== Copyright (C) 2003-2009, and GNU GPL'd, by Nicholas Nethercote
+==5497== Using Valgrind-3.6.0.SVN and LibVEX; rerun with -h for copyright info
+==5497== Command: ../src/bin/lua-original mandelbrot.lua 16000
+==5497==
+==5497==
+==5525== Massif, a heap profiler
+==5525== Copyright (C) 2003-2009, and GNU GPL'd, by Nicholas Nethercote
+==5525== Using Valgrind-3.6.0.SVN and LibVEX; rerun with -h for copyright info
+==5525== Command: ../src/bin/lua-original fannkuch.lua 12
+==5525==
+==5525==
+10:47:46.20 user 2:09.91 system 10:49:53.83 total

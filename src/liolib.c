@@ -17,7 +17,7 @@
 
 #include "lauxlib.h"
 #include "lualib.h"
-
+#include "lstate.h"
 
 
 #define IO_INPUT	1
@@ -163,6 +163,7 @@ static int io_open (lua_State *L) {
   const char *mode = luaL_optstring(L, 2, "r");
   FILE **pf = newfile(L);
   *pf = fopen(filename, mode);
+  printf("t: %lu, fd: %d\n", G(L)->allocated, fileno(*pf));
   return (*pf == NULL) ? pushresult(L, 0, filename) : 1;
 }
 

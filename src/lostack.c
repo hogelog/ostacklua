@@ -108,8 +108,15 @@ LUAI_FUNC int ostack_closeframe(lua_State *L, int findex) {
 
 LUAI_FUNC int ostack_renewframe(lua_State *L, TValue *findex) {
   int i = cast_int(nvalue(findex));
-  ostack_closeframe(L, i);
-  setnvalue(findex, ostack_newframe(L));
+  OStack *os = ostack(L);
+  SObject *top = os->top, *base = os->frames[i].base;
+  while (top != base) {
+    top -= 1;
+    if (top->body) {
+      freeobj(L, top->body);
+    }
+  }
+  os->top = base;
   return i;
 }
 

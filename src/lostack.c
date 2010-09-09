@@ -96,8 +96,7 @@ LUAI_FUNC int ostack_closeframe(lua_State *L, int findex) {
   uint64_t count_start = rdtsc();
   uint64_t count_end;
   OStack *os = ostack(L);
-  Frame *f = &os->frames[findex];
-  SObject *top = os->top, *base = f->base;
+  SObject *top = os->top, *base = os->frames[findex].base;
   while (top != base) {
     top -= 1;
     if (top->body) {
@@ -105,7 +104,7 @@ LUAI_FUNC int ostack_closeframe(lua_State *L, int findex) {
     }
   }
   os->findex = findex;
-  os->top = f->base;
+  os->top = base;
   count_end = rdtsc();
   ++g->cframestep;
   g->cframetime += count_end - count_start;
@@ -114,8 +113,15 @@ LUAI_FUNC int ostack_closeframe(lua_State *L, int findex) {
 
 LUAI_FUNC int ostack_renewframe(lua_State *L, TValue *findex) {
   int i = cast_int(nvalue(findex));
-  ostack_closeframe(L, i);
-  setnvalue(findex, ostack_newframe(L));
+  OStack *os = ostack(L);
+  SObject *top = os->top, *base = os->frames[i].base;
+  while (top != base) {
+    top -= 1;
+    if (top->body) {
+      freeobj(L, top->body);
+    }
+  }
+  os->top = base;
   return i;
 }
 

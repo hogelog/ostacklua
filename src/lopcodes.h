@@ -206,6 +206,7 @@ OP_CLOSURE,/*	A Bx	R(A) := closure(KPROTO[Bx], R(A), ... ,R(A+n))	*/
 
 OP_NEWFRAME,
 OP_CLOSEFRAME,
+OP_BREAK,
 
 OP_VARARG/*	A B	R(A), R(A+1), ..., R(A+B-1) = vararg		*/
 } OpCode;

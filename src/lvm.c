@@ -674,6 +674,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           luaG_runerror(L, LUA_QL("for") " limit must be a number");
         else if (!tonumber(pstep, ra+3))
           luaG_runerror(L, LUA_QL("for") " step must be a number");
+        setnvalue(ra, ostack_newframe(L));
         setnvalue(ra+1, luai_numsub(nvalue(ra+1), nvalue(pstep)));
         dojump(L, pc, GETARG_sBx(i));
         continue;
@@ -755,6 +756,13 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         lua_Number findex = nvalue(ra) + GETARG_sBx(i);
         lua_assert(findex>=0.0);
         ostack_closeframe(L, cast_int(findex));
+        continue;
+      }
+      case OP_BREAK: {
+        lua_Number findex = nvalue(ra);
+        lua_assert(findex>=0.0);
+        ostack_closeframe(L, cast_int(findex));
+        dojump(L, pc, GETARG_sBx(i));
         continue;
       }
       case OP_VARARG: {

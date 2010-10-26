@@ -53,6 +53,7 @@ const char *const luaP_opnames[NUM_OPCODES+1] = {
   "CLOSURE",
   "NEWFRAME",
   "CLOSEFRAME",
+  "BREAK",
   "VARARG",
   NULL
 };
@@ -60,7 +61,7 @@ const char *const luaP_opnames[NUM_OPCODES+1] = {
 
 #define opmode(t,a,b,c,m) (((t)<<7) | ((a)<<6) | ((b)<<4) | ((c)<<2) | (m))
 
-const lu_byte luaP_opmodes[NUM_OPCODES] = {
+const lu_byte luaP_opmodes[NUM_OPCODES] = { /* "ORDER OP" */
 /*       T  A    B       C     mode		   opcode	*/
   opmode(0, 1, OpArgR, OpArgN, iABC) 		/* OP_MOVE */
  ,opmode(0, 1, OpArgK, OpArgN, iABx)		/* OP_LOADK */
@@ -101,6 +102,7 @@ const lu_byte luaP_opmodes[NUM_OPCODES] = {
  ,opmode(0, 1, OpArgU, OpArgN, iABx)		/* OP_CLOSURE */
  ,opmode(0, 1, OpArgK, OpArgN, iAsBx)		/* OP_NEWFRAME */
  ,opmode(0, 1, OpArgK, OpArgN, iAsBx)		/* OP_CLOSEFRAME */
+ ,opmode(0, 0, OpArgR, OpArgN, iAsBx)		/* OP_BREAK */
  ,opmode(0, 1, OpArgU, OpArgN, iABC)		/* OP_VARARG */
 };
 

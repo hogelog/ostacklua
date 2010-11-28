@@ -660,6 +660,8 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           setnvalue(ra+1, idx);  /* update internal index... */
           setnvalue(ra+4, idx);  /* ...and external index */
           ostack_renewframe(L, ra);
+        } else {
+          ostack_closeframe(L, nvalue(ra));
         }
         continue;
       }

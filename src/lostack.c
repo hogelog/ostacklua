@@ -88,6 +88,7 @@ LUAI_FUNC int ostack_newframe(lua_State *L) {
   lua_assert(os->findex < os->framesnum);
   f->base = f->top = os->top;
   os->findex += 1;
+  printf("new: %d\n", os->findex);
   return os->findex - 1;
 }
 

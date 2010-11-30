@@ -53,6 +53,7 @@ const char *const luaP_opnames[NUM_OPCODES+1] = {
   "CLOSURE",
   "NEWFRAME",
   "CLOSEFRAME",
+  "CONTINUE",
   "BREAK",
   "VARARG",
   NULL
@@ -102,6 +103,7 @@ const lu_byte luaP_opmodes[NUM_OPCODES] = { /* "ORDER OP" */
  ,opmode(0, 1, OpArgU, OpArgN, iABx)		/* OP_CLOSURE */
  ,opmode(0, 1, OpArgK, OpArgN, iAsBx)		/* OP_NEWFRAME */
  ,opmode(0, 1, OpArgK, OpArgN, iAsBx)		/* OP_CLOSEFRAME */
+ ,opmode(0, 0, OpArgR, OpArgN, iAsBx)		/* OP_CONTINUE */
  ,opmode(0, 0, OpArgR, OpArgN, iAsBx)		/* OP_BREAK */
  ,opmode(0, 1, OpArgU, OpArgN, iABC)		/* OP_VARARG */
 };

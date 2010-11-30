@@ -367,8 +367,10 @@ static Instruction symbexec (const Proto *pt, int lastpc, int reg) {
       if (a == reg) last = pc;  /* change register `a' */
     }
     if (testTMode(op)) {
+      int op = GET_OPCODE(pt->code[pc+1]);
       check(pc+2 < pt->sizecode);  /* check skip */
-      check(GET_OPCODE(pt->code[pc+1]) == OP_JMP);
+      check(op == OP_JMP || op == OP_CONTINUE || op == OP_BREAK);
+      //check(GET_OPCODE(pt->code[pc+1]) == OP_JMP);
     }
     switch (op) {
       case OP_LOADBOOL: {
@@ -413,6 +415,8 @@ static Instruction symbexec (const Proto *pt, int lastpc, int reg) {
       case OP_FORPREP:
         checkreg(pt, a+3);
         /* go through */
+      case OP_CONTINUE:
+      case OP_BREAK:
       case OP_JMP: {
         int dest = pc+1+b;
         /* not full check and jump is forward and do not skip `lastpc'? */

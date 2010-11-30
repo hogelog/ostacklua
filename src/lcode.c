@@ -66,6 +66,16 @@ int luaK_jump (FuncState *fs) {
 }
 
 
+int luaK_continue (FuncState *fs) {
+  int jpc = fs->jpc;  /* save list of jumps to here */
+  int j;
+  fs->jpc = NO_JUMP;
+  j = luaK_codeAsBx(fs, OP_CONTINUE, 0, NO_JUMP);
+  luaK_concat(fs, &j, jpc);  /* keep them on hold */
+  return j;
+}
+
+
 int luaK_break (FuncState *fs) {
   int jpc = fs->jpc;  /* save list of jumps to here */
   int j;
@@ -850,5 +860,12 @@ void luaK_setlist (FuncState *fs, int base, int nelems, int tostore) {
     luaK_code(fs, cast(Instruction, c), fs->ls->lastline);
   }
   fs->freereg = base + 1;  /* free registers with list values */
+}
+
+
+void luaK_editopcode(FuncState *fs, int list, int oldcode, int newcode) {
+  Instruction *codes = fs->f->code;
+  lua_assert(GET_OPCODE(codes[list]) == oldcode);
+  SET_OPCODE(codes[list], newcode);
 }
 

@@ -102,7 +102,7 @@ static void PrintCode(const Proto* f)
     if (getBMode(o)==OpArgK) printf("%d %d",a,-1-bx); else printf("%d %d",a,bx);
     break;
    case iAsBx:
-    if (o==OP_JMP||o==OP_BREAK) printf("%d",sbx); else printf("%d %d",a,sbx);
+    if (o==OP_JMP||o==OP_BREAK||o==OP_CONTINUE) printf("%d",sbx); else printf("%d %d",a,sbx);
     break;
   }
   switch (o)
@@ -140,6 +140,7 @@ static void PrintCode(const Proto* f)
     }
     break;
    case OP_JMP:
+   case OP_CONTINUE:
    case OP_BREAK:
    case OP_FORLOOP:
    case OP_FORPREP:

@@ -355,6 +355,19 @@ static void Arith (lua_State *L, StkId ra, const TValue *rb,
 
 #define dojump(L,pc,i)	{(pc) += (i); luai_threadyield(L);}
 
+#define dobranch(L,pc,i)	{ \
+  int op = GET_OPCODE(*pc); \
+  /*if (op == OP_CONTINUE || op == OP_BREAK) { \
+    lua_Number frame = nvalue(RA(*pc)); \
+    int fnum; \
+    lua_number2int(fnum, frame); \
+    lua_assert(fnum != 0); \
+    op == OP_CONTINUE ? ostack_renewframe(L, fnum) : ostack_closeframe(L, fnum); \
+  } \*/ \
+  (pc) += (i); \
+  luai_threadyield(L); \
+}
+
 
 #define Protect(x)	{ L->savedpc = pc; {x;}; base = L->base; }
 
@@ -545,7 +558,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         TValue *rc = RKC(i);
         Protect(
           if (equalobj(L, rb, rc) == GETARG_A(i))
-            dojump(L, pc, GETARG_sBx(*pc));
+            dobranch(L, pc, GETARG_sBx(*pc));
         )
         pc++;
         continue;
@@ -553,7 +566,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_LT: {
         Protect(
           if (luaV_lessthan(L, RKB(i), RKC(i)) == GETARG_A(i))
-            dojump(L, pc, GETARG_sBx(*pc));
+            dobranch(L, pc, GETARG_sBx(*pc));
         )
         pc++;
         continue;
@@ -561,14 +574,14 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_LE: {
         Protect(
           if (lessequal(L, RKB(i), RKC(i)) == GETARG_A(i))
-            dojump(L, pc, GETARG_sBx(*pc));
+            dobranch(L, pc, GETARG_sBx(*pc));
         )
         pc++;
         continue;
       }
       case OP_TEST: {
         if (l_isfalse(ra) != GETARG_C(i))
-          dojump(L, pc, GETARG_sBx(*pc));
+          dobranch(L, pc, GETARG_sBx(*pc));
         pc++;
         continue;
       }
@@ -576,7 +589,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         TValue *rb = RB(i);
         if (l_isfalse(rb) != GETARG_C(i)) {
           setobjs2s(L, ra, rb);
-          dojump(L, pc, GETARG_sBx(*pc));
+          dobranch(L, pc, GETARG_sBx(*pc));
         }
         pc++;
         continue;
@@ -766,20 +779,34 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_NEWFRAME: {
-        setnvalue(ra, ostack_newframe(L));
-        lua_assert(nvalue(ra)>=0.0);
+        int fnum = ostack_newframe(L);
+        setnvalue(ra, fnum);
+        lua_assert(fnum > 0);
         continue;
       }
       case OP_CLOSEFRAME: {
-        lua_Number findex = nvalue(ra) + GETARG_sBx(i);
-        lua_assert(findex>=0.0);
-        ostack_closeframe(L, cast_int(findex));
+        lua_Number frame = nvalue(ra);
+        int fnum;
+        lua_number2int(fnum, frame);
+        lua_assert(fnum > 0);
+        ostack_closeframe(L, fnum);
+        continue;
+      }
+      case OP_CONTINUE: {
+        //lua_Number frame = nvalue(ra);
+        //int fnum;
+        //lua_number2int(fnum, frame);
+        //lua_assert(fnum > 0);
+        //ostack_renewframe(L, fnum);
+        dojump(L, pc, GETARG_sBx(i));
         continue;
       }
       case OP_BREAK: {
-        lua_Number findex = nvalue(ra);
-        lua_assert(findex>=0.0);
-        ostack_closeframe(L, cast_int(findex));
+        lua_Number frame = nvalue(ra);
+        int fnum;
+        lua_number2int(fnum, frame);
+        lua_assert(fnum > 0);
+        ostack_closeframe(L, fnum);
         dojump(L, pc, GETARG_sBx(i));
         continue;
       }

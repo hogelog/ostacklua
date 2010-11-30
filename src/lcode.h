@@ -63,6 +63,7 @@ LUAI_FUNC void luaK_storevar (FuncState *fs, expdesc *var, expdesc *e);
 LUAI_FUNC void luaK_setreturns (FuncState *fs, expdesc *e, int nresults);
 LUAI_FUNC void luaK_setoneret (FuncState *fs, expdesc *e);
 LUAI_FUNC int luaK_jump (FuncState *fs);
+LUAI_FUNC int luaK_continue (FuncState *fs);
 LUAI_FUNC int luaK_break (FuncState *fs);
 LUAI_FUNC void luaK_ret (FuncState *fs, int first, int nret);
 LUAI_FUNC void luaK_patchlist (FuncState *fs, int list, int target);
@@ -73,6 +74,7 @@ LUAI_FUNC void luaK_prefix (FuncState *fs, UnOpr op, expdesc *v);
 LUAI_FUNC void luaK_infix (FuncState *fs, BinOpr op, expdesc *v);
 LUAI_FUNC void luaK_posfix (FuncState *fs, BinOpr op, expdesc *v1, expdesc *v2);
 LUAI_FUNC void luaK_setlist (FuncState *fs, int base, int nelems, int tostore);
+LUAI_FUNC void luaK_editopcode (FuncState *fs, int list, int oldcode, int newcode);
 
 
 #endif

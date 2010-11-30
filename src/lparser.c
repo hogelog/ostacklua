@@ -995,10 +995,10 @@ static void whilestat (LexState *ls, int line) {
   int condexit;
   BlockCnt bl;
   int base = fs->freereg;
-  luaK_codeAsBx(fs, OP_NEWFRAME, base, 0);
-  new_localvarliteral(ls, "(for frame)", 0);
-  luaK_reserveregs(fs, 1); /* frame index */
-  adjustlocalvars(ls, 1);
+  //luaK_codeAsBx(fs, OP_NEWFRAME, base, 0);
+  //new_localvarliteral(ls, "(for frame)", 0);
+  //luaK_reserveregs(fs, 1); /* frame index */
+  //adjustlocalvars(ls, 1);
 
   luaX_next(ls);  /* skip WHILE */
   whileinit = luaK_getlabel(fs);
@@ -1006,13 +1006,13 @@ static void whilestat (LexState *ls, int line) {
   enterblock(fs, &bl, 1);
   checknext(ls, TK_DO);
   block(ls);
-  luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
-  luaK_codeAsBx(fs, OP_NEWFRAME, base, 0);
+  //luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
+  //luaK_codeAsBx(fs, OP_NEWFRAME, base, 0);
   luaK_patchlist(fs, luaK_jump(fs), whileinit);
   check_match(ls, TK_END, TK_WHILE, line);
   leaveblock(fs);
   luaK_patchtohere(fs, condexit);  /* false conditions finish the loop */
-  luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
+  //luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
 }
 
 
@@ -1020,24 +1020,27 @@ static void repeatstat (LexState *ls, int line) {
   /* repeatstat -> REPEAT block UNTIL cond */
   int condexit;
   FuncState *fs = ls->fs;
-  int repeat_init = luaK_getlabel(fs);
-  BlockCnt bl1, bl2;
+  int repeat_init;
   int base = fs->freereg;
-  luaK_codeAsBx(fs, OP_NEWFRAME, base, 0);
-  new_localvarliteral(ls, "(for frame)", 0);
-  luaK_reserveregs(fs, 1); /* frame index */
-  adjustlocalvars(ls, 1);
+  BlockCnt bl1, bl2;
+  //luaK_codeAsBx(fs, OP_NEWFRAME, base, 0);
+  //new_localvarliteral(ls, "(for frame)", 0);
+  //luaK_reserveregs(fs, 1); /* frame index */
+  //adjustlocalvars(ls, 1);
+
+  repeat_init = luaK_getlabel(fs);
 
   enterblock(fs, &bl1, 1);  /* loop block */
   enterblock(fs, &bl2, 0);  /* scope block */
   luaX_next(ls);  /* skip REPEAT */
   chunk(ls);
-  luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
+  //luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
   check_match(ls, TK_UNTIL, TK_REPEAT, line);
   condexit = cond(ls);  /* read condition (inside scope block) */
   if (!bl2.upval) {  /* no upvalues? */
     leaveblock(fs);  /* finish scope */
     luaK_patchlist(ls->fs, condexit, repeat_init);  /* close the loop */
+    //luaK_editopcode(ls->fs, condexit, OP_JMP, OP_CONTINUE);
   }
   else {  /* complete semantics when there are upvalues */
     breakstat(ls);  /* if condition then break */
@@ -1046,7 +1049,7 @@ static void repeatstat (LexState *ls, int line) {
     luaK_patchlist(ls->fs, luaK_jump(fs), repeat_init);  /* and repeat */
   }
   leaveblock(fs);  /* finish loop */
-  luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
+  //luaK_codeAsBx(fs, OP_CLOSEFRAME, base, 0);
 }
 
 

@@ -653,15 +653,18 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         lua_Number step = nvalue(ra+3);
         lua_Number idx = luai_numadd(nvalue(ra+1), step); /* increment index */
         lua_Number limit = nvalue(ra+2);
-        lua_assert(nvalue(ra)!=0);
+        lua_Number frame = nvalue(ra);
+        int fnum;
+        lua_number2int(fnum, frame);
+        lua_assert(fnum != 0);
         if (luai_numlt(0, step) ? luai_numle(idx, limit)
                                 : luai_numle(limit, idx)) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
           setnvalue(ra+1, idx);  /* update internal index... */
           setnvalue(ra+4, idx);  /* ...and external index */
-          ostack_renewframe(L, ra);
+          ostack_renewframe(L, fnum);
         } else {
-          ostack_closeframe(L, nvalue(ra));
+          ostack_closeframe(L, fnum);
         }
         continue;
       }
@@ -682,18 +685,31 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_TFORLOOP: {
-        StkId cb = ra + 4;  /* call base */
-        setobjs2s(L, cb+2, ra+3);
-        setobjs2s(L, cb+1, ra+2);
-        setobjs2s(L, cb, ra+1);
+        //int fnum;
+        //lua_Number frame;
+        //StkId cb = ra + 4;  /* call base */
+        //setobjs2s(L, cb+2, ra+3);
+        //setobjs2s(L, cb+1, ra+2);
+        //setobjs2s(L, cb, ra+1);
+        StkId cb = ra + 3;  /* call base */
+        setobjs2s(L, cb+2, ra+2);
+        setobjs2s(L, cb+1, ra+1);
+        setobjs2s(L, cb, ra);
         L->top = cb+3;  /* func. + 2 args (state and index) */
         Protect(luaD_call(L, cb, GETARG_C(i)));
         L->top = L->ci->top;
-        cb = RA(i) + 4;  /* previous call may change the stack */
+        //cb = RA(i) + 4;  /* previous call may change the stack */
+        cb = RA(i) + 3;  /* previous call may change the stack */
+
+        //frame = nvalue(RA(i));
+        //lua_number2int(fnum, frame);
+        //lua_assert(fnum != 0);
         if (!ttisnil(cb)) {  /* continue loop? */
           setobjs2s(L, cb-1, cb);  /* save control variable */
           dojump(L, pc, GETARG_sBx(*pc));  /* jump back */
-          ostack_renewframe(L, RA(i));
+        //  ostack_renewframe(L, fnum);
+        //} else {
+        //  ostack_closeframe(L, fnum);
         }
         pc++;
         continue;

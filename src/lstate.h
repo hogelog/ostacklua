@@ -130,7 +130,7 @@ struct lua_State {
 
 
 #define G(L)	(L->l_G)
-#define ostack(L) (&L->ostack);
+#define ostack(L) (&L->ostack)
 
 
 /*

@@ -29,6 +29,7 @@
 #define LUA_TUPVAL	(LAST_TAG+2)
 #define LUA_TDEADKEY	(LAST_TAG+3)
 
+#define LUA_NOTREGION 256
 
 /*
 ** Union of all collectable objects
@@ -40,7 +41,7 @@ typedef union GCObject GCObject;
 ** Common Header for all collectable objects (in macro form, to be
 ** included in other objects)
 */
-#define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked
+#define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked; lu_byte region
 
 
 /*
@@ -188,6 +189,10 @@ typedef struct lua_TValue {
 
 #define iscollectable(o)	(ttype(o) >= LUA_TSTRING)
 
+
+#define set_reion(o,r) ((o)->gch.region = (r))
+#define set_notregion(o) ((o)->gch.region = LUA_NOTREGION)
+#define is_region(o) ((o)->gch.region != LUA_NOTREGION)
 
 
 typedef TValue *StkId;  /* index to stack elements */

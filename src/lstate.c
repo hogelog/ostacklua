@@ -104,6 +104,7 @@ static void preinit_state (lua_State *L, global_State *g) {
 
 static void close_state (lua_State *L) {
   global_State *g = G(L);
+  ostack_close(L);
   luaF_close(L, L->stack);  /* close all upvalues for this thread */
   luaC_freeall(L);  /* collect all objects */
   lua_assert(g->rootgc == obj2gco(L));
@@ -127,11 +128,13 @@ lua_State *luaE_newthread (lua_State *L) {
   L1->hook = L->hook;
   resethookcount(L1);
   lua_assert(iswhite(obj2gco(L1)));
+  ostack_init(L1);
   return L1;
 }
 
 
 void luaE_freethread (lua_State *L, lua_State *L1) {
+  ostack_close(L);
   luaF_close(L1, L1->stack);  /* close all upvalues for this thread */
   lua_assert(L1->openupval == NULL);
   luai_userstatefree(L1);
@@ -179,6 +182,7 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcstepmul = LUAI_GCMUL;
   g->gcdept = 0;
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
+  ostack_init(L);
   if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
     /* memory allocation error: free partial state */
     close_state(L);

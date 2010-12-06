@@ -12,6 +12,7 @@
 #include "lobject.h"
 #include "ltm.h"
 #include "lzio.h"
+#include "lregion.h"
 
 
 
@@ -124,10 +125,12 @@ struct lua_State {
   GCObject *gclist;
   struct lua_longjmp *errorJmp;  /* current error recover point */
   ptrdiff_t errfunc;  /* current error handling function (stack index) */
+  OStack ostack;
 };
 
 
 #define G(L)	(L->l_G)
+#define ostack(L) (&L->ostack);
 
 
 /*

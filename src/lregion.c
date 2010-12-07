@@ -65,7 +65,7 @@ static void buf_fix(OStack *os, RObject *ohead) {
   }
 }
 
-OStack *ostack_init(lua_State *L) {
+void ostack_init(lua_State *L) {
   OStack *os = ostack(L);
   os->rbuf.head = os->rbuf.last = NULL;
   os->rbuf.size = 0;

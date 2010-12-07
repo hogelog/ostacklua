@@ -33,7 +33,7 @@ typedef struct OStack {
 
 #define ostack_new(L,t) cast(t *, ostack_alloc(L, sizeof(t)))
 
-LUAI_FUNC OStack *ostack_init(lua_State *L);
+LUAI_FUNC void ostack_init(lua_State *L);
 LUAI_FUNC void ostack_close(lua_State *L);
 LUAI_FUNC void region_new(lua_State *L);
 LUAI_FUNC void region_renew(lua_State *L);

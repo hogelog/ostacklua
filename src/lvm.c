@@ -656,6 +656,10 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
           setnvalue(ra, idx);  /* update internal index... */
           setnvalue(ra+3, idx);  /* ...and external index */
+          region_renew(L);
+        }
+        else {
+          region_free(L);
         }
         continue;
       }
@@ -671,6 +675,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         else if (!tonumber(pstep, ra+2))
           luaG_runerror(L, LUA_QL("for") " step must be a number");
         setnvalue(ra, luai_numsub(nvalue(ra), nvalue(pstep)));
+        region_new(L);
         dojump(L, pc, GETARG_sBx(i));
         continue;
       }

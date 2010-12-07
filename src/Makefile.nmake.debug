@@ -1,0 +1,168 @@
+# makefile for building Lua
+# see ../INSTALL for installation instructions
+# see ../Makefile and luaconf.h for further customization
+
+# == CHANGE THE SETTINGS BELOW TO SUIT YOUR ENVIRONMENT =======================
+
+# Your platform. See PLATS for possible values.
+
+CC=cl
+LINK=link /nologo
+MT=mt /nologo
+DEL=del /Q
+
+#CC= gcc
+CFLAGS= /nologo /MD /W3 /c /D_CRT_SECURE_NO_DEPRECATE /DLUA_ANSI /Dlua_assert=assert 
+#AR= ar rcu
+#RANLIB= ranlib
+#RM= rm -f
+#LIBS= -lm $(MYLIBS)
+
+
+# == END OF USER SETTINGS. NO NEED TO CHANGE ANYTHING BELOW THIS LINE =========
+
+#LUA_A=	lua51.dll
+CORE_O=	lapi.obj lcode.obj ldebug.obj ldo.obj ldump.obj lfunc.obj lgc.obj llex.obj lmem.obj \
+	lobject.obj lopcodes.obj lregion.obj lparser.obj lstate.obj lstring.obj ltable.obj ltm.obj  \
+	lundump.obj lvm.obj lzio.obj
+LIB_O=	lauxlib.obj lbaselib.obj ldblib.obj liolib.obj lmathlib.obj loslib.obj ltablib.obj \
+	lstrlib.obj loadlib.obj linit.obj
+
+LUA_T=	lua.exe
+LUA_O=	lua.obj
+
+LUAC_T=	luac.exe
+LUAC_O=	luac.obj print.obj
+
+ALL_O= $(CORE_O) $(LIB_O) $(LUA_O) $(LUAC_O)
+#ALL_T= $(LUA_A) $(LUA_T) $(LUAC_T)
+ALL_T= $(LUA_T) $(LUAC_T)
+#ALL_A= $(LUA_A)
+
+default: $(PLAT)
+
+all:	$(ALL_T)
+
+#$(LUA_A): $(CORE_O) $(LIB_O)
+#	$(LINK) /DLL /out:$@ $(CORE_O) $(LIB_O)
+
+$(LUA_T): $(LUA_O) $(CORE_O) $(LIB_O)
+	$(CC) $(LUA_O) $(CORE_O) $(LIB_O)
+
+#$(LINK) /out:$@ $(LUA_O) $(CORE_O) $(LIB_O)
+
+$(LUAC_T): $(LUAC_O) $(CORE_O) $(LIB_O)
+	$(CC) $(LUAC_O) $(CORE_O) $(LIB_O)
+
+#$(LINK) /out:$@ $(LUAC_O) $(LUA_L)
+
+clean:
+	$(DEL) $(ALL_T) $(ALL_O)
+
+# convenience targets for popular platforms
+
+aix:
+	$(MAKE) all CC="xlc" CFLAGS="-O2 -DLUA_USE_POSIX -DLUA_USE_DLOPEN" MYLIBS="-ldl" MYLDFLAGS="-brtl -bexpall"
+
+ansi:
+	$(MAKE) all MYCFLAGS=-DLUA_ANSI
+
+bsd:
+	$(MAKE) all MYCFLAGS="-DLUA_USE_POSIX -DLUA_USE_DLOPEN" MYLIBS="-Wl,-E"
+
+freebsd:
+	$(MAKE) all MYCFLAGS="-DLUA_USE_LINUX" MYLIBS="-Wl,-E -lreadline"
+
+generic:
+	$(MAKE) all MYCFLAGS=
+
+linux:
+	$(MAKE) all MYCFLAGS=-DLUA_USE_LINUX MYLIBS="-Wl,-E -ldl -lreadline -lhistory -lncurses"
+
+macosx:
+	$(MAKE) all MYCFLAGS=-DLUA_USE_LINUX MYLIBS="-lreadline"
+# use this on Mac OS X 10.3-
+#	$(MAKE) all MYCFLAGS=-DLUA_USE_MACOSX
+
+mingw:
+	$(MAKE) "LUA_A=lua51.dll" "LUA_T=lua.exe" \
+	"AR=$(CC) -shared -o" "RANLIB=strip --strip-unneeded" \
+	"MYCFLAGS=-DLUA_BUILD_AS_DLL" "MYLIBS=" "MYLDFLAGS=-s" lua.exe
+	$(MAKE) "LUAC_T=luac.exe" luac.exe
+
+posix:
+	$(MAKE) all MYCFLAGS=-DLUA_USE_POSIX
+
+solaris:
+	$(MAKE) all MYCFLAGS="-DLUA_USE_POSIX -DLUA_USE_DLOPEN" MYLIBS="-ldl"
+
+# list targets that do not create files (but not all makes understand .PHONY)
+.PHONY: all default clean depend echo none
+
+# DO NOT DELETE
+
+lapi.obj: lapi.c lua.h luaconf.h lapi.h lobject.h llimits.h ldebug.h \
+  lstate.h lregion.h ltm.h lzio.h lmem.h ldo.h lfunc.h lgc.h lstring.h \
+  ltable.h lundump.h lvm.h
+lauxlib.obj: lauxlib.c lua.h luaconf.h lauxlib.h
+lbaselib.obj: lbaselib.c lua.h luaconf.h lauxlib.h lualib.h
+lcode.obj: lcode.c lua.h luaconf.h lcode.h llex.h lobject.h llimits.h \
+  lzio.h lmem.h lopcodes.h lparser.h ldebug.h lstate.h lregion.h ltm.h \
+  ldo.h lgc.h ltable.h
+ldblib.obj: ldblib.c lua.h luaconf.h lauxlib.h lualib.h
+ldebug.obj: ldebug.c lua.h luaconf.h lapi.h lobject.h llimits.h lcode.h \
+  llex.h lzio.h lmem.h lopcodes.h lparser.h ldebug.h lstate.h lregion.h \
+  ltm.h ldo.h lfunc.h lstring.h lgc.h ltable.h lvm.h
+ldo.obj: ldo.c lua.h luaconf.h ldebug.h lstate.h lobject.h llimits.h \
+  lregion.h ltm.h lzio.h lmem.h ldo.h lfunc.h lgc.h lopcodes.h lparser.h \
+  lstring.h ltable.h lundump.h lvm.h
+ldump.obj: ldump.c lua.h luaconf.h lobject.h llimits.h lstate.h lregion.h \
+  ltm.h lzio.h lmem.h lundump.h
+lfunc.obj: lfunc.c lua.h luaconf.h lfunc.h lobject.h llimits.h lgc.h lmem.h \
+  lstate.h lregion.h ltm.h lzio.h
+lgc.obj: lgc.c lua.h luaconf.h ldebug.h lstate.h lobject.h llimits.h \
+  lregion.h ltm.h lzio.h lmem.h ldo.h lfunc.h lgc.h lstring.h ltable.h
+linit.obj: linit.c lua.h luaconf.h lualib.h lauxlib.h
+liolib.obj: liolib.c lua.h luaconf.h lauxlib.h lualib.h
+llex.obj: llex.c lua.h luaconf.h ldo.h lobject.h llimits.h lstate.h \
+  lregion.h ltm.h lzio.h lmem.h llex.h lparser.h lstring.h lgc.h ltable.h
+lmathlib.obj: lmathlib.c lua.h luaconf.h lauxlib.h lualib.h
+lmem.obj: lmem.c lua.h luaconf.h ldebug.h lstate.h lobject.h llimits.h \
+  lregion.h ltm.h lzio.h lmem.h ldo.h
+loadlib.obj: loadlib.c lua.h luaconf.h lauxlib.h lualib.h
+lobject.obj: lobject.c lua.h luaconf.h ldo.h lobject.h llimits.h lstate.h \
+  lregion.h ltm.h lzio.h lmem.h lstring.h lgc.h lvm.h
+lopcodes.obj: lopcodes.c lopcodes.h llimits.h lua.h luaconf.h
+loslib.obj: loslib.c lua.h luaconf.h lauxlib.h lualib.h
+lregion.obj: lregion.c lregion.h lobject.h llimits.h lua.h luaconf.h \
+  lstate.h ltm.h lzio.h lmem.h lgc.h ltable.h
+lparser.obj: lparser.c lua.h luaconf.h lcode.h llex.h lobject.h llimits.h \
+  lzio.h lmem.h lopcodes.h lparser.h ldebug.h lstate.h lregion.h ltm.h \
+  ldo.h lfunc.h lstring.h lgc.h ltable.h
+lstate.obj: lstate.c lua.h luaconf.h ldebug.h lstate.h lobject.h llimits.h \
+  lregion.h ltm.h lzio.h lmem.h ldo.h lfunc.h lgc.h llex.h lstring.h \
+  ltable.h
+lstring.obj: lstring.c lua.h luaconf.h lmem.h llimits.h lobject.h lstate.h \
+  lregion.h ltm.h lzio.h lstring.h lgc.h
+lstrlib.obj: lstrlib.c lua.h luaconf.h lauxlib.h lualib.h
+ltable.obj: ltable.c lua.h luaconf.h ldebug.h lstate.h lobject.h llimits.h \
+  lregion.h ltm.h lzio.h lmem.h ldo.h lgc.h ltable.h
+ltablib.obj: ltablib.c lua.h luaconf.h lauxlib.h lualib.h
+ltm.obj: ltm.c lua.h luaconf.h lobject.h llimits.h lstate.h lregion.h ltm.h \
+  lzio.h lmem.h lstring.h lgc.h ltable.h
+lua.obj: lua.c lua.h luaconf.h lauxlib.h lualib.h
+luac.obj: luac.c lua.h luaconf.h lauxlib.h ldo.h lobject.h llimits.h \
+  lstate.h lregion.h ltm.h lzio.h lmem.h lfunc.h lopcodes.h lstring.h \
+  lgc.h lundump.h
+lundump.obj: lundump.c lua.h luaconf.h ldebug.h lstate.h lobject.h \
+  llimits.h lregion.h ltm.h lzio.h lmem.h ldo.h lfunc.h lstring.h lgc.h \
+  lundump.h
+lvm.obj: lvm.c lua.h luaconf.h ldebug.h lstate.h lobject.h llimits.h \
+  lregion.h ltm.h lzio.h lmem.h ldo.h lfunc.h lgc.h lopcodes.h lstring.h \
+  ltable.h lvm.h
+lzio.obj: lzio.c lua.h luaconf.h llimits.h lmem.h lstate.h lobject.h \
+  lregion.h ltm.h lzio.h
+print.obj: print.c ldebug.h lstate.h lua.h luaconf.h lobject.h llimits.h \
+  lregion.h ltm.h lzio.h lmem.h lopcodes.h lundump.h
+
+# (end of Makefile)

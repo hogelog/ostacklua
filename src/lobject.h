@@ -29,7 +29,7 @@
 #define LUA_TUPVAL	(LAST_TAG+2)
 #define LUA_TDEADKEY	(LAST_TAG+3)
 
-#define LUA_NOTREGION 256
+#define LUA_NOTREGION 0
 
 /*
 ** Union of all collectable objects
@@ -190,9 +190,10 @@ typedef struct lua_TValue {
 #define iscollectable(o)	(ttype(o) >= LUA_TSTRING)
 
 
-#define set_reion(o,r) ((o)->gch.region = (r))
-#define set_notregion(o) ((o)->gch.region = LUA_NOTREGION)
-#define is_region(o) ((o)->gch.region != LUA_NOTREGION)
+#define get_regnum(o) check_exp(is_robj(o), (o)->gch.region)
+#define set_regnum(o,r) ((o)->gch.region = (r))
+#define set_notrobj(o) (set_regnum((o), LUA_NOTREGION))
+#define is_robj(o) ((o)->gch.region != LUA_NOTREGION)
 
 
 typedef TValue *StkId;  /* index to stack elements */

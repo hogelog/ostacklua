@@ -22,10 +22,14 @@ struct RObjectBuffer {
 
 typedef struct OStack {
   Region regions[OSTACK_REGIONS];
-  int regnum;
-  Region *region;
+  int cregnum;
+  Region *creg;
   struct RObjectBuffer rbuf;
 } OStack;
+
+#define is_validregnum(num) ((num) >= 0 && (num) <= OSTACK_REGIONS)
+#define is_notonregnum(num) ((num) == 0)
+#define is_onregnum(num) ((num) > 0 && (num) <= OSTACK_REGIONS)
 
 #define ostack_new(L,t) cast(t *, ostack_alloc(L, sizeof(t)))
 
@@ -41,6 +45,6 @@ LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size);
 LUAI_FUNC void ostack_reject(lua_State *L, GCObject *src);
 
 #define is_must_reject(parent,child) \
-  (is_region(child) && (is_region(parent) || (parent)->gch.region < (child)->gch.region))
+  ((parent)->gch.region < (child)->gch.region)
 
 #endif

@@ -457,7 +457,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_NEWTABLE: {
         int b = GETARG_B(i);
         int c = GETARG_C(i);
-        sethvalue(L, ra, luaH_new(L, luaO_fb2int(b), luaO_fb2int(c)));
+        sethvalue(L, ra, luaH_region_new(L, luaO_fb2int(b), luaO_fb2int(c)));
         Protect(luaC_checkGC(L));
         continue;
       }
@@ -535,6 +535,11 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_JMP: {
+        dojump(L, pc, GETARG_sBx(i));
+        continue;
+      }
+      case OP_BREAK: {
+        region_free(L);
         dojump(L, pc, GETARG_sBx(i));
         continue;
       }

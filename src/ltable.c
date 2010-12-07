@@ -371,6 +371,29 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
 }
 
 
+Table *luaH_region_new (lua_State *L, int narray, int nhash) {
+  Table *t;
+  if (lua_regnum(L) == 0) {
+    t = luaM_new(L, Table);
+    luaC_link(L, obj2gco(t), LUA_TTABLE);
+  }
+  else {
+    t = ostack_new(L, Table);
+    ostack_link(L, obj2gco(t), LUA_TTABLE);
+  }
+  t->metatable = NULL;
+  t->flags = cast_byte(~0);
+  /* temporary values (kept only if some malloc fails) */
+  t->array = NULL;
+  t->sizearray = 0;
+  t->lsizenode = 0;
+  t->node = cast(Node *, dummynode);
+  setarrayvector(L, t, narray);
+  setnodevector(L, t, nhash);
+  return t;
+}
+
+
 void luaH_free (lua_State *L, Table *t) {
   if (t->node != dummynode)
     luaM_freearray(L, t->node, sizenode(t), Node);
@@ -573,6 +596,34 @@ int luaH_getn (Table *t) {
   else if (t->node == dummynode)  /* hash part is empty? */
     return j;  /* that is easy... */
   else return unbound_search(t, j);
+}
+
+
+void luaH_reject (lua_State *L, Table *src) {
+  int i;
+  int asize = src->sizearray;
+  int nsize = src->node == dummynode ? 0 : sizenode(src);
+  Table *mt = src->metatable;
+  lua_assert(!is_robj(obj2gco(src)));
+  if (mt && is_robj(obj2gco(mt))) {
+    ostack_reject(L, obj2gco(mt));
+  }
+  for (i = 0; i < asize; i++) {
+    TValue *o = &src->array[i];
+    if (iscollectable(o) && is_robj(gcvalue(o)))
+      ostack_reject(L, gcvalue(o));
+  }
+  for (i = 0; i < nsize; i++) {
+    Node *s = gnode(src, i);
+    TValue *skey = key2tval(s);
+    if (!ttisnil(skey)) {
+      TValue *sval = gval(s);
+      if (iscollectable(skey) && is_robj(gcvalue(skey)))
+        ostack_reject(L, gcvalue(skey));
+      if (iscollectable(sval) && is_robj(gcvalue(sval)))
+        ostack_reject(L, gcvalue(sval));
+    }
+  }
 }
 
 

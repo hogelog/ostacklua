@@ -984,7 +984,10 @@ static void breakstat (LexState *ls) {
     luaX_syntaxerror(ls, "no loop to break");
   if (upval)
     luaK_codeABC(fs, OP_CLOSE, bl->nactvar, 0, 0);
-  luaK_concat(fs, &bl->breaklist, luaK_jump(fs));
+  if (bl->isbreakable == 1)
+    luaK_concat(fs, &bl->breaklist, luaK_jump(fs));
+  else if (bl->isbreakable == 2)
+    luaK_concat(fs, &bl->breaklist, luaK_break(fs));
 }
 
 
@@ -1114,12 +1117,17 @@ static void forstat (LexState *ls, int line) {
   FuncState *fs = ls->fs;
   TString *varname;
   BlockCnt bl;
-  enterblock(fs, &bl, 1);  /* scope for loop and control variables */
   luaX_next(ls);  /* skip `for' */
   varname = str_checkname(ls);  /* first variable name */
   switch (ls->t.token) {
-    case '=': fornum(ls, varname, line); break;
-    case ',': case TK_IN: forlist(ls, varname); break;
+    case '=':
+      enterblock(fs, &bl, 2);  /* scope for loop and control variables */
+      fornum(ls, varname, line);
+      break;
+    case ',': case TK_IN:
+      enterblock(fs, &bl, 1);  /* scope for loop and control variables */
+      forlist(ls, varname);
+      break;
     default: luaX_syntaxerror(ls, LUA_QL("=") " or " LUA_QL("in") " expected");
   }
   check_match(ls, TK_END, TK_FOR, line);

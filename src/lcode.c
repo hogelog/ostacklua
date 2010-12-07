@@ -66,6 +66,16 @@ int luaK_jump (FuncState *fs) {
 }
 
 
+int luaK_break (FuncState *fs) {
+  int jpc = fs->jpc;  /* save list of jumps to here */
+  int j;
+  fs->jpc = NO_JUMP;
+  j = luaK_codeAsBx(fs, OP_BREAK, 0, NO_JUMP);
+  luaK_concat(fs, &j, jpc);  /* keep them on hold */
+  return j;
+}
+
+
 void luaK_ret (FuncState *fs, int first, int nret) {
   luaK_codeABC(fs, OP_RETURN, first, nret+1, 0);
 }

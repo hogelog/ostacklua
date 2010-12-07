@@ -33,12 +33,13 @@ typedef struct OStack {
 
 #define ostack_new(L,t) cast(t *, ostack_alloc(L, sizeof(t)))
 
-LUAI_FUNC void ostack_init(lua_State *L);
-LUAI_FUNC void ostack_close(lua_State *L);
-LUAI_FUNC void region_new(lua_State *L);
-LUAI_FUNC void region_renew(lua_State *L);
-LUAI_FUNC void region_free(lua_State *L);
-LUAI_FUNC void *ostack_alloc(lua_State *L, size_t size);
+LUAI_FUNC void ostack_init (lua_State *L);
+LUAI_FUNC void ostack_close (lua_State *L);
+LUAI_FUNC void region_new (lua_State *L);
+LUAI_FUNC void region_renew (lua_State *L);
+LUAI_FUNC void region_free (lua_State *L);
+LUAI_FUNC void *ostack_alloc (lua_State *L, size_t size);
+LUAI_FUNC void ostack_link (lua_State *L, GCObject *o, lu_byte tt);
 
 //LUAI_FUNC int ostack_getregion(lua_State *L, GCObject *o) {
 //LUAI_FUNC GCObject *ostack2heap(lua_State *L, GCObject *src);

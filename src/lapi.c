@@ -28,6 +28,7 @@
 #include "ltm.h"
 #include "lundump.h"
 #include "lvm.h"
+#include "lregion.h"
 
 
 
@@ -1085,3 +1086,6 @@ LUA_API const char *lua_setupvalue (lua_State *L, int funcindex, int n) {
   return name;
 }
 
+LUA_API int lua_regnum (lua_State *L) {
+  return ostack(L)->cregnum;
+}

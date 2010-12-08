@@ -42,10 +42,9 @@ LUAI_FUNC void *rstack_alloc (lua_State *L, size_t size);
 LUAI_FUNC void rstack_link (lua_State *L, GCObject *o, lu_byte tt);
 
 //LUAI_FUNC int rstack_getregion(lua_State *L, GCObject *o) {
-//LUAI_FUNC GCObject *rstack2heap(lua_State *L, GCObject *src);
 LUAI_FUNC void rstack_reject(lua_State *L, GCObject *src);
 
-#define is_must_reject(parent,child) \
+#define must_reject(parent,child) \
   ((parent)->gch.region < (child)->gch.region)
 
 #endif

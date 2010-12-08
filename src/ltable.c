@@ -378,8 +378,8 @@ Table *luaH_region_new (lua_State *L, int narray, int nhash) {
     luaC_link(L, obj2gco(t), LUA_TTABLE);
   }
   else {
-    t = ostack_new(L, Table);
-    ostack_link(L, obj2gco(t), LUA_TTABLE);
+    t = rstack_new(L, Table);
+    rstack_link(L, obj2gco(t), LUA_TTABLE);
   }
   t->metatable = NULL;
   t->flags = cast_byte(~0);
@@ -606,12 +606,12 @@ void luaH_reject (lua_State *L, Table *src) {
   Table *mt = src->metatable;
   lua_assert(!is_robj(obj2gco(src)));
   if (mt && is_robj(obj2gco(mt))) {
-    ostack_reject(L, obj2gco(mt));
+    rstack_reject(L, obj2gco(mt));
   }
   for (i = 0; i < asize; i++) {
     TValue *o = &src->array[i];
     if (iscollectable(o) && is_robj(gcvalue(o)))
-      ostack_reject(L, gcvalue(o));
+      rstack_reject(L, gcvalue(o));
   }
   for (i = 0; i < nsize; i++) {
     Node *s = gnode(src, i);
@@ -619,9 +619,9 @@ void luaH_reject (lua_State *L, Table *src) {
     if (!ttisnil(skey)) {
       TValue *sval = gval(s);
       if (iscollectable(skey) && is_robj(gcvalue(skey)))
-        ostack_reject(L, gcvalue(skey));
+        rstack_reject(L, gcvalue(skey));
       if (iscollectable(sval) && is_robj(gcvalue(sval)))
-        ostack_reject(L, gcvalue(sval));
+        rstack_reject(L, gcvalue(sval));
     }
   }
 }

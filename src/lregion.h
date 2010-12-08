@@ -12,38 +12,38 @@ typedef struct Region {
   RObject *base, *top;
 } Region;
 
-#define OSTACK_REGIONS 256
-#define OSTACK_MINBUFSIZE 1024
+#define RStack_REGIONS 256
+#define RStack_MINBUFSIZE 1024
 
 struct RObjectBuffer {
   RObject *head, *last;
   int size;
 };
 
-typedef struct OStack {
-  Region regions[OSTACK_REGIONS];
+typedef struct RStack {
+  Region regions[RStack_REGIONS];
   int cregnum;
   Region *creg;
   struct RObjectBuffer rbuf;
-} OStack;
+} RStack;
 
-#define is_validregnum(num) ((num) >= 0 && (num) <= OSTACK_REGIONS)
+#define is_validregnum(num) ((num) >= 0 && (num) <= RStack_REGIONS)
 #define is_notonregnum(num) ((num) == 0)
-#define is_onregnum(num) ((num) > 0 && (num) <= OSTACK_REGIONS)
+#define is_onregnum(num) ((num) > 0 && (num) <= RStack_REGIONS)
 
-#define ostack_new(L,t) cast(t *, ostack_alloc(L, sizeof(t)))
+#define rstack_new(L,t) cast(t *, rstack_alloc(L, sizeof(t)))
 
-LUAI_FUNC void ostack_init (lua_State *L);
-LUAI_FUNC void ostack_close (lua_State *L);
+LUAI_FUNC void rstack_init (lua_State *L);
+LUAI_FUNC void rstack_close (lua_State *L);
 LUAI_FUNC void region_new (lua_State *L);
 LUAI_FUNC void region_renew (lua_State *L);
 LUAI_FUNC void region_free (lua_State *L);
-LUAI_FUNC void *ostack_alloc (lua_State *L, size_t size);
-LUAI_FUNC void ostack_link (lua_State *L, GCObject *o, lu_byte tt);
+LUAI_FUNC void *rstack_alloc (lua_State *L, size_t size);
+LUAI_FUNC void rstack_link (lua_State *L, GCObject *o, lu_byte tt);
 
-//LUAI_FUNC int ostack_getregion(lua_State *L, GCObject *o) {
-//LUAI_FUNC GCObject *ostack2heap(lua_State *L, GCObject *src);
-LUAI_FUNC void ostack_reject(lua_State *L, GCObject *src);
+//LUAI_FUNC int rstack_getregion(lua_State *L, GCObject *o) {
+//LUAI_FUNC GCObject *rstack2heap(lua_State *L, GCObject *src);
+LUAI_FUNC void rstack_reject(lua_State *L, GCObject *src);
 
 #define is_must_reject(parent,child) \
   ((parent)->gch.region < (child)->gch.region)

@@ -95,7 +95,7 @@
 
 #define luaC_objbarriert(L,t,o)  \
    { \
-     if (is_must_reject(obj2gco(t), obj2gco(o))) ostack_reject(L, obj2gco(o)); \
+     if (is_must_reject(obj2gco(t), obj2gco(o))) rstack_reject(L, obj2gco(o)); \
      if (iswhite(obj2gco(o)) && isblack(obj2gco(t))) luaC_barrierback(L,t); \
    }
 

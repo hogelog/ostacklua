@@ -1087,5 +1087,5 @@ LUA_API const char *lua_setupvalue (lua_State *L, int funcindex, int n) {
 }
 
 LUA_API int lua_regnum (lua_State *L) {
-  return ostack(L)->cregnum;
+  return rstack(L)->cregnum;
 }

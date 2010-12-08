@@ -50,17 +50,17 @@ static void freeobj (lua_State *L, GCObject *o) {
   }
 }
 
-static void buf_resize(lua_State *L, OStack *os, size_t nsize) {
-  RObject *old = os->rbuf.head;
-  luaM_reallocvector(L, os->rbuf.head, os->rbuf.size, nsize, RObject);
-  os->rbuf.last = os->rbuf.head + nsize;
-  os->rbuf.size = nsize;
+static void buf_resize(lua_State *L, RStack *rs, size_t nsize) {
+  RObject *old = rs->rbuf.head;
+  luaM_reallocvector(L, rs->rbuf.head, rs->rbuf.size, nsize, RObject);
+  rs->rbuf.last = rs->rbuf.head + nsize;
+  rs->rbuf.size = nsize;
 }
 
 
-static void buf_fix (OStack *os, RObject *ohead) {
-  Region *r = os->regions, *last = os->creg + 1;
-  ptrdiff_t diff = os->rbuf.head - ohead;
+static void buf_fix (RStack *rs, RObject *ohead) {
+  Region *r = rs->regions, *last = rs->creg + 1;
+  ptrdiff_t diff = rs->rbuf.head - ohead;
   for (; r != last; r++) {
     r->base += diff;
     r->top += diff;
@@ -68,44 +68,44 @@ static void buf_fix (OStack *os, RObject *ohead) {
 }
 
 
-void ostack_init (lua_State *L) {
-  OStack *os = ostack(L);
-  os->rbuf.head = os->rbuf.last = NULL;
-  os->rbuf.size = 0;
-  buf_resize(L, os, OSTACK_MINBUFSIZE);
-  os->cregnum = 0;
-  os->creg = os->regions;
-  os->creg->top = os->creg->base = os->rbuf.head;
+void rstack_init (lua_State *L) {
+  RStack *rs = rstack(L);
+  rs->rbuf.head = rs->rbuf.last = NULL;
+  rs->rbuf.size = 0;
+  buf_resize(L, rs, RStack_MINBUFSIZE);
+  rs->cregnum = 0;
+  rs->creg = rs->regions;
+  rs->creg->top = rs->creg->base = rs->rbuf.head;
 }
 
 
-void ostack_close (lua_State *L) {
-  OStack *os = ostack(L);
-  RObject *top = os->creg->top, *base = os->rbuf.head;
+void rstack_close (lua_State *L) {
+  RStack *rs = rstack(L);
+  RObject *top = rs->creg->top, *base = rs->rbuf.head;
   while (top != base) {
     GCObject *o = (--top)->body;
     if (top->body)
       freeobj(L, top->body);
   }
-  buf_resize(L, os, 0);
+  buf_resize(L, rs, 0);
 }
 
 
 void region_new (lua_State *L) {
-  OStack *os = ostack(L);
-  RObject *top = os->creg->top;
-  Region *r = os->creg = &os->regions[++os->cregnum];
-  lua_assert(os->cregnum > 0 && os->cregnum < OSTACK_REGIONS);
+  RStack *rs = rstack(L);
+  RObject *top = rs->creg->top;
+  Region *r = rs->creg = &rs->regions[++rs->cregnum];
+  lua_assert(rs->cregnum > 0 && rs->cregnum < RStack_REGIONS);
   r->base = r->top = top;
 }
 
 
 void region_renew (lua_State *L) {
-  OStack *os = ostack(L);
-  Region *r = os->creg;
+  RStack *rs = rstack(L);
+  Region *r = rs->creg;
   RObject *top = r->top;
   RObject *base = r->base;
-  lua_assert(os->cregnum > 0 && os->cregnum < OSTACK_REGIONS);
+  lua_assert(rs->cregnum > 0 && rs->cregnum < RStack_REGIONS);
   while (top != base) {
     GCObject *o = (--top)->body;
     if (top->body)
@@ -116,28 +116,28 @@ void region_renew (lua_State *L) {
 
 
 void region_free (lua_State *L) {
-  OStack *os = ostack(L);
-  Region *r = os->creg;
+  RStack *rs = rstack(L);
+  Region *r = rs->creg;
   RObject *top = r->top;
   RObject *base = r->base;
-  lua_assert(os->cregnum > 0 && os->cregnum < OSTACK_REGIONS);
+  lua_assert(rs->cregnum > 0 && rs->cregnum < RStack_REGIONS);
   while (top != base) {
     GCObject *o = (--top)->body;
     if (top->body)
       freeobj(L, top->body);
   }
-  os->creg = &os->regions[--os->cregnum];
+  rs->creg = &rs->regions[--rs->cregnum];
 }
 
 
-void *ostack_alloc (lua_State *L, size_t size) {
-  OStack *os = ostack(L);
-  Region *r = check_exp(os->cregnum > 0, os->creg);
+void *rstack_alloc (lua_State *L, size_t size) {
+  RStack *rs = rstack(L);
+  Region *r = check_exp(rs->cregnum > 0, rs->creg);
   RObject *top = r->top;
-  if (top == os->rbuf.last) {
-    RObject *ohead = os->rbuf.head;
-    buf_resize(L, os, os->rbuf.size * 2);
-    buf_fix(os, ohead);
+  if (top == rs->rbuf.last) {
+    RObject *ohead = rs->rbuf.head;
+    buf_resize(L, rs, rs->rbuf.size * 2);
+    buf_fix(rs, ohead);
     top = r->top;
   }
   top->body = luaM_malloc(L, size);
@@ -146,11 +146,11 @@ void *ostack_alloc (lua_State *L, size_t size) {
 }
 
 
-static RObject *ostack_getrobj (OStack *os, GCObject *o) {
+static RObject *rstack_getrobj (RStack *rs, GCObject *o) {
   int regnum = get_regnum(o);
-  Region *r = &os->regions[regnum];
+  Region *r = &rs->regions[regnum];
   RObject *top = r->top, *base = r->base;
-  lua_assert(regnum > 0 && regnum < OSTACK_REGIONS);
+  lua_assert(regnum > 0 && regnum < RStack_REGIONS);
   while (top != base) {
     --top;
     if (top->body == o)
@@ -160,9 +160,9 @@ static RObject *ostack_getrobj (OStack *os, GCObject *o) {
 }
 
 
-void ostack_reject (lua_State *L, GCObject *src) {
-  OStack *os = ostack(L);
-  RObject *robj = ostack_getrobj(os, src);
+void rstack_reject (lua_State *L, GCObject *src) {
+  RStack *rs = rstack(L);
+  RObject *robj = rstack_getrobj(rs, src);
   lua_assert(robj && src == robj->body);
   luaC_link(L, src, src->gch.tt);
   switch(src->gch.tt) {
@@ -170,7 +170,7 @@ void ostack_reject (lua_State *L, GCObject *src) {
       luaH_reject(L, gco2h(src));
       break;
     //case LUA_TUSERDATA:
-    //  luaS_ostack2heapu(L, rawgco2u(src));
+    //  luaS_rstack2heapu(L, rawgco2u(src));
     //  break;
     // TODO: implement
     default:
@@ -179,11 +179,11 @@ void ostack_reject (lua_State *L, GCObject *src) {
   robj->body = NULL;
 }
 
-void ostack_link (lua_State *L, GCObject *o, lu_byte tt) {
+void rstack_link (lua_State *L, GCObject *o, lu_byte tt) {
   global_State *g = G(L);
-  OStack *os = ostack(L);
+  RStack *rs = rstack(L);
   o->gch.tt = tt;
   o->gch.next = NULL;
   o->gch.marked = luaC_white(g);
-  set_regnum(o, os->cregnum);
+  set_regnum(o, rs->cregnum);
 }

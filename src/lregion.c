@@ -82,13 +82,12 @@ void rstack_init (lua_State *L) {
 void rstack_close (lua_State *L) {
   RStack *rs = rstack(L);
   RObject *top = rs->creg->top, *base = rs->rbuf.head;
-  lua_assert(rs->cregnum == 0);
+  while (top != base) {
+    GCObject *o = (--top)->body;
+    if (top->body)
+      freeobj(L, top->body);
+  }
   lua_assert(top == rs->rbuf.head);
-  //while (top != base) {
-  //  GCObject *o = (--top)->body;
-  //  if (top->body)
-  //    freeobj(L, top->body);
-  //}
   buf_resize(L, rs, 0);
 }
 

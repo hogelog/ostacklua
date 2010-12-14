@@ -368,7 +368,7 @@ static Instruction symbexec (const Proto *pt, int lastpc, int reg) {
     }
     if (testTMode(op)) {
       check(pc+2 < pt->sizecode);  /* check skip */
-      check(GET_OPCODE(pt->code[pc+1]) == OP_JMP);
+      check(GET_OPCODE(pt->code[pc+1]) == OP_JMP || GET_OPCODE(pt->code[pc+1]) == OP_BREAK);
     }
     switch (op) {
       case OP_LOADBOOL: {

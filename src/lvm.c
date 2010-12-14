@@ -352,6 +352,7 @@ static void Arith (lua_State *L, StkId ra, const TValue *rb,
 
 
 #define dojump(L,pc,i)	{(pc) += (i); luai_threadyield(L);}
+#define dobreak(L,pc,i)	{if (GET_OPCODE(*pc) == OP_BREAK) region_free(L); (pc) += (i); luai_threadyield(L);}
 
 
 #define Protect(x)	{ L->savedpc = pc; {x;}; base = L->base; }
@@ -548,7 +549,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         TValue *rc = RKC(i);
         Protect(
           if (equalobj(L, rb, rc) == GETARG_A(i))
-            dojump(L, pc, GETARG_sBx(*pc));
+            dobreak(L, pc, GETARG_sBx(*pc));
         )
         pc++;
         continue;
@@ -556,7 +557,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_LT: {
         Protect(
           if (luaV_lessthan(L, RKB(i), RKC(i)) == GETARG_A(i))
-            dojump(L, pc, GETARG_sBx(*pc));
+            dobreak(L, pc, GETARG_sBx(*pc));
         )
         pc++;
         continue;
@@ -564,14 +565,14 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_LE: {
         Protect(
           if (lessequal(L, RKB(i), RKC(i)) == GETARG_A(i))
-            dojump(L, pc, GETARG_sBx(*pc));
+            dobreak(L, pc, GETARG_sBx(*pc));
         )
         pc++;
         continue;
       }
       case OP_TEST: {
         if (l_isfalse(ra) != GETARG_C(i))
-          dojump(L, pc, GETARG_sBx(*pc));
+          dobreak(L, pc, GETARG_sBx(*pc));
         pc++;
         continue;
       }
@@ -579,7 +580,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         TValue *rb = RB(i);
         if (l_isfalse(rb) != GETARG_C(i)) {
           setobjs2s(L, ra, rb);
-          dojump(L, pc, GETARG_sBx(*pc));
+          dobreak(L, pc, GETARG_sBx(*pc));
         }
         pc++;
         continue;

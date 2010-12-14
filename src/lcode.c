@@ -87,13 +87,15 @@ static int condjump (FuncState *fs, OpCode op, int A, int B, int C) {
 }
 
 
-static void fixjump (FuncState *fs, int pc, int dest) {
+static void fixjump (FuncState *fs, int pc, int dest, int tobreak) {
   Instruction *jmp = &fs->f->code[pc];
   int offset = dest-(pc+1);
   lua_assert(dest != NO_JUMP);
   if (abs(offset) > MAXARG_sBx)
     luaX_syntaxerror(fs->ls, "control structure too long");
   SETARG_sBx(*jmp, offset);
+  if (tobreak)
+    SET_OPCODE(*jmp, OP_BREAK);
 }
 
 
@@ -159,12 +161,14 @@ static void removevalues (FuncState *fs, int list) {
 
 static void patchlistaux (FuncState *fs, int list, int vtarget, int reg,
                           int dtarget) {
+  int tobreak = 0;
   while (list != NO_JUMP) {
     int next = getjump(fs, list);
     if (patchtestreg(fs, list, reg))
-      fixjump(fs, list, vtarget);
+      fixjump(fs, list, vtarget, tobreak);
     else
-      fixjump(fs, list, dtarget);  /* jump to default target */
+      fixjump(fs, list, dtarget, tobreak);  /* jump to default target */
+    tobreak = tobreak || GET_OPCODE(fs->f->code[list]) == OP_BREAK;
     list = next;
   }
 }
@@ -201,7 +205,7 @@ void luaK_concat (FuncState *fs, int *l1, int l2) {
     int next;
     while ((next = getjump(fs, list)) != NO_JUMP)  /* find last element */
       list = next;
-    fixjump(fs, list, l2);
+    fixjump(fs, list, l2, 0);
   }
 }
 

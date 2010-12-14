@@ -35,9 +35,9 @@ typedef struct RStack {
 
 LUAI_FUNC void rstack_init (lua_State *L);
 LUAI_FUNC void rstack_close (lua_State *L);
-LUAI_FUNC void region_new (lua_State *L);
-LUAI_FUNC void region_renew (lua_State *L);
-LUAI_FUNC void region_free (lua_State *L);
+LUAI_FUNC int region_new (lua_State *L);
+LUAI_FUNC void region_renew (lua_State *L, int regnum);
+LUAI_FUNC void region_free (lua_State *L, int regnum);
 LUAI_FUNC void *rstack_alloc (lua_State *L, size_t size);
 LUAI_FUNC void rstack_link (lua_State *L, GCObject *o, lu_byte tt);
 

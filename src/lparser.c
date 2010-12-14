@@ -1051,7 +1051,7 @@ static void forbody (LexState *ls, int base, int line, int nvars, int isnum) {
   BlockCnt bl;
   FuncState *fs = ls->fs;
   int prep, endfor;
-  adjustlocalvars(ls, 3);  /* control variables */
+  adjustlocalvars(ls, isnum ? 4 : 3);  /* control variables */
   checknext(ls, TK_DO);
   prep = isnum ? luaK_codeAsBx(fs, OP_FORPREP, base, NO_JUMP) : luaK_jump(fs);
   enterblock(fs, &bl, 0);  /* scope for declared variables */
@@ -1071,10 +1071,12 @@ static void fornum (LexState *ls, TString *varname, int line) {
   /* fornum -> NAME = exp1,exp1[,exp1] forbody */
   FuncState *fs = ls->fs;
   int base = fs->freereg;
-  new_localvarliteral(ls, "(for index)", 0);
-  new_localvarliteral(ls, "(for limit)", 1);
-  new_localvarliteral(ls, "(for step)", 2);
-  new_localvar(ls, varname, 3);
+  new_localvarliteral(ls, "(for region)", 0);
+  new_localvarliteral(ls, "(for index)", 1);
+  new_localvarliteral(ls, "(for limit)", 2);
+  new_localvarliteral(ls, "(for step)", 3);
+  new_localvar(ls, varname, 4);
+  luaK_reserveregs(fs, 1); /* region index */
   checknext(ls, '=');
   exp1(ls);  /* initial value */
   checknext(ls, ',');

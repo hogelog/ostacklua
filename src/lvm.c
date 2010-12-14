@@ -539,7 +539,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_BREAK: {
-        region_free(L);
+        region_free(L, rstack(L)->cregnum);
         dojump(L, pc, GETARG_sBx(i));
         continue;
       }
@@ -653,34 +653,38 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         }
       }
       case OP_FORLOOP: {
-        lua_Number step = nvalue(ra+2);
-        lua_Number idx = luai_numadd(nvalue(ra), step); /* increment index */
-        lua_Number limit = nvalue(ra+1);
+        lua_Number step = nvalue(ra+3);
+        lua_Number idx = luai_numadd(nvalue(ra+1), step); /* increment index */
+        lua_Number limit = nvalue(ra+2);
+        lua_Number region = nvalue(ra);
+        int regnum;
+        lua_number2int(regnum, region);
+        lua_assert(regnum != 0);
         if (luai_numlt(0, step) ? luai_numle(idx, limit)
                                 : luai_numle(limit, idx)) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
-          setnvalue(ra, idx);  /* update internal index... */
-          setnvalue(ra+3, idx);  /* ...and external index */
-          region_renew(L);
+          setnvalue(ra+1, idx);  /* update internal index... */
+          setnvalue(ra+4, idx);  /* ...and external index */
+          region_renew(L, regnum);
         }
         else {
-          region_free(L);
+          region_free(L, regnum);
         }
         continue;
       }
       case OP_FORPREP: {
-        const TValue *init = ra;
-        const TValue *plimit = ra+1;
-        const TValue *pstep = ra+2;
+        const TValue *init = ra+1;
+        const TValue *plimit = ra+2;
+        const TValue *pstep = ra+3;
         L->savedpc = pc;  /* next steps may throw errors */
-        if (!tonumber(init, ra))
+        if (!tonumber(init, ra+1))
           luaG_runerror(L, LUA_QL("for") " initial value must be a number");
-        else if (!tonumber(plimit, ra+1))
+        else if (!tonumber(plimit, ra+2))
           luaG_runerror(L, LUA_QL("for") " limit must be a number");
-        else if (!tonumber(pstep, ra+2))
+        else if (!tonumber(pstep, ra+3))
           luaG_runerror(L, LUA_QL("for") " step must be a number");
-        setnvalue(ra, luai_numsub(nvalue(ra), nvalue(pstep)));
-        region_new(L);
+        setnvalue(ra, region_new(L));
+        setnvalue(ra+1, luai_numsub(nvalue(ra), nvalue(pstep)));
         dojump(L, pc, GETARG_sBx(i));
         continue;
       }

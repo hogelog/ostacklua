@@ -51,7 +51,6 @@ static void freeobj (lua_State *L, GCObject *o) {
 }
 
 static void buf_resize(lua_State *L, RStack *rs, size_t nsize) {
-  RObject *old = rs->rbuf.head;
   luaM_reallocvector(L, rs->rbuf.head, rs->rbuf.size, nsize, RObject);
   rs->rbuf.last = rs->rbuf.head + nsize;
   rs->rbuf.size = nsize;
@@ -81,7 +80,6 @@ void rstack_init (lua_State *L) {
 
 void rstack_close (lua_State *L) {
   RStack *rs = rstack(L);
-  RObject *top = rs->creg->top, *base = rs->rbuf.head;
   lua_assert(rs->cregnum == 0);
   lua_assert(top == rs->rbuf.head);
   buf_resize(L, rs, 0);
@@ -106,8 +104,8 @@ void region_renew (lua_State *L, int regnum) {
   lua_assert(rs->cregnum < RStack_REGIONS);
   while (top != base) {
     GCObject *o = (--top)->body;
-    if (top->body)
-      freeobj(L, top->body);
+    if (o)
+      freeobj(L, o);
   }
   rs->cregnum = regnum;
   rs->creg = &rs->regions[rs->cregnum];
@@ -124,8 +122,8 @@ void region_free (lua_State *L, int regnum) {
   lua_assert(rs->cregnum < RStack_REGIONS);
   while (top != base) {
     GCObject *o = (--top)->body;
-    if (top->body)
-      freeobj(L, top->body);
+    if (o)
+      freeobj(L, o);
   }
   rs->cregnum = regnum - 1;
   rs->creg = &rs->regions[rs->cregnum];

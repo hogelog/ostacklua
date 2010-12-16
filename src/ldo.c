@@ -293,6 +293,7 @@ int luaD_precall (lua_State *L, StkId func, int nresults) {
     L->savedpc = p->code;  /* starting point */
     ci->tailcalls = 0;
     ci->nresults = nresults;
+    ci->regnum = lua_regionnumber(L);
     for (st = L->top; st < ci->top; st++)
       setnilvalue(st);
     L->top = ci->top;
@@ -313,6 +314,7 @@ int luaD_precall (lua_State *L, StkId func, int nresults) {
     ci->top = L->top + LUA_MINSTACK;
     lua_assert(ci->top <= L->stack_last);
     ci->nresults = nresults;
+    ci->regnum = lua_regionnumber(L);
     if (L->hookmask & LUA_MASKCALL)
       luaD_callhook(L, LUA_HOOKCALL, -1);
     lua_unlock(L);
@@ -346,6 +348,8 @@ int luaD_poscall (lua_State *L, StkId firstResult) {
   if (L->hookmask & LUA_MASKRET)
     firstResult = callrethooks(L, firstResult);
   ci = L->ci--;
+  if (ci->regnum < lua_regionnumber(L))
+    region_free(L, ci->regnum+1);
   res = ci->func;  /* res == final position of 1st result */
   wanted = ci->nresults;
   L->base = (ci - 1)->base;  /* restore base */

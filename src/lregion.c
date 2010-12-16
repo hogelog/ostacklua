@@ -84,51 +84,52 @@ void rstack_close (lua_State *L) {
   RObject *top = rs->creg->top, *base = rs->rbuf.head;
   lua_assert(rs->cregnum == 0);
   lua_assert(top == rs->rbuf.head);
-  //while (top != base) {
-  //  GCObject *o = (--top)->body;
-  //  if (top->body)
-  //    freeobj(L, top->body);
-  //}
   buf_resize(L, rs, 0);
 }
 
 
-void region_new (lua_State *L) {
+int region_new (lua_State *L) {
   RStack *rs = rstack(L);
   RObject *top = rs->creg->top;
   Region *r = rs->creg = &rs->regions[++rs->cregnum];
   lua_assert(rs->cregnum > 0 && rs->cregnum < RStack_REGIONS);
   r->base = r->top = top;
+  return rs->cregnum;
 }
 
 
-void region_renew (lua_State *L) {
+void region_renew (lua_State *L, int regnum) {
   RStack *rs = rstack(L);
-  Region *r = rs->creg;
-  RObject *top = r->top;
-  RObject *base = r->base;
-  lua_assert(rs->cregnum > 0 && rs->cregnum < RStack_REGIONS);
+  RObject *top = rs->creg->top;
+  RObject *base = rs->regions[regnum].base;
+  lua_assert(0 < regnum && regnum <= rs->cregnum);
+  lua_assert(rs->cregnum < RStack_REGIONS);
   while (top != base) {
     GCObject *o = (--top)->body;
     if (top->body)
       freeobj(L, top->body);
   }
-  r->top = r->base;
+  rs->cregnum = regnum;
+  rs->creg = &rs->regions[rs->cregnum];
+  rs->creg->top = base;
 }
 
 
-void region_free (lua_State *L) {
+void region_free (lua_State *L, int regnum) {
   RStack *rs = rstack(L);
   Region *r = rs->creg;
   RObject *top = r->top;
-  RObject *base = r->base;
-  lua_assert(rs->cregnum > 0 && rs->cregnum < RStack_REGIONS);
+  RObject *base = rs->regions[regnum].base;
+  lua_assert(0 < regnum && regnum <= rs->cregnum);
+  lua_assert(rs->cregnum < RStack_REGIONS);
   while (top != base) {
     GCObject *o = (--top)->body;
     if (top->body)
       freeobj(L, top->body);
   }
-  rs->creg = &rs->regions[--rs->cregnum];
+  rs->cregnum = regnum - 1;
+  rs->creg = &rs->regions[rs->cregnum];
+  lua_assert(rs->creg->top == base);
 }
 
 

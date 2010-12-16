@@ -444,8 +444,8 @@ static int luaB_newproxy (lua_State *L) {
 }
 
 
-static int luaB_regnum (lua_State *L) {
-  lua_pushinteger(L, lua_regnum(L));
+static int luaB_regionnumber (lua_State *L) {
+  lua_pushinteger(L, lua_regionnumber(L));
   return 1;
 }
 
@@ -475,7 +475,7 @@ static const luaL_Reg base_funcs[] = {
   {"type", luaB_type},
   {"unpack", luaB_unpack},
   {"xpcall", luaB_xpcall},
-  {"regnum", luaB_regnum},
+  {"region_number", luaB_regionnumber},
   {NULL, NULL}
 };
 

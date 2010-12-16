@@ -352,7 +352,7 @@ static void Arith (lua_State *L, StkId ra, const TValue *rb,
 
 
 #define dojump(L,pc,i)	{(pc) += (i); luai_threadyield(L);}
-#define dobreak(L,pc,i)	{if (GET_OPCODE(*pc) == OP_BREAK) region_free(L); (pc) += (i); luai_threadyield(L);}
+#define dobreak(L,pc,i)	{if (GET_OPCODE(*pc) == OP_BREAK) region_free(L, lua_regionnumber(L)); (pc) += (i); luai_threadyield(L);}
 
 
 #define Protect(x)	{ L->savedpc = pc; {x;}; base = L->base; }
@@ -540,7 +540,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_BREAK: {
-        region_free(L);
+        region_free(L, lua_regionnumber(L));
         dojump(L, pc, GETARG_sBx(i));
         continue;
       }
@@ -662,10 +662,10 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
           setnvalue(ra, idx);  /* update internal index... */
           setnvalue(ra+3, idx);  /* ...and external index */
-          region_renew(L);
+          region_renew(L, lua_regionnumber(L));
         }
         else {
-          region_free(L);
+          region_free(L, lua_regionnumber(L));
         }
         continue;
       }

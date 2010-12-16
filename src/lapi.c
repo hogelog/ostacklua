@@ -1086,6 +1086,6 @@ LUA_API const char *lua_setupvalue (lua_State *L, int funcindex, int n) {
   return name;
 }
 
-LUA_API int lua_regnum (lua_State *L) {
+LUA_API int lua_regionnumber (lua_State *L) {
   return rstack(L)->cregnum;
 }

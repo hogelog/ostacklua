@@ -373,7 +373,7 @@ Table *luaH_new (lua_State *L, int narray, int nhash) {
 
 Table *luaH_region_new (lua_State *L, int narray, int nhash) {
   Table *t;
-  if (lua_regnum(L) == 0) {
+  if (lua_regionnumber(L) == 0) {
     t = luaM_new(L, Table);
     luaC_link(L, obj2gco(t), LUA_TTABLE);
   }

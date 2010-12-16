@@ -81,7 +81,7 @@ void rstack_init (lua_State *L) {
 void rstack_close (lua_State *L) {
   RStack *rs = rstack(L);
   lua_assert(rs->cregnum == 0);
-  lua_assert(top == rs->rbuf.head);
+  lua_assert(rs->creg->top == rs->rbuf.head);
   buf_resize(L, rs, 0);
 }
 

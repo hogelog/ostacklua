@@ -353,7 +353,7 @@ static void Arith (lua_State *L, StkId ra, const TValue *rb,
 
 
 #define dojump(L,pc,i)	{(pc) += (i); luai_threadyield(L);}
-#define dobreak(L,pc,i)	{if (GET_OPCODE(*pc) == OP_BREAK) region_free(L, lua_regionnumber(L)); (pc) += (i); luai_threadyield(L);}
+#define dobreak(L,rs,pc,i)	{if (GET_OPCODE(*pc) == OP_BREAK) region_free(rs); (pc) += (i); luai_threadyield(L);}
 
 
 #define Protect(x)	{ L->savedpc = pc; {x;}; base = L->base; }
@@ -377,6 +377,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
   StkId base;
   TValue *k;
   const Instruction *pc;
+  RStack *rs = rstack(L);
  reentry:  /* entry point */
   lua_assert(isLua(L->ci));
   pc = L->savedpc;
@@ -541,7 +542,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         continue;
       }
       case OP_BREAK: {
-        region_free(L, lua_regionnumber(L));
+        region_free(rs);
         dojump(L, pc, GETARG_sBx(i));
         continue;
       }
@@ -550,7 +551,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         TValue *rc = RKC(i);
         Protect(
           if (equalobj(L, rb, rc) == GETARG_A(i))
-            dobreak(L, pc, GETARG_sBx(*pc));
+            dobreak(L, rs, pc, GETARG_sBx(*pc));
         )
         pc++;
         continue;
@@ -558,7 +559,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_LT: {
         Protect(
           if (luaV_lessthan(L, RKB(i), RKC(i)) == GETARG_A(i))
-            dobreak(L, pc, GETARG_sBx(*pc));
+            dobreak(L, rs, pc, GETARG_sBx(*pc));
         )
         pc++;
         continue;
@@ -566,14 +567,14 @@ void luaV_execute (lua_State *L, int nexeccalls) {
       case OP_LE: {
         Protect(
           if (lessequal(L, RKB(i), RKC(i)) == GETARG_A(i))
-            dobreak(L, pc, GETARG_sBx(*pc));
+            dobreak(L, rs, pc, GETARG_sBx(*pc));
         )
         pc++;
         continue;
       }
       case OP_TEST: {
         if (l_isfalse(ra) != GETARG_C(i))
-          dobreak(L, pc, GETARG_sBx(*pc));
+          dobreak(L, rs, pc, GETARG_sBx(*pc));
         pc++;
         continue;
       }
@@ -581,7 +582,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         TValue *rb = RB(i);
         if (l_isfalse(rb) != GETARG_C(i)) {
           setobjs2s(L, ra, rb);
-          dobreak(L, pc, GETARG_sBx(*pc));
+          dobreak(L, rs, pc, GETARG_sBx(*pc));
         }
         pc++;
         continue;
@@ -663,10 +664,10 @@ void luaV_execute (lua_State *L, int nexeccalls) {
           dojump(L, pc, GETARG_sBx(i));  /* jump back */
           setnvalue(ra, idx);  /* update internal index... */
           setnvalue(ra+3, idx);  /* ...and external index */
-          region_renew(L, lua_regionnumber(L));
+          region_renew(rs);
         }
         else {
-          region_free(L, lua_regionnumber(L));
+          region_free(rs);
         }
         continue;
       }
@@ -682,7 +683,7 @@ void luaV_execute (lua_State *L, int nexeccalls) {
         else if (!tonumber(pstep, ra+2))
           luaG_runerror(L, LUA_QL("for") " step must be a number");
         setnvalue(ra, luai_numsub(nvalue(ra), nvalue(pstep)));
-        region_new(L);
+        region_new(rs);
         dojump(L, pc, GETARG_sBx(i));
         continue;
       }

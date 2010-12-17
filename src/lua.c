@@ -16,6 +16,7 @@
 
 #include "lauxlib.h"
 #include "lualib.h"
+#include "lstate.h"
 #include "lregion.h"
 
 
@@ -97,6 +98,7 @@ static int traceback (lua_State *L) {
 static int docall (lua_State *L, int narg, int clear) {
   int status;
   int base = lua_gettop(L) - narg;  /* function index */
+  RStack *rs = rstack(L);
   lua_pushcfunction(L, traceback);  /* push traceback function */
   lua_insert(L, base);  /* put it under chunk and args */
   signal(SIGINT, laction);
@@ -105,8 +107,8 @@ static int docall (lua_State *L, int narg, int clear) {
   lua_remove(L, base);  /* remove traceback function */
   /* force a complete garbage collection in case of errors */
   if (status != 0) {
-    if (lua_regionnumber(L) != 0)
-      region_free(L, 1);
+    while (lua_regionnumber(L) != 0)
+      region_free(rs);
     lua_gc(L, LUA_GCCOLLECT, 0);
   }
   return status;

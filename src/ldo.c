@@ -345,11 +345,12 @@ int luaD_poscall (lua_State *L, StkId firstResult) {
   StkId res;
   int wanted, i;
   CallInfo *ci;
+  RStack *rs = rstack(L);
   if (L->hookmask & LUA_MASKRET)
     firstResult = callrethooks(L, firstResult);
   ci = L->ci--;
-  if (ci->regnum < lua_regionnumber(L))
-    region_free(L, ci->regnum+1);
+  while (ci->regnum < lua_regionnumber(L))
+    region_free(rs);
   res = ci->func;  /* res == final position of 1st result */
   wanted = ci->nresults;
   L->base = (ci - 1)->base;  /* restore base */

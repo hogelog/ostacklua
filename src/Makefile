@@ -169,7 +169,7 @@ ltable.o: ltable.c lua.h luaconf.h ldebug.h lstate.h lobject.h llimits.h \
 ltablib.o: ltablib.c lua.h luaconf.h lauxlib.h lualib.h
 ltm.o: ltm.c lua.h luaconf.h lobject.h llimits.h lstate.h lregion.h ltm.h \
   lzio.h lmem.h lstring.h lgc.h ltable.h
-lua.o: lua.c lua.h luaconf.h lauxlib.h lualib.h
+lua.o: lua.c lua.h luaconf.h lauxlib.h lualib.h lregion.h
 luac.o: luac.c lua.h luaconf.h lauxlib.h ldo.h lobject.h llimits.h \
   lstate.h lregion.h ltm.h lzio.h lmem.h lfunc.h lopcodes.h lstring.h \
   lgc.h lundump.h

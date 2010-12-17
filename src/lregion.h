@@ -21,6 +21,7 @@ struct RObjectBuffer {
 };
 
 typedef struct RStack {
+  lua_State *state;
   Region regions[RStack_REGIONS];
   int cregnum;
   Region *creg;
@@ -35,11 +36,19 @@ typedef struct RStack {
 
 LUAI_FUNC void rstack_init (lua_State *L);
 LUAI_FUNC void rstack_close (lua_State *L);
-LUAI_FUNC int region_new (lua_State *L);
-LUAI_FUNC void region_renew (lua_State *L, int regnum);
-LUAI_FUNC void region_free (lua_State *L, int regnum);
+LUAI_FUNC void region_new (RStack *rs);
+void region_renew_ (RStack *rs, Region *creg, RObject *base, RObject *top);
+LUAI_FUNC void region_free (RStack *rs);
 LUAI_FUNC void *rstack_alloc (lua_State *L, size_t size);
 LUAI_FUNC void rstack_link (lua_State *L, GCObject *o, lu_byte tt);
+
+#define region_renew(rs) { \
+    Region *creg = rs->creg; \
+    RObject *base = creg->base; \
+    RObject *top = creg->top; \
+    if (top != base) \
+      region_renew_(rs, creg, base, top); \
+  }
 
 //LUAI_FUNC int rstack_getregion(lua_State *L, GCObject *o) {
 LUAI_FUNC void rstack_reject(lua_State *L, GCObject *src);

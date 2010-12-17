@@ -4,27 +4,29 @@
 
 #include "lobject.h"
 
-typedef struct RObject {
-  GCObject *body;
-} RObject;
+//typedef struct RObject {
+//  GCObject *body;
+//} RObject;
 
 typedef struct Region {
-  RObject *base, *top;
+  //RObject *base, *top;
+  GCObject *gbase, *gtop;
 } Region;
 
 #define RStack_REGIONS 256
 #define RStack_MINBUFSIZE 1024
 
-struct RObjectBuffer {
-  RObject *head, *last;
-  int size;
-};
+//struct RObjectBuffer {
+//  RObject *head, *last;
+//  int size;
+//};
 
 typedef struct RStack {
   Region regions[RStack_REGIONS];
   int cregnum;
   Region *creg;
-  struct RObjectBuffer rbuf;
+  //struct RObjectBuffer rbuf;
+  GCObject *root;
 } RStack;
 
 #define is_validregnum(num) ((num) >= 0 && (num) <= RStack_REGIONS)

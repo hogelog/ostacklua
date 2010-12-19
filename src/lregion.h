@@ -28,10 +28,6 @@ typedef struct RStack {
   struct RObjectBuffer rbuf;
 } RStack;
 
-#define is_validregnum(num) ((num) >= 0 && (num) <= RStack_REGIONS)
-#define is_notonregnum(num) ((num) == 0)
-#define is_onregnum(num) ((num) > 0 && (num) <= RStack_REGIONS)
-
 #define rstack_new(L,t) cast(t *, rstack_alloc(L, sizeof(t)))
 
 LUAI_FUNC void rstack_init (lua_State *L);

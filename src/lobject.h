@@ -110,7 +110,7 @@ typedef struct lua_TValue {
   lua_assert(!iscollectable(obj) || (ttype(obj) == (obj)->value.gc->gch.tt))
 
 #define checkliveness(g,obj) \
-  lua_assert(!iscollectable(obj) || \
+  lua_assert(!iscollectable(obj) || is_robj(gcvalue(obj)) || \
   ((ttype(obj) == (obj)->value.gc->gch.tt) && !isdead(g, (obj)->value.gc)))
 
 

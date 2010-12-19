@@ -69,6 +69,7 @@ static void buf_fix (RStack *rs, RObject *ohead) {
 
 void rstack_init (lua_State *L) {
   RStack *rs = rstack(L);
+  rs->state = L;
   rs->rbuf.head = rs->rbuf.last = NULL;
   rs->rbuf.size = 0;
   buf_resize(L, rs, RStack_MINBUFSIZE);
@@ -103,6 +104,7 @@ void region_renew_ (RStack *rs, Region *creg, RObject *base, RObject *top) {
     if (o)
       freeobj(rs->state, o);
   } while (top != base);
+  lua_assert(rs->creg->top == base);
 }
 
 
@@ -118,7 +120,7 @@ void region_free (RStack *rs) {
     if (o)
       freeobj(rs->state, o);
   }
-  lua_assert(creg->top == base);
+  lua_assert(rs->creg->top == base);
 }
 
 
@@ -176,6 +178,7 @@ void rstack_link (lua_State *L, GCObject *o, lu_byte tt) {
   RStack *rs = rstack(L);
   o->gch.tt = tt;
   o->gch.next = NULL;
-  o->gch.marked = luaC_white(g);
+  o->gch.marked = luaC_white(G(L));
+  l_setbit(o->gch.marked, FIXEDBIT);
   set_regnum(o, rs->cregnum);
 }

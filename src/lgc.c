@@ -50,9 +50,9 @@
 
 
 #define markvalue(g,o) { checkconsistency(o); \
-  if (iscollectable(o) && iswhite(gcvalue(o))) reallymarkobject(g,gcvalue(o)); }
+  if (iscollectable(o) && !is_robj(gcvalue(o)) && iswhite(gcvalue(o))) reallymarkobject(g,gcvalue(o)); }
 
-#define markobject(g,t) { if (iswhite(obj2gco(t))) \
+#define markobject(g,t) { if (!is_robj(obj2gco(t)) && iswhite(obj2gco(t))) \
 		reallymarkobject(g, obj2gco(t)); }
 
 
@@ -67,6 +67,7 @@ static void removeentry (Node *n) {
 
 
 static void reallymarkobject (global_State *g, GCObject *o) {
+  lua_assert(!is_robj(o));
   lua_assert(iswhite(o) && !isdead(g, o));
   white2gray(o);
   switch (o->gch.tt) {
@@ -270,12 +271,39 @@ static void traversestack (global_State *g, lua_State *l) {
 }
 
 
+static void traverseregions (global_State *g, lua_State *l) {
+  RStack *rs = rstack(l);
+  RObject *end = rs->rbuf.head - 1, *ro = rs->creg->top - 1;
+  for ( ; ro != end; ro--) {
+    GCObject *o = ro->body;
+    if (o) {
+      white2gray(o);
+      switch(o->gch.tt) {
+        case LUA_TTABLE: {
+          traversetable(g, gco2h(o));
+          break;
+        }
+        //case LUA_TUSERDATA: {
+        //  Table *mt = gco2u(o)->metatable;
+        //  markobject(g, obj2gco(mt));
+        //  break;
+        //}
+        // TODO: implement
+        default: lua_assert(0);
+      }
+      gray2black(o);
+    }
+  }
+}
+
+
 /*
 ** traverse one gray object, turning it to black.
 ** Returns `quantity' traversed.
 */
 static l_mem propagatemark (global_State *g) {
   GCObject *o = g->gray;
+  lua_assert(!is_robj(o));
   lua_assert(isgray(o));
   gray2black(o);
   switch (o->gch.tt) {
@@ -301,6 +329,7 @@ static l_mem propagatemark (global_State *g) {
       g->grayagain = o;
       black2gray(o);
       traversestack(g, th);
+      traverseregions(g, th);
       return sizeof(lua_State) + sizeof(TValue) * th->stacksize +
                                  sizeof(CallInfo) * th->size_ci;
     }
@@ -376,6 +405,7 @@ static void cleartable (GCObject *l) {
 
 
 static void freeobj (lua_State *L, GCObject *o) {
+  lua_assert(!is_robj(o));
   switch (o->gch.tt) {
     case LUA_TPROTO: luaF_freeproto(L, gco2p(o)); break;
     case LUA_TFUNCTION: luaF_freeclosure(L, gco2cl(o)); break;
@@ -409,6 +439,7 @@ static GCObject **sweeplist (lua_State *L, GCObject **p, lu_mem count) {
   global_State *g = G(L);
   int deadmask = otherwhite(g);
   while ((curr = *p) != NULL && count-- > 0) {
+    lua_assert(!is_robj(curr));
     if (curr->gch.tt == LUA_TTHREAD)  /* sweep open upvalues of each thread */
       sweepwholelist(L, &gco2th(curr)->openupval);
     if ((curr->gch.marked ^ WHITEBITS) & deadmask) {  /* not dead? */

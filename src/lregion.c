@@ -174,7 +174,6 @@ void rstack_reject (lua_State *L, GCObject *src) {
 }
 
 void rstack_link (lua_State *L, GCObject *o, lu_byte tt) {
-  global_State *g = G(L);
   RStack *rs = rstack(L);
   o->gch.tt = tt;
   o->gch.next = NULL;

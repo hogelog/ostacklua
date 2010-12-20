@@ -75,6 +75,29 @@ static int getjump (FuncState *fs, int pc) {
 }
 
 
+static void testbreakbranch(Instruction *i) {
+  switch(GET_OPCODE(*i)) {
+    case OP_EQ:
+      SET_OPCODE(*i, OP_BEQ);
+      break;
+    case OP_LT:
+      SET_OPCODE(*i, OP_BLT);
+      break;
+    case OP_LE:
+      SET_OPCODE(*i, OP_BLE);
+      break;
+    case OP_TEST:
+      SET_OPCODE(*i, OP_BTEST);
+      break;
+    case OP_TESTSET:
+      SET_OPCODE(*i, OP_BTESTSET);
+      break;
+    default:
+      break;
+  }
+}
+
+
 int luaK_break (FuncState *fs) {
   int jpc = fs->jpc;  /* save list of jumps to here */
   int j;
@@ -82,12 +105,14 @@ int luaK_break (FuncState *fs) {
   fs->jpc = NO_JUMP;
   list = j = luaK_codeAsBx(fs, OP_BREAK, 0, NO_JUMP);
   luaK_concat(fs, &j, jpc);  /* keep them on hold */
-  while (list != NO_JUMP) {
+  do {
     int next = getjump(fs, list);
     Instruction *jmp = &fs->f->code[list];
+    Instruction *prev = &fs->f->code[list - 1];
     SET_OPCODE(*jmp, OP_BREAK);
+    testbreakbranch(prev);
     list = next;
-  }
+  } while (list != NO_JUMP);
   return j;
 }
 
@@ -139,7 +164,8 @@ static Instruction *getjumpcontrol (FuncState *fs, int pc) {
 static int need_value (FuncState *fs, int list) {
   for (; list != NO_JUMP; list = getjump(fs, list)) {
     Instruction i = *getjumpcontrol(fs, list);
-    if (GET_OPCODE(i) != OP_TESTSET) return 1;
+    int op = GET_OPCODE(i);
+    if (op != OP_TESTSET && op != OP_BTESTSET) return 1;
   }
   return 0;  /* not found */
 }
@@ -147,7 +173,8 @@ static int need_value (FuncState *fs, int list) {
 
 static int patchtestreg (FuncState *fs, int node, int reg) {
   Instruction *i = getjumpcontrol(fs, node);
-  if (GET_OPCODE(*i) != OP_TESTSET)
+  int op = GET_OPCODE(*i);
+  if (op != OP_TESTSET && op != OP_BTESTSET)
     return 0;  /* cannot patch other instructions */
   if (reg != NO_REG && reg != GETARG_B(*i))
     SETARG_A(*i, reg);
@@ -533,7 +560,9 @@ void luaK_self (FuncState *fs, expdesc *e, expdesc *key) {
 static void invertjump (FuncState *fs, expdesc *e) {
   Instruction *pc = getjumpcontrol(fs, e->u.s.info);
   lua_assert(testTMode(GET_OPCODE(*pc)) && GET_OPCODE(*pc) != OP_TESTSET &&
-                                           GET_OPCODE(*pc) != OP_TEST);
+                                           GET_OPCODE(*pc) != OP_BTESTSET &&
+                                           GET_OPCODE(*pc) != OP_TEST &&
+                                           GET_OPCODE(*pc) != OP_BTEST);
   SETARG_A(*pc, !(GETARG_A(*pc)));
 }
 

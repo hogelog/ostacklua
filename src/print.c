@@ -128,6 +128,9 @@ static void PrintCode(const Proto* f)
    case OP_EQ:
    case OP_LT:
    case OP_LE:
+   case OP_BEQ:
+   case OP_BLT:
+   case OP_BLE:
     if (ISK(b) || ISK(c))
     {
      printf("\t; ");

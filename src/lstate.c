@@ -5,6 +5,7 @@
 */
 
 
+#include <stdio.h>
 #include <stddef.h>
 
 #define lstate_c
@@ -104,6 +105,7 @@ static void preinit_state (lua_State *L, global_State *g) {
 
 static void close_state (lua_State *L) {
   global_State *g = G(L);
+  uint64_t lua_end;
   rstack_close(L);
   luaF_close(L, L->stack);  /* close all upvalues for this thread */
   luaC_freeall(L);  /* collect all objects */
@@ -114,6 +116,8 @@ static void close_state (lua_State *L) {
   freestack(L, L);
   lua_assert(g->totalbytes == sizeof(LG));
   (*g->frealloc)(g->ud, fromstate(L), state_size(LG), 0);
+  lua_end = rdtsc();
+  fprintf(stderr, "## execution: %lu cycle, gc: %lu cycle %d step, cframe: %lu cycle %d step\n", (lua_end - g->lua_start), g->gctime, g->gcstep, g->cframetime, g->cframestep);
 }
 
 
@@ -182,6 +186,9 @@ LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud) {
   g->gcpause = LUAI_GCPAUSE;
   g->gcstepmul = LUAI_GCMUL;
   g->gcdept = 0;
+  g->gctime = 0;
+  g->gcstep = 0;
+  g->lua_start = rdtsc();
   for (i=0; i<NUM_TAGS; i++) g->mt[i] = NULL;
   rstack_init(L);
   if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
@@ -217,3 +224,9 @@ LUA_API void lua_close (lua_State *L) {
   close_state(L);
 }
 
+
+uint64_t rdtsc () {
+  unsigned int eax, edx;
+  __asm__ volatile("rdtsc" : "=a"(eax), "=d"(edx));
+  return ((uint64_t)edx << 32) | eax;
+}

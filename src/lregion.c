@@ -97,6 +97,9 @@ void region_new (RStack *rs) {
 
 
 void region_renew_ (RStack *rs, Region *creg, RObject *base, RObject *top) {
+  global_State *g = G(rs->state);
+  uint64_t count_start = rdtsc();
+  uint64_t count_end;
   creg->top = base;
   lua_assert(0 < rs->cregnum && rs->cregnum < RStack_REGIONS);
   do {
@@ -105,10 +108,16 @@ void region_renew_ (RStack *rs, Region *creg, RObject *base, RObject *top) {
       freeobj(rs->state, o);
   } while (top != base);
   lua_assert(rs->creg->top == base);
+  count_end = rdtsc();
+  ++g->cframestep;
+  g->cframetime += count_end - count_start;
 }
 
 
 void region_free (RStack *rs) {
+  global_State *g = G(rs->state);
+  uint64_t count_start = rdtsc();
+  uint64_t count_end;
   Region *creg = rs->creg;
   RObject *top = creg->top;
   RObject *base = creg->base;
@@ -121,6 +130,9 @@ void region_free (RStack *rs) {
       freeobj(rs->state, o);
   }
   lua_assert(rs->creg->top == base);
+  count_end = rdtsc();
+  ++g->cframestep;
+  g->cframetime += count_end - count_start;
 }
 
 

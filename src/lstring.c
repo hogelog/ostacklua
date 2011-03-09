@@ -111,3 +111,10 @@ Udata *luaS_newudata (lua_State *L, size_t s, Table *e) {
   return u;
 }
 
+void luaS_rejectu (lua_State *L, Udata *src) {
+  Table *mt = src->uv.metatable;
+  lua_assert(!is_robj(obj2gco(src)));
+  if (mt && is_robj(obj2gco(mt))) {
+    rstack_reject(L, obj2gco(mt));
+  }
+}

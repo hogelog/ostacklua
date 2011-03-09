@@ -163,9 +163,9 @@ void rstack_reject (lua_State *L, GCObject *src) {
     case LUA_TTABLE:
       luaH_reject(L, gco2h(src));
       break;
-    //case LUA_TUSERDATA:
-    //  luaS_rstack2heapu(L, rawgco2u(src));
-    //  break;
+    case LUA_TUSERDATA:
+      luaS_rejectu(L, rawgco2u(src));
+      break;
     // TODO: implement
     default:
       lua_assert(0);
